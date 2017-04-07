@@ -22,7 +22,7 @@ public class tab_work_sets extends Fragment {
             bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps;
 
     Button squatSet1, squatSet2, squatSet3, bpSet1, bpSet2, bpSet3,
-            rowSet1, rowSet2, rowSet3, btnSave, btnRead;
+            rowSet1, rowSet2, rowSet3, btnSave, btnRead, btnDel;
 
     TextView textView;
 
@@ -44,6 +44,7 @@ public class tab_work_sets extends Fragment {
         rowSet3 = (Button) rootView.findViewById(R.id.rowSet3);
         btnSave = (Button) rootView.findViewById(R.id.btnSave);
         btnRead = (Button) rootView.findViewById(R.id.btnRead);
+        btnDel = (Button) rootView.findViewById(R.id.btnDel);
         textView =(TextView) rootView.findViewById(R.id.textView);
 
         dbHelper = new DBHelper(getActivity());
@@ -72,6 +73,7 @@ public class tab_work_sets extends Fragment {
         rowSet3.setOnClickListener(onClickListener);
         btnSave.setOnClickListener(onClickListener);
         btnRead.setOnClickListener(onClickListener);
+        btnDel.setOnClickListener(onClickListener);
 
         return rootView;
     }
@@ -228,6 +230,9 @@ public class tab_work_sets extends Fragment {
                     }
 
                     cursor.close();
+                    break;
+                case R.id.btnDel:
+                    database.delete(DBHelper.TABLE_WORKOUTS, null, null);
                     break;
             }
             dbHelper.close();
