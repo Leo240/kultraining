@@ -226,7 +226,7 @@ public class tab_work_sets extends Fragment {
                         );
 
                     }else{
-                        textView.setText("Данные отсутствуют");
+                        textView.setText("0 рядов");
                     }
 
                     cursor.close();
