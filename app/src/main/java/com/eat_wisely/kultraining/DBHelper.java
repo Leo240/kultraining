@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
 
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
     public static final String DATABASE_NAME = "workoutsDb";
     public static final String TABLE_WORKOUTS = "workouts";
 
@@ -20,6 +20,9 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String KEY_ROW_SET_1 ="row_set_1";
     public static final String KEY_ROW_SET_2 ="row_set_2";
     public static final String KEY_ROW_SET_3 ="row_set_3";
+    public static final String KEY_SQUAT_WORK_WEIGHT = "squat_work_weight";
+    public static final String KEY_BP_WORK_WEIGHT = "bp_work_weight";
+    public static final String KEY_ROW_WORK_WEIGHT = "row_work_weight";
     public static final String KEY_WORKOUT_DATE = "workout_date";
 
     public DBHelper(Context context) {
@@ -29,10 +32,19 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_WORKOUTS + "(" + KEY_ID + " integer primary key," +
-                    KEY_SQUAT_SET_1 + " text," + KEY_SQUAT_SET_2 + " text," + KEY_SQUAT_SET_3
-                    + " text," + KEY_BP_SET_1 + " text," + KEY_BP_SET_2 + " text," + KEY_BP_SET_3
-                    + " text," + KEY_ROW_SET_1 + " text," + KEY_ROW_SET_2 + " text," + KEY_ROW_SET_3
-                    + " text," + KEY_WORKOUT_DATE + " text)"
+                KEY_SQUAT_SET_1 + " integer," +
+                KEY_SQUAT_SET_2 + " integer," +
+                KEY_SQUAT_SET_3 + " integer," +
+                KEY_BP_SET_1 + " integer," +
+                KEY_BP_SET_2 + " integer," +
+                KEY_BP_SET_3 + " integer," +
+                KEY_ROW_SET_1 + " integer," +
+                KEY_ROW_SET_2 + " integer," +
+                KEY_ROW_SET_3 + " integer," +
+                KEY_SQUAT_WORK_WEIGHT + " integer," +
+                KEY_BP_WORK_WEIGHT + " integer," +
+                KEY_ROW_WORK_WEIGHT + " integer," +
+                KEY_WORKOUT_DATE + " text)"
         );
     }
 

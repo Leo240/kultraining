@@ -1,18 +1,17 @@
 package com.eat_wisely.kultraining;
 
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -45,7 +44,7 @@ public class tab_work_sets extends Fragment {
         btnSave = (Button) rootView.findViewById(R.id.btnSave);
         btnRead = (Button) rootView.findViewById(R.id.btnRead);
         btnDel = (Button) rootView.findViewById(R.id.btnDel);
-        textView =(TextView) rootView.findViewById(R.id.textView);
+        textView = (TextView) rootView.findViewById(R.id.textView);
 
         dbHelper = new DBHelper(getActivity());
 
@@ -94,7 +93,8 @@ public class tab_work_sets extends Fragment {
             String rowSet3Value = rowSet3.getText().toString();
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            String date = sdf.format(new Date());
+            String dateValue = sdf.format(new Date());
+
 
             SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -192,7 +192,7 @@ public class tab_work_sets extends Fragment {
                     contentValues.put(DBHelper.KEY_ROW_SET_1, rowSet1Value);
                     contentValues.put(DBHelper.KEY_ROW_SET_2, rowSet2Value);
                     contentValues.put(DBHelper.KEY_ROW_SET_3, rowSet3Value);
-                    contentValues.put(DBHelper.KEY_WORKOUT_DATE, date);
+                    contentValues.put(DBHelper.KEY_WORKOUT_DATE, dateValue);
 
                     database.insert(DBHelper.TABLE_WORKOUTS, null, contentValues);
                     break;
@@ -200,7 +200,7 @@ public class tab_work_sets extends Fragment {
                     Cursor cursor = database.query(DBHelper.TABLE_WORKOUTS, null, null, null, null, null, null);
 
                     if (cursor.moveToFirst()){
-                        int idIndex = cursor.getColumnIndex(DBHelper.KEY_ID);
+
                         int squatIndex1 = cursor.getColumnIndex(DBHelper.KEY_SQUAT_SET_1);
                         int squatIndex2 = cursor.getColumnIndex(DBHelper.KEY_SQUAT_SET_2);
                         int squatIndex3 = cursor.getColumnIndex(DBHelper.KEY_SQUAT_SET_3);
@@ -212,18 +212,22 @@ public class tab_work_sets extends Fragment {
                         int rowIndex3 = cursor.getColumnIndex(DBHelper.KEY_ROW_SET_3);
                         int dateIndex = cursor.getColumnIndex(DBHelper.KEY_WORKOUT_DATE);
 
-                        textView.setText(cursor.getInt(idIndex) + ":" + cursor.getInt(dateIndex) + "\n" +
-                                        "Приседания:\n" +
-                                "1 сет - " + cursor.getInt(squatIndex1) +
-                                " 2 сет - " + cursor.getInt(squatIndex2) +
-                                " 3 сет - " + cursor.getInt(squatIndex3) + "\n" + "Жим лежа:\n" +
-                                "1 сет - " + cursor.getInt(bpIndex1) +
-                                " 2 сет - " + cursor.getInt(bpIndex2) +
-                                " 3 сет - " + cursor.getInt(bpIndex3) + "\n" + "Тяга в наклоне:\n" +
-                                "1 сет - " + cursor.getInt(rowIndex1) +
-                                " 2 сет - " + cursor.getInt(rowIndex2) +
-                                " 3 сет - " + cursor.getInt(rowIndex3)
-                        );
+                        do{
+                            Log.d("myLog", "Дата: " + cursor.getString(dateIndex) + "\n" +
+                                    "Приседания:\n" +
+                                    "1 сет - " + cursor.getInt(squatIndex1) +
+                                    " 2 сет - " + cursor.getInt(squatIndex2) +
+                                    " 3 сет - " + cursor.getInt(squatIndex3) + "\n" + "Жим лежа:\n" +
+                                    "1 сет - " + cursor.getInt(bpIndex1) +
+                                    " 2 сет - " + cursor.getInt(bpIndex2) +
+                                    " 3 сет - " + cursor.getInt(bpIndex3) + "\n" + "Тяга в наклоне:\n" +
+                                    "1 сет - " + cursor.getInt(rowIndex1) +
+                                    " 2 сет - " + cursor.getInt(rowIndex2) +
+                                    " 3 сет - " + cursor.getInt(rowIndex3)
+                            );
+                        }
+                        while (cursor.moveToNext());
+
 
                     }else{
                         textView.setText("0 рядов");
