@@ -5,12 +5,26 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 public class HistoryActivity extends AppCompatActivity {
+
+    String[] dates = new String[] {"Вт, 4 Апр", "Чт, 6 Апр", "Сб, 8 Апр", "Вт, 11 Апр", "Чт, 13 Апр"};
+    String[] squats = new String[] {"Приседания: 8/8/8 80кг", "Приседания: 8/8/8 82.5кг",
+            "Приседания: 8/8/8 85кг", "Приседания: 8/8/8 87.5кг", "Приседания: 8/8/8 90кг"};
+    String[] benchpress = new String[] {"Жим лежа: 8/8/8 55кг", "Жим лежа: 8/8/8 57.5кг",
+            "Жим лежа: 8/8/8 60кг", "Жим лежа: 8/8/8 62.5кг", "Жим лежа: 8/8/8 65кг"};
+    String[] row = new String[] {"Тяга в наклоне: 8/8/8 50кг", "Тяга в наклоне: 8/8/8 52.5кг",
+            "Тяга в наклоне: 8/8/8 55кг", "Тяга в наклоне: 8/8/8 57.5кг", "Тяга в наклоне: 8/8/8 60кг"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +32,17 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(dates.length);
+
+        Map<String, Object> m;
+        for(int i=0; i < dates.length; i++){
+            
+        }
+
+        ListView lvMain = (ListView) findViewById(R.id.lvMain);
+
+        ArrayList<Map<String, String>> groupData;
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

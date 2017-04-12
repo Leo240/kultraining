@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="vertical"
+        android:background="@color/cardview_light_background">
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Вт, 11 Апр"
+            android:textSize="18sp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="12dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvExercise_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Приседания: 8/8/8"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvExercise_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Жим лежа: 8/8/8"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:id="@+id/tvExercise_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Тяга в наклоне: 8/8/8"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp"/>
+    </LinearLayout>
