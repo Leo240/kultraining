@@ -1,5 +1,6 @@
 package com.eat_wisely.kultraining;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -67,8 +68,9 @@ public class WorkoutActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_home) {
+            Intent intentHome = new Intent(this, MainActivity.class);
+            startActivity(intentHome);
         }
 
         return super.onOptionsItemSelected(item);

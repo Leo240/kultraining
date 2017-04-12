@@ -8,7 +8,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,11 +44,13 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         switch (id) {
-            case R.id.action_settings:
-                return true;
+            case R.id.action_home:
+                Intent intentHome = new Intent(this, MainActivity.class);
+                startActivity(intentHome);
+                break;
             case R.id.action_history:
-                Intent intent = new Intent(this, HistoryActivity.class);
-                startActivity(intent);
+                Intent intentHistory = new Intent(this, HistoryActivity.class);
+                startActivity(intentHistory);
                 break;
         }
 
