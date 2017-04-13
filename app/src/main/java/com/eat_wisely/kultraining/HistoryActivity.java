@@ -5,18 +5,22 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
+import android.widget.SimpleAdapter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class HistoryActivity extends AppCompatActivity {
+
+    final String ATTR_DATES = "dates";
+    final String ATTR_SQUATS = "squats";
+    final String ATTR_BP = "benchpress";
+    final String ATTR_ROW = "row";
 
     String[] dates = new String[] {"Вт, 4 Апр", "Чт, 6 Апр", "Сб, 8 Апр", "Вт, 11 Апр", "Чт, 13 Апр"};
     String[] squats = new String[] {"Приседания: 8/8/8 80кг", "Приседания: 8/8/8 82.5кг",
@@ -37,12 +41,22 @@ public class HistoryActivity extends AppCompatActivity {
 
         Map<String, Object> m;
         for(int i=0; i < dates.length; i++){
-            
+            m = new HashMap<String, Object>();
+            m.put(ATTR_DATES, dates[i]);
+            m.put(ATTR_SQUATS, squats[i]);
+            m.put(ATTR_BP, benchpress[i]);
+            m.put(ATTR_ROW, row[i]);
+            data.add(m);
         }
 
-        ListView lvMain = (ListView) findViewById(R.id.lvMain);
+        String[] from = {ATTR_DATES, ATTR_SQUATS, ATTR_BP, ATTR_ROW};
+        int[] to = {R.id.tvDate, R.id.tvExercise_1, R.id.tvExercise_2, R.id.tvExercise_3};
 
-        ArrayList<Map<String, String>> groupData;
+        SimpleAdapter simpleAdapter = new SimpleAdapter(this, data, R.layout.card, from, to);
+
+        ListView lvMain = (ListView) findViewById(R.id.lvMain);
+        lvMain.setAdapter(simpleAdapter);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
