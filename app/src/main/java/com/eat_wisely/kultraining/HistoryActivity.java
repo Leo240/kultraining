@@ -1,9 +1,15 @@
 package com.eat_wisely.kultraining;
 
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,16 +17,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HistoryActivity extends AppCompatActivity {
+public class HistoryActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     final String ATTR_DATES = "dates";
     final String ATTR_SQUATS = "squats";
     final String ATTR_BP = "benchpress";
     final String ATTR_ROW = "row";
+    DB db;
+    ListView lvMain;
+    SimpleCursorAdapter scAdapter;
 
     String[] dates = new String[] {"Вт, 4 Апр", "Чт, 6 Апр", "Сб, 8 Апр", "Вт, 11 Апр", "Чт, 13 Апр"};
     String[] squats = new String[] {"Приседания: 8/8/8 80кг", "Приседания: 8/8/8 82.5кг",
@@ -37,7 +51,10 @@ public class HistoryActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(dates.length);
+        db = new DB(this);
+        db.open();
+
+        /*ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>(dates.length);
 
         Map<String, Object> m;
         for(int i=0; i < dates.length; i++){
@@ -47,15 +64,22 @@ public class HistoryActivity extends AppCompatActivity {
             m.put(ATTR_BP, benchpress[i]);
             m.put(ATTR_ROW, row[i]);
             data.add(m);
-        }
+        }*/
 
-        String[] from = {ATTR_DATES, ATTR_SQUATS, ATTR_BP, ATTR_ROW};
+
+        String[] from = new String[] {DB.KEY_WORKOUT_DATE, DB.KEY_EX_1, DB.KEY_EX_2,
+                DB.KEY_EX_3};
         int[] to = {R.id.tvDate, R.id.tvExercise_1, R.id.tvExercise_2, R.id.tvExercise_3};
 
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this, data, R.layout.card, from, to);
+        //SimpleAdapter simpleAdapter = new SimpleAdapter(this, data, R.layout.card, from, to);
+        scAdapter = new SimpleCursorAdapter(this, R.layout.card, null, from, to, 0);
 
-        ListView lvMain = (ListView) findViewById(R.id.lvMain);
-        lvMain.setAdapter(simpleAdapter);
+        scAdapter.setViewBinder(new MyViewBinder());
+
+        lvMain = (ListView) findViewById(R.id.lvMain);
+        lvMain.setAdapter(scAdapter);
+
+        getSupportLoaderManager().initLoader(0, null, this);
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -93,4 +117,55 @@ public class HistoryActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    protected void onDestroy(){
+        super.onDestroy();
+        db.close();
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle bndl){
+        return new MyCursorLoader(this, db);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor){
+        scAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader){
+
+    }
+
+    static class MyCursorLoader extends CursorLoader{
+        DB db;
+
+        public MyCursorLoader(Context context, DB db) {
+            super(context);
+            this.db = db;
+        }
+
+        @Override
+        public Cursor loadInBackground(){
+            Cursor cursor = db.getAllData();
+            return cursor;
+        }
+    }
+
+    class MyViewBinder implements SimpleCursorAdapter.ViewBinder{
+
+
+
+        @Override
+        public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+
+            final int KEY_EX_1 = cursor.getColumnIndex(db.KEY_EX_1);
+
+            switch (columnIndex){
+                case KEY_EX_1:
+                    return true;
+            }
+            return false;
+        }
+    }
 }
