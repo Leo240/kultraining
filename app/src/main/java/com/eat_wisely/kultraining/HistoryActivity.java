@@ -20,10 +20,12 @@ import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class HistoryActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
@@ -159,10 +161,55 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
         @Override
         public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 
-            final int KEY_EX_1 = cursor.getColumnIndex(db.KEY_EX_1);
+            switch(view.getId()){
+                case R.id.tvDate:
+                    int KEY_WORKOUT_DATE = cursor.getColumnIndex(db.KEY_WORKOUT_DATE);
+                    String workout_date = cursor.getString(KEY_WORKOUT_DATE);
+                    TextView tvDate = (TextView) view;
+                    tvDate.setText(workout_date);
+                    return true;
+                case R.id.tvExercise_1:
+                    int KEY_EX_1 = cursor.getColumnIndex(db.KEY_EX_1);
+                    String ex_1 = cursor.getString(KEY_EX_1);
+                    TextView tvEx1 = (TextView) view;
+                    try {
+                        JSONObject obj = new JSONObject(ex_1);
+                        String set1 = obj.getString("set1");
+                        String set2 = obj.getString("set2");
+                        String set3 = obj.getString("set3");
+                        tvEx1.setText("Приседания: " + set1 + "/" + set2 + "/" + set3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                case R.id.tvExercise_2:
+                    int KEY_EX_2 = cursor.getColumnIndex(db.KEY_EX_2);
+                    String ex_2 = cursor.getString(KEY_EX_2);
+                    TextView tvEx2 = (TextView) view;
+                    try {
+                        JSONObject obj = new JSONObject(ex_2);
+                        String set1 = obj.getString("set1");
+                        String set2 = obj.getString("set2");
+                        String set3 = obj.getString("set3");
+                        tvEx2.setText("Жим лежа: " + set1 + "/" + set2 + "/" + set3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return true;
+                case R.id.tvExercise_3:
+                    int KEY_EX_3 = cursor.getColumnIndex(db.KEY_EX_3);
+                    String ex_3 = cursor.getString(KEY_EX_3);
+                    TextView tvEx3 = (TextView) view;
+                    try {
+                        JSONObject obj = new JSONObject(ex_3);
+                        String set1 = obj.getString("set1");
+                        String set2 = obj.getString("set2");
+                        String set3 = obj.getString("set3");
+                        tvEx3.setText("Тяга в наклоне: " + set1 + "/" + set2 + "/" + set3);
 
-            switch (columnIndex){
-                case KEY_EX_1:
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     return true;
             }
             return false;
