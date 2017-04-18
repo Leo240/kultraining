@@ -1,5 +1,6 @@
 package com.eat_wisely.kultraining;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -77,16 +78,6 @@ public class tab_work_sets extends Fragment {
 
         @Override
         public void onClick(View v) {
-
-        String squatSet1Value = squatSet1.getText().toString();
-        String squatSet2Value = squatSet2.getText().toString();
-        String squatSet3Value = squatSet3.getText().toString();
-        String bpSet1Value = bpSet1.getText().toString();
-        String bpSet2Value = bpSet2.getText().toString();
-        String bpSet3Value = bpSet3.getText().toString();
-        String rowSet1Value = rowSet1.getText().toString();
-        String rowSet2Value = rowSet2.getText().toString();
-        String rowSet3Value = rowSet3.getText().toString();
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         String dateValue = sdf.format(new Date());
@@ -198,6 +189,9 @@ public class tab_work_sets extends Fragment {
                 db.open();
                 db.addRec(e1, e2, e3, dateValue);
                 db.close();
+
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
                 break;
         }
 
