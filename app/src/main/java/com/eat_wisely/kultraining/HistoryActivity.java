@@ -69,15 +69,16 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         int id = item.getItemId();
+        Intent intent;
 
         switch (id){
             case R.id.action_home:
-                Intent intentHome = new Intent(this, MainActivity.class);
-                startActivity(intentHome);
+                intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 break;
             case R.id.action_history:
-                Intent intentHistory = new Intent(this, HistoryActivity.class);
-                startActivity(intentHistory);
+                intent = new Intent(this, HistoryActivity.class);
+                startActivity(intent);
                 break;
 
         }
@@ -122,20 +123,18 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
 
     class MyViewBinder implements SimpleCursorAdapter.ViewBinder{
 
-
-
         @Override
         public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
 
             switch(view.getId()){
                 case R.id.tvDate:
-                    int KEY_WORKOUT_DATE = cursor.getColumnIndex(db.KEY_WORKOUT_DATE);
+                    int KEY_WORKOUT_DATE = cursor.getColumnIndex(DB.KEY_WORKOUT_DATE);
                     String workout_date = cursor.getString(KEY_WORKOUT_DATE);
                     TextView tvDate = (TextView) view;
                     tvDate.setText(workout_date);
                     return true;
                 case R.id.tvExercise_1:
-                    int KEY_EX_1 = cursor.getColumnIndex(db.KEY_EX_1);
+                    int KEY_EX_1 = cursor.getColumnIndex(DB.KEY_EX_1);
                     String ex_1 = cursor.getString(KEY_EX_1);
                     TextView tvEx1 = (TextView) view;
                     try {
@@ -149,7 +148,7 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
                     }
                     return true;
                 case R.id.tvExercise_2:
-                    int KEY_EX_2 = cursor.getColumnIndex(db.KEY_EX_2);
+                    int KEY_EX_2 = cursor.getColumnIndex(DB.KEY_EX_2);
                     String ex_2 = cursor.getString(KEY_EX_2);
                     TextView tvEx2 = (TextView) view;
                     try {
@@ -163,7 +162,7 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
                     }
                     return true;
                 case R.id.tvExercise_3:
-                    int KEY_EX_3 = cursor.getColumnIndex(db.KEY_EX_3);
+                    int KEY_EX_3 = cursor.getColumnIndex(DB.KEY_EX_3);
                     String ex_3 = cursor.getString(KEY_EX_3);
                     TextView tvEx3 = (TextView) view;
                     try {
@@ -172,7 +171,6 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
                         String set2 = obj.getString("set2");
                         String set3 = obj.getString("set3");
                         tvEx3.setText("Тяга в наклоне: " + set1 + "/" + set2 + "/" + set3);
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

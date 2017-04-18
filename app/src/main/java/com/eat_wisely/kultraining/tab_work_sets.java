@@ -1,21 +1,21 @@
 package com.eat_wisely.kultraining;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
+import java.util.Locale;
 
 public class tab_work_sets extends Fragment {
 
@@ -24,6 +24,8 @@ public class tab_work_sets extends Fragment {
 
     Button squatSet1, squatSet2, squatSet3, bpSet1, bpSet2, bpSet3,
             rowSet1, rowSet2, rowSet3, btnSave;
+
+    TextView tvSquatWeight, tvBenchWeight, tvRowWeight;
 
     String[] reps;
 
@@ -46,6 +48,40 @@ public class tab_work_sets extends Fragment {
         rowSet2 = (Button) rootView.findViewById(R.id.rowSet2);
         rowSet3 = (Button) rootView.findViewById(R.id.rowSet3);
         btnSave = (Button) rootView.findViewById(R.id.btnSave);
+        tvSquatWeight = (TextView) rootView.findViewById(R.id.tvSquatWeight);
+        tvBenchWeight = (TextView) rootView.findViewById(R.id.tvRowWeight);
+
+        db.open();
+        Cursor c = db.getAllData();
+        if(c.getCount() == 0){
+            tvSquatWeight.setText("20кг");
+            tvBenchWeight.setText("20кг");
+            tvRowWeight.setText("20кг");
+        }
+        c.moveToLast();
+        int KEY_EX_1 = c.getColumnIndex(DB.KEY_EX_1);
+        String ex_1 = c.getString(KEY_EX_1);
+
+        int KEY_EX_2 = c.getColumnIndex(DB.KEY_EX_2);
+        String ex_2 = c.getString(KEY_EX_2);
+
+        int KEY_EX_3 = c.getColumnIndex(DB.KEY_EX_3);
+        String ex_3 = c.getString(KEY_EX_3);
+
+        try {
+            JSONObject obj_ex_1 = new JSONObject(ex_1);
+            if(obj_ex_1.getString("exercise") == "1"){
+                tvSquatWeight.setText(obj_ex_1.getString("workWeight"));
+            }
+
+            JSONObject obj_ex_2 = new JSONObject(ex_2);
+            if(obj_ex_2.getString("exercise") == "2"){
+                tvBenchWeight.setText(obj_ex_2.getString("workWeight"));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         Resources res = getResources();
         reps = res.getStringArray(R.array.rep_range);
@@ -70,6 +106,9 @@ public class tab_work_sets extends Fragment {
         rowSet2.setOnClickListener(onClickListener);
         rowSet3.setOnClickListener(onClickListener);
         btnSave.setOnClickListener(onClickListener);
+        tvSquatWeight.setOnClickListener(onClickListener);
+        tvBenchWeight.setOnClickListener(onClickListener);
+        tvRowWeight.setOnClickListener(onClickListener);
 
         return rootView;
     }
@@ -79,7 +118,7 @@ public class tab_work_sets extends Fragment {
         @Override
         public void onClick(View v) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String dateValue = sdf.format(new Date());
 
         JSONObject ex1 = new JSONObject();
@@ -89,13 +128,47 @@ public class tab_work_sets extends Fragment {
             ex1.put("set1",squatSet1.getText().toString());
             ex1.put("set2",squatSet2.getText().toString());
             ex1.put("set3",squatSet3.getText().toString());
+
+            int set1 = Integer.parseInt(ex1.getString("set1"));
+            int set2 = Integer.parseInt(ex1.getString("set2"));
+            int set3 = Integer.parseInt(ex1.getString("set3"));
+
+            if(set1 == 8 && set2 == 8 && set3 == 8){
+                ex1.put("success", true);
+            }
+        }catch (Exception e){
+            System.out.println("Error:" + e);
+        }
+
+        try {
             ex2.put("set1",bpSet1.getText().toString());
             ex2.put("set2",bpSet2.getText().toString());
             ex2.put("set3",bpSet3.getText().toString());
+
+            int set1 = Integer.parseInt(ex2.getString("set1"));
+            int set2 = Integer.parseInt(ex2.getString("set2"));
+            int set3 = Integer.parseInt(ex2.getString("set3"));
+
+            if(set1 == 8 && set2 == 8 && set3 == 8){
+                ex2.put("success", true);
+            }
+        }catch (Exception e) {
+            System.out.println("Error:" + e);
+        }
+
+        try {
             ex3.put("set1",rowSet1.getText().toString());
             ex3.put("set2",rowSet2.getText().toString());
             ex3.put("set3",rowSet3.getText().toString());
-        }catch (Exception e){
+
+            int set1 = Integer.parseInt(ex3.getString("set1"));
+            int set2 = Integer.parseInt(ex3.getString("set2"));
+            int set3 = Integer.parseInt(ex3.getString("set3"));
+
+            if(set1 == 8 && set2 == 8 && set3 == 8){
+                ex3.put("success", true);
+            }
+        }catch (Exception e) {
             System.out.println("Error:" + e);
         }
 

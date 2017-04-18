@@ -63,13 +63,13 @@ public class DB{
         Cursor c = mDB.query(TABLE_WORKOUTS, null, selection, selectionArgs, null, null, null);
 
         if (c.getCount() == 0){
+            c.close();
             cv.put(KEY_EX_1, ex1);
             cv.put(KEY_EX_2, ex2);
             cv.put(KEY_EX_3, ex3);
             cv.put(KEY_WORKOUT_DATE, dateValue);
 
             mDB.insert(TABLE_WORKOUTS, null, cv);
-            c.close();
         }
         c.close();
         cv.put(KEY_EX_1, ex1);
@@ -77,7 +77,6 @@ public class DB{
         cv.put(KEY_EX_3, ex3);
 
         mDB.update(TABLE_WORKOUTS, cv, selection, selectionArgs);
-
     }
 
     public void delRec(long id){
