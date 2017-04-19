@@ -131,168 +131,170 @@ public class tab_work_sets extends Fragment {
         @Override
         public void onClick(View v) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        String dateValue = sdf.format(new Date());
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            String dateValue = sdf.format(new Date());
 
-        JSONObject ex1 = new JSONObject();
-        JSONObject ex2 = new JSONObject();
-        JSONObject ex3 = new JSONObject();
-        try {
-            ex1.put("set1",squatSet1.getText().toString());
-            ex1.put("set2",squatSet2.getText().toString());
-            ex1.put("set3",squatSet3.getText().toString());
-            ex1.put("workWeight", tvSquatWeight.getText().toString());
+            JSONObject ex1 = new JSONObject();
+            JSONObject ex2 = new JSONObject();
+            JSONObject ex3 = new JSONObject();
+            try {
+                ex1.put("set1",squatSet1.getText().toString());
+                ex1.put("set2",squatSet2.getText().toString());
+                ex1.put("set3",squatSet3.getText().toString());
+                ex1.put("workWeight", tvSquatWeight.getText().toString());
+                ex1.put("exercise", "1");
 
-            int set1 = Integer.parseInt(ex1.getString("set1"));
-            int set2 = Integer.parseInt(ex1.getString("set2"));
-            int set3 = Integer.parseInt(ex1.getString("set3"));
+                int set1 = Integer.parseInt(ex1.getString("set1"));
+                int set2 = Integer.parseInt(ex1.getString("set2"));
+                int set3 = Integer.parseInt(ex1.getString("set3"));
 
-            if(set1 == 8 && set2 == 8 && set3 == 8){
-                ex1.put("success", true);
+                if(set1 == 8 && set2 == 8 && set3 == 8){
+                    ex1.put("success", true);
+                }
+
+                ex1.put("success", false);
+            }catch (Exception e){
+                System.out.println("Error:" + e);
             }
 
-            ex1.put("success", false);
-        }catch (Exception e){
-            System.out.println("Error:" + e);
-        }
+            try {
+                ex2.put("set1",bpSet1.getText().toString());
+                ex2.put("set2",bpSet2.getText().toString());
+                ex2.put("set3",bpSet3.getText().toString());
+                ex2.put("workWeight",tvBenchWeight.getText().toString());
+                ex2.put("exercise", "2");
 
-        try {
-            ex2.put("set1",bpSet1.getText().toString());
-            ex2.put("set2",bpSet2.getText().toString());
-            ex2.put("set3",bpSet3.getText().toString());
-            ex2.put("workWeight",tvBenchWeight.getText().toString());
+                int set1 = Integer.parseInt(ex2.getString("set1"));
+                int set2 = Integer.parseInt(ex2.getString("set2"));
+                int set3 = Integer.parseInt(ex2.getString("set3"));
 
-            int set1 = Integer.parseInt(ex2.getString("set1"));
-            int set2 = Integer.parseInt(ex2.getString("set2"));
-            int set3 = Integer.parseInt(ex2.getString("set3"));
+                if(set1 == 8 && set2 == 8 && set3 == 8){
+                    ex2.put("success", true);
+                }
 
-            if(set1 == 8 && set2 == 8 && set3 == 8){
-                ex2.put("success", true);
+                ex2.put("success", false);
+            }catch (Exception e) {
+                System.out.println("Error:" + e);
             }
 
-            ex2.put("success", false);
-        }catch (Exception e) {
-            System.out.println("Error:" + e);
-        }
+            try {
+                ex3.put("set1",rowSet1.getText().toString());
+                ex3.put("set2",rowSet2.getText().toString());
+                ex3.put("set3",rowSet3.getText().toString());
+                ex3.put("workWeight",tvRowWeight.getText().toString());
+                ex3.put("exercise", "3");
 
-        try {
-            ex3.put("set1",rowSet1.getText().toString());
-            ex3.put("set2",rowSet2.getText().toString());
-            ex3.put("set3",rowSet3.getText().toString());
-            ex3.put("workWeight",tvRowWeight.getText().toString());
+                int set1 = Integer.parseInt(ex3.getString("set1"));
+                int set2 = Integer.parseInt(ex3.getString("set2"));
+                int set3 = Integer.parseInt(ex3.getString("set3"));
 
-            int set1 = Integer.parseInt(ex3.getString("set1"));
-            int set2 = Integer.parseInt(ex3.getString("set2"));
-            int set3 = Integer.parseInt(ex3.getString("set3"));
+                if(set1 == 8 && set2 == 8 && set3 == 8){
+                    ex3.put("success", true);
+                }
 
-            if(set1 == 8 && set2 == 8 && set3 == 8){
-                ex3.put("success", true);
+                ex3.put("success", false);
+            }catch (Exception e) {
+                System.out.println("Error:" + e);
             }
 
-            ex3.put("success", false);
-        }catch (Exception e) {
-            System.out.println("Error:" + e);
-        }
+            String e1 = ex1.toString();
+            String e2 = ex2.toString();
+            String e3 = ex3.toString();
 
-        String e1 = ex1.toString();
-        String e2 = ex2.toString();
-        String e3 = ex3.toString();
+            switch (v.getId()){
+                case R.id.squatSet1:
+                    squatSet1reps--;
+                    squatSet1.setText(reps[squatSet1reps]);
 
-        switch (v.getId()){
-            case R.id.squatSet1:
-                squatSet1reps--;
-                squatSet1.setText(reps[squatSet1reps]);
+                    if (squatSet1reps == 0){
+                        squatSet1.setText("0");
+                        squatSet1reps = reps.length;
+                    }
+                    break;
+                case R.id.squatSet2:
+                    squatSet2reps--;
+                    squatSet2.setText(reps[squatSet2reps]);
 
-                if (squatSet1reps == 0){
-                    squatSet1.setText("0");
-                    squatSet1reps = reps.length;
-                }
-                break;
-            case R.id.squatSet2:
-                squatSet2reps--;
-                squatSet2.setText(reps[squatSet2reps]);
+                    if (squatSet2reps == 0){
+                        squatSet2.setText("0");
+                        squatSet2reps = reps.length;
+                    }
+                    break;
+                case R.id.squatSet3:
+                    squatSet3reps--;
+                    squatSet3.setText(reps[squatSet3reps]);
 
-                if (squatSet2reps == 0){
-                    squatSet2.setText("0");
-                    squatSet2reps = reps.length;
-                }
-                break;
-            case R.id.squatSet3:
-                squatSet3reps--;
-                squatSet3.setText(reps[squatSet3reps]);
+                    if (squatSet3reps == 0){
+                        squatSet3.setText("0");
+                        squatSet3reps = reps.length;
+                    }
+                    break;
+                case R.id.bpSet1:
+                    bpSet1reps--;
+                    bpSet1.setText(reps[bpSet1reps]);
 
-                if (squatSet3reps == 0){
-                    squatSet3.setText("0");
-                    squatSet3reps = reps.length;
-                }
-                break;
-            case R.id.bpSet1:
-                bpSet1reps--;
-                bpSet1.setText(reps[bpSet1reps]);
+                    if (bpSet1reps == 0){
+                        bpSet1.setText("0");
+                        bpSet1reps = reps.length;
+                    }
+                    break;
+                case R.id.bpSet2:
+                    bpSet2reps--;
+                    bpSet2.setText(reps[bpSet2reps]);
 
-                if (bpSet1reps == 0){
-                    bpSet1.setText("0");
-                    bpSet1reps = reps.length;
-                }
-                break;
-            case R.id.bpSet2:
-                bpSet2reps--;
-                bpSet2.setText(reps[bpSet2reps]);
+                    if (bpSet2reps == 0){
+                        bpSet2.setText("0");
+                        bpSet2reps = reps.length;
+                    }
+                    break;
+                case R.id.bpSet3:
+                    bpSet3reps--;
+                    bpSet3.setText(reps[bpSet3reps]);
 
-                if (bpSet2reps == 0){
-                    bpSet2.setText("0");
-                    bpSet2reps = reps.length;
-                }
-                break;
-            case R.id.bpSet3:
-                bpSet3reps--;
-                bpSet3.setText(reps[bpSet3reps]);
+                    if (bpSet3reps == 0){
+                        bpSet3.setText("0");
+                        bpSet3reps = reps.length;
+                    }
+                    break;
+                case R.id.rowSet1:
+                    rowSet1reps--;
+                    rowSet1.setText(reps[rowSet1reps]);
 
-                if (bpSet3reps == 0){
-                    bpSet3.setText("0");
-                    bpSet3reps = reps.length;
-                }
-                break;
-            case R.id.rowSet1:
-                rowSet1reps--;
-                rowSet1.setText(reps[rowSet1reps]);
+                    if (rowSet1reps == 0){
+                        rowSet1.setText("0");
+                        rowSet1reps = reps.length;
+                    }
+                    break;
+                case R.id.rowSet2:
+                    rowSet2reps--;
+                    rowSet2.setText(reps[rowSet2reps]);
 
-                if (rowSet1reps == 0){
-                    rowSet1.setText("0");
-                    rowSet1reps = reps.length;
-                }
-                break;
-            case R.id.rowSet2:
-                rowSet2reps--;
-                rowSet2.setText(reps[rowSet2reps]);
+                    if (rowSet2reps == 0){
+                        rowSet2.setText("0");
+                        rowSet2reps = reps.length;
+                    }
+                    break;
+                case R.id.rowSet3:
+                    rowSet3reps--;
+                    rowSet3.setText(reps[rowSet3reps]);
 
-                if (rowSet2reps == 0){
-                    rowSet2.setText("0");
-                    rowSet2reps = reps.length;
-                }
-                break;
-            case R.id.rowSet3:
-                rowSet3reps--;
-                rowSet3.setText(reps[rowSet3reps]);
+                    if (rowSet3reps == 0){
+                        rowSet3.setText("0");
+                        rowSet3reps = reps.length;
+                    }
+                    break;
+                case R.id.btnSave:
+                    db.open();
+                    db.addRec(e1, e2, e3, dateValue);
+                    db.close();
 
-                if (rowSet3reps == 0){
-                    rowSet3.setText("0");
-                    rowSet3reps = reps.length;
-                }
-                break;
-            case R.id.btnSave:
-                db.open();
-                db.addRec(e1, e2, e3, dateValue);
-                db.close();
-
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.tvSquatWeight:
-                DialogFragment fragment = new ChooseWorkWeight();
-                fragment.show(getFragmentManager(), "myDialog");
-        }
-
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.tvSquatWeight:
+                    DialogFragment fragment = new ChooseWorkWeight();
+                    fragment.show(getFragmentManager(), "myDialog");
+            }
         }
     };
 }
