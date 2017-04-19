@@ -39,8 +39,9 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
-                tools:text="70 кг"
-                android:textSize="16sp" />
+                android:clickable="true"
+                android:textSize="16sp"
+                tools:text="70 кг" />
 
             <Button
                 android:id="@+id/squatSet1"
@@ -100,6 +101,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
                 tools:text="70 кг"
+                android:clickable="true"
                 android:textSize="16sp" />
 
             <Button
@@ -160,6 +162,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
                 tools:text="70 кг"
+                android:clickable="true"
                 android:textSize="16sp" />
 
             <Button
