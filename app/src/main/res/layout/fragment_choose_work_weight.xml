@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="horizontal"
-    tools:context="com.eat_wisely.kultraining.ChooseWorkWeight">
+    tools:context="com.eat_wisely.kultraining.WorkWeight">
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/ibMinus"
@@ -15,9 +15,10 @@
         android:src="@drawable/ic_remove_dark" />
 
     <EditText
+        android:id="@+id/etWeight"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:text="45кг" />
+        tools:text="45" />
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/ibPlus"

@@ -56,9 +56,9 @@ public class tab_work_sets extends Fragment {
         db.open();
         Cursor c = db.getAllData();
         if(c.getCount() == 0){
-            tvSquatWeight.setText("20кг");
-            tvBenchWeight.setText("20кг");
-            tvRowWeight.setText("20кг");
+            tvSquatWeight.setText(R.string.default_weight);
+            tvBenchWeight.setText(R.string.default_weight);
+            tvRowWeight.setText(R.string.default_weight);
         }else {
             c.moveToLast();
             int KEY_EX_1 = c.getColumnIndex(DB.KEY_EX_1);
@@ -292,9 +292,10 @@ public class tab_work_sets extends Fragment {
                     startActivity(intent);
                     break;
                 case R.id.tvSquatWeight:
-                    DialogFragment fragment = new ChooseWorkWeight();
+                    DialogFragment fragment = new WorkWeight();
                     fragment.show(getFragmentManager(), "myDialog");
             }
         }
     };
+
 }
