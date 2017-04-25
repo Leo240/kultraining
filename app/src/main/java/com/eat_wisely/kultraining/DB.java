@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DB{
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "workoutsDb";
     private static final String TABLE_WORKOUTS = "workouts";
 
@@ -17,19 +17,15 @@ public class DB{
     public static final String KEY_EX_1 ="ex1";
     public static final String KEY_EX_2 ="ex2";
     public static final String KEY_EX_3 ="ex3";
-    public static final String KEY_SQUAT_WORK_WEIGHT = "squat_work_weight";
-    public static final String KEY_BP_WORK_WEIGHT = "bp_work_weight";
-    public static final String KEY_ROW_WORK_WEIGHT = "row_work_weight";
     public static final String KEY_WORKOUT_DATE = "workout_date";
+    public static final String KEY_WORKOUT_TYPE = "workout_type";
 
     private static final String DB_CREATE = "create table " + TABLE_WORKOUTS + "(" + KEY_ID + " integer primary key," +
             KEY_EX_1 + " text," +
             KEY_EX_2 + " text," +
             KEY_EX_3 + " text," +
-            KEY_SQUAT_WORK_WEIGHT + " integer," +
-            KEY_BP_WORK_WEIGHT + " integer," +
-            KEY_ROW_WORK_WEIGHT + " integer," +
-            KEY_WORKOUT_DATE + " text)";
+            KEY_WORKOUT_DATE + " text," +
+            KEY_WORKOUT_TYPE + " text)";
 
     private final Context mCtx;
     private DBHelper dbHelper;
@@ -56,7 +52,7 @@ public class DB{
         return mDB.query(TABLE_WORKOUTS, null, null, null, null, null, null);
     }
 
-    void addRec(String ex1, String ex2, String ex3, String dateValue){
+    void addRec(String ex1, String ex2, String ex3, String dateValue, String workoutType){
         ContentValues cv = new ContentValues();
         selection = "workout_date = ?";
         selectionArgs = new String[]{dateValue};
@@ -68,6 +64,7 @@ public class DB{
             cv.put(KEY_EX_2, ex2);
             cv.put(KEY_EX_3, ex3);
             cv.put(KEY_WORKOUT_DATE, dateValue);
+            cv.put(KEY_WORKOUT_TYPE, workoutType);
 
             mDB.insert(TABLE_WORKOUTS, null, cv);
         }

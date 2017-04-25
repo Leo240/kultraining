@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 public class WorkoutActivity extends AppCompatActivity {
 
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -39,6 +40,9 @@ public class WorkoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_workout);
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

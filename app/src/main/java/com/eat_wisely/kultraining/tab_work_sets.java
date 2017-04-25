@@ -24,28 +24,13 @@ import java.util.Locale;
 
 public class tab_work_sets extends Fragment {
 
-    List<Button> buttons;
-
-    final int[] BUTTON_IDS = {
-            R.id.squatSet1,
-            R.id.squatSet2,
-            R.id.squatSet3,
-            R.id.bpSet1,
-            R.id.bpSet2,
-            R.id.bpSet3,
-            R.id.rowSet1,
-            R.id.rowSet2,
-            R.id.rowSet3,
-            R.id.btnSave
-    };
-
     int squatSet1reps, squatSet2reps, squatSet3reps, bpSet1reps,
             bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps;
 
-    /*Button squatSet1, squatSet2, squatSet3, bpSet1, bpSet2, bpSet3,
-            rowSet1, rowSet2, rowSet3, btnSave;*/
+    Button exec1Set1, exec1Set2, exec1Set3, exec2Set1, exec2Set2, exec2Set3,
+            exec3Set1, exec3Set2, exec3Set3, btnSave;
 
-    TextView tvSquatWeight, tvBenchWeight, tvRowWeight;
+    TextView tvExec1Weight, tvExec2Weight, tvExec3Weight;
 
     String[] reps;
 
@@ -58,34 +43,27 @@ public class tab_work_sets extends Fragment {
 
         db = new DB(getActivity());
 
-        buttons = new ArrayList<Button>(BUTTON_IDS.length);
 
-        for (int id : BUTTON_IDS) {
-            Button button = (Button) rootView.findViewById(id);
-            button.setOnClickListener(onClickListener);
-            buttons.add(button);
-        }
-
-        /*squatSet1 = (Button) rootView.findViewById(R.id.squatSet1);
-        squatSet2 = (Button) rootView.findViewById(R.id.squatSet2);
-        squatSet3 = (Button) rootView.findViewById(R.id.squatSet3);
-        bpSet1 = (Button) rootView.findViewById(R.id.bpSet1);
-        bpSet2 = (Button) rootView.findViewById(R.id.bpSet2);
-        bpSet3 = (Button) rootView.findViewById(R.id.bpSet3);
-        rowSet1 = (Button) rootView.findViewById(R.id.rowSet1);
-        rowSet2 = (Button) rootView.findViewById(R.id.rowSet2);
-        rowSet3 = (Button) rootView.findViewById(R.id.rowSet3);
-        btnSave = (Button) rootView.findViewById(R.id.btnSave);*/
-        tvSquatWeight = (TextView) rootView.findViewById(R.id.tvSquatWeight);
-        tvBenchWeight = (TextView) rootView.findViewById(R.id.tvBenchWeight);
-        tvRowWeight = (TextView) rootView.findViewById(R.id.tvRowWeight);
+        exec1Set1 = (Button) rootView.findViewById(R.id.squatSet1);
+        exec1Set2 = (Button) rootView.findViewById(R.id.squatSet2);
+        exec1Set3 = (Button) rootView.findViewById(R.id.squatSet3);
+        exec2Set1 = (Button) rootView.findViewById(R.id.bpSet1);
+        exec2Set2 = (Button) rootView.findViewById(R.id.bpSet2);
+        exec2Set3 = (Button) rootView.findViewById(R.id.bpSet3);
+        exec3Set1 = (Button) rootView.findViewById(R.id.rowSet1);
+        exec3Set2 = (Button) rootView.findViewById(R.id.rowSet2);
+        exec3Set3 = (Button) rootView.findViewById(R.id.rowSet3);
+        btnSave = (Button) rootView.findViewById(R.id.btnSave);
+        tvExec1Weight = (TextView) rootView.findViewById(R.id.tvSquatWeight);
+        tvExec2Weight = (TextView) rootView.findViewById(R.id.tvBenchWeight);
+        tvExec3Weight = (TextView) rootView.findViewById(R.id.tvRowWeight);
 
         db.open();
         Cursor c = db.getAllData();
         if(c.getCount() == 0){
-            tvSquatWeight.setText(R.string.default_weight);
-            tvBenchWeight.setText(R.string.default_weight);
-            tvRowWeight.setText(R.string.default_weight);
+            tvExec1Weight.setText(R.string.default_weight);
+            tvExec2Weight.setText(R.string.default_weight);
+            tvExec3Weight.setText(R.string.default_weight);
         }else {
             c.moveToLast();
             int KEY_EX_1 = c.getColumnIndex(DB.KEY_EX_1);
@@ -102,17 +80,17 @@ public class tab_work_sets extends Fragment {
             try {
                 JSONObject obj_ex_1 = new JSONObject(ex_1);
                 if(obj_ex_1.getString("exercise").equalsIgnoreCase("1") ){
-                    tvSquatWeight.setText(obj_ex_1.getString("workWeight") + "кг");
+                    tvExec1Weight.setText(obj_ex_1.getString("workWeight") + "кг");
                 }
 
                 JSONObject obj_ex_2 = new JSONObject(ex_2);
                 if(obj_ex_2.getString("exercise").equalsIgnoreCase("2") ){
-                    tvBenchWeight.setText(obj_ex_2.getString("workWeight") + "кг");
+                    tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
                 }
 
                 JSONObject obj_ex_3 = new JSONObject(ex_3);
                 if(obj_ex_3.getString("exercise").equalsIgnoreCase("3") ){
-                    tvRowWeight.setText(obj_ex_3.getString("workWeight") + "кг");
+                    tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
                 }
 
             } catch (JSONException e) {
@@ -136,19 +114,19 @@ public class tab_work_sets extends Fragment {
         rowSet2reps = reps.length;
         rowSet3reps = reps.length;
 
-        /*squatSet1.setOnClickListener(onClickListener);
-        squatSet2.setOnClickListener(onClickListener);
-        squatSet3.setOnClickListener(onClickListener);
-        bpSet1.setOnClickListener(onClickListener);
-        bpSet2.setOnClickListener(onClickListener);
-        bpSet3.setOnClickListener(onClickListener);
-        rowSet1.setOnClickListener(onClickListener);
-        rowSet2.setOnClickListener(onClickListener);
-        rowSet3.setOnClickListener(onClickListener);
-        btnSave.setOnClickListener(onClickListener);*/
-        tvSquatWeight.setOnClickListener(onClickListener);
-        tvBenchWeight.setOnClickListener(onClickListener);
-        tvRowWeight.setOnClickListener(onClickListener);
+        exec1Set1.setOnClickListener(onClickListener);
+        exec1Set2.setOnClickListener(onClickListener);
+        exec1Set3.setOnClickListener(onClickListener);
+        exec2Set1.setOnClickListener(onClickListener);
+        exec2Set2.setOnClickListener(onClickListener);
+        exec2Set3.setOnClickListener(onClickListener);
+        exec3Set1.setOnClickListener(onClickListener);
+        exec3Set2.setOnClickListener(onClickListener);
+        exec3Set3.setOnClickListener(onClickListener);
+        btnSave.setOnClickListener(onClickListener);
+        tvExec1Weight.setOnClickListener(onClickListener);
+        tvExec2Weight.setOnClickListener(onClickListener);
+        tvExec3Weight.setOnClickListener(onClickListener);
 
         return rootView;
     }
@@ -166,10 +144,10 @@ public class tab_work_sets extends Fragment {
             JSONObject ex2 = new JSONObject();
             JSONObject ex3 = new JSONObject();
             try {
-                ex1.put("set1",buttons.get(R.id.squatSet1).getText().toString());
-                ex1.put("set2",buttons.get(R.id.squatSet2).getText().toString());
-                ex1.put("set3",buttons.get(R.id.squatSet3).getText().toString());
-                ex1.put("workWeight", tvSquatWeight.getText().toString().replace("кг", ""));
+                ex1.put("set1",exec1Set1.getText().toString());
+                ex1.put("set2",exec1Set2.getText().toString());
+                ex1.put("set3",exec1Set3.getText().toString());
+                ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
                 ex1.put("exercise", "1");
 
                 int set1 = Integer.parseInt(ex1.getString("set1"));
@@ -186,10 +164,10 @@ public class tab_work_sets extends Fragment {
             }
 
             try {
-                ex2.put("set1",buttons.get(R.id.bpSet1).getText().toString());
-                ex2.put("set2",buttons.get(R.id.bpSet2).getText().toString());
-                ex2.put("set3",buttons.get(R.id.bpSet3).getText().toString());
-                ex2.put("workWeight",tvBenchWeight.getText().toString().replace("кг", ""));
+                ex2.put("set1",exec2Set1.getText().toString());
+                ex2.put("set2",exec2Set2.getText().toString());
+                ex2.put("set3",exec2Set3.getText().toString());
+                ex2.put("workWeight",tvExec2Weight.getText().toString().replace("кг", ""));
                 ex2.put("exercise", "2");
 
                 int set1 = Integer.parseInt(ex2.getString("set1"));
@@ -206,10 +184,10 @@ public class tab_work_sets extends Fragment {
             }
 
             try {
-                ex3.put("set1",buttons.get(R.id.rowSet1).getText().toString());
-                ex3.put("set2",buttons.get(R.id.rowSet2).getText().toString());
-                ex3.put("set3",buttons.get(R.id.rowSet3).getText().toString());
-                ex3.put("workWeight",tvRowWeight.getText().toString().replace("кг", ""));
+                ex3.put("set1",exec3Set1.getText().toString());
+                ex3.put("set2",exec3Set2.getText().toString());
+                ex3.put("set3",exec3Set3.getText().toString());
+                ex3.put("workWeight",tvExec3Weight.getText().toString().replace("кг", ""));
                 ex3.put("exercise", "3");
 
                 int set1 = Integer.parseInt(ex3.getString("set1"));
@@ -232,94 +210,93 @@ public class tab_work_sets extends Fragment {
             switch (v.getId()){
                 case R.id.squatSet1:
                     squatSet1reps--;
-                    int pos = buttons.indexOf(v);
-                    (buttons.get(R.id.squatSet1)).setText(reps[squatSet1reps]);
+                    exec1Set1.setText(reps[squatSet1reps]);
 
                     if (squatSet1reps == 0){
-                        (buttons.get(R.id.squatSet1)).setText("0");
+                        exec1Set1.setText("0");
                         squatSet1reps = reps.length;
                     }
                     break;
-                /*case R.id.squatSet2:
+                case R.id.squatSet2:
                     squatSet2reps--;
-                    buttons.get(R.id.squatSet2).setText(reps[squatSet2reps]);
+                    exec1Set2.setText(reps[squatSet2reps]);
 
                     if (squatSet2reps == 0){
-                        buttons.get(R.id.squatSet2).setText("0");
+                        exec1Set2.setText("0");
                         squatSet2reps = reps.length;
                     }
                     break;
                 case R.id.squatSet3:
                     squatSet3reps--;
-                    buttons.get(R.id.squatSet3).setText(reps[squatSet3reps]);
+                    exec1Set3.setText(reps[squatSet3reps]);
 
                     if (squatSet3reps == 0){
-                        buttons.get(R.id.squatSet3).setText("0");
+                        exec1Set3.setText("0");
                         squatSet3reps = reps.length;
                     }
                     break;
                 case R.id.bpSet1:
                     bpSet1reps--;
-                    buttons.get(R.id.bpSet1).setText(reps[bpSet1reps]);
+                    exec2Set1.setText(reps[bpSet1reps]);
 
                     if (bpSet1reps == 0){
-                        buttons.get(R.id.bpSet1).setText("0");
+                        exec2Set1.setText("0");
                         bpSet1reps = reps.length;
                     }
                     break;
                 case R.id.bpSet2:
                     bpSet2reps--;
-                    buttons.get(R.id.bpSet2).setText(reps[bpSet2reps]);
+                    exec2Set2.setText(reps[bpSet2reps]);
 
                     if (bpSet2reps == 0){
-                        buttons.get(R.id.bpSet2).setText("0");
+                        exec2Set2.setText("0");
                         bpSet2reps = reps.length;
                     }
                     break;
                 case R.id.bpSet3:
                     bpSet3reps--;
-                    buttons.get(R.id.bpSet3).setText(reps[bpSet3reps]);
+                    exec2Set3.setText(reps[bpSet3reps]);
 
                     if (bpSet3reps == 0){
-                        buttons.get(R.id.bpSet3).setText("0");
+                        exec2Set3.setText("0");
                         bpSet3reps = reps.length;
                     }
                     break;
                 case R.id.rowSet1:
                     rowSet1reps--;
-                    buttons.get(R.id.rowSet1).setText(reps[rowSet1reps]);
+                    exec3Set1.setText(reps[rowSet1reps]);
 
                     if (rowSet1reps == 0){
-                        buttons.get(R.id.rowSet1).setText("0");
+                        exec3Set1.setText("0");
                         rowSet1reps = reps.length;
                     }
                     break;
                 case R.id.rowSet2:
                     rowSet2reps--;
-                    buttons.get(R.id.rowSet2).setText(reps[rowSet2reps]);
+                    exec3Set2.setText(reps[rowSet2reps]);
 
                     if (rowSet2reps == 0){
-                        buttons.get(R.id.rowSet2).setText("0");
+                        exec3Set2.setText("0");
                         rowSet2reps = reps.length;
                     }
                     break;
                 case R.id.rowSet3:
                     rowSet3reps--;
-                    buttons.get(R.id.rowSet3).setText(reps[rowSet3reps]);
+                    exec3Set3.setText(reps[rowSet3reps]);
 
                     if (rowSet3reps == 0){
-                        buttons.get(R.id.rowSet3).setText("0");
+                        exec3Set3.setText("0");
                         rowSet3reps = reps.length;
                     }
                     break;
                 case R.id.btnSave:
                     db.open();
-                    db.addRec(e1, e2, e3, dateValue);
+                    db.addRec(e1, e2, e3, dateValue, workoutType);
                     db.close();
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     startActivity(intent);
-                    break;*/
+                    break;
                 case R.id.tvSquatWeight:
                     fragment = new SquatWorkWeight();
                     fragment.show(getFragmentManager(), "squatDialog");

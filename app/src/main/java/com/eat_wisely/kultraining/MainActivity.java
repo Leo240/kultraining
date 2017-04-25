@@ -1,6 +1,7 @@
 package com.eat_wisely.kultraining;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,9 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    DB db;
+    Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,11 +22,20 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        db = new DB(this);
+
        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, WorkoutActivity.class);
+                db.open();
+                Cursor c = db.getAllData();
+                if (c.getCount() == 0) {
+                    intent = new Intent("com.eat_wisely.action.workout_a");
+                    intent.putExtra("workoutType", "A");
+                    startActivity(intent);
+                }
+                intent = new Intent(MainActivity.this, WorkoutActivity.class);
                 startActivity(intent);
             }
         });
