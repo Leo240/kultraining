@@ -32,7 +32,7 @@
             <TextView
                 android:id="@+id/tvSquatWeight"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_alignBaseline="@id/squat_title"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
@@ -40,6 +40,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
                 android:clickable="true"
+                android:paddingTop="16dp"
                 android:textSize="16sp"
                 tools:text="70 кг" />
 
@@ -93,16 +94,17 @@
             <TextView
                 android:id="@+id/tvBenchWeight"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_alignBaseline="@id/benchpress_title"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
-                tools:text="70 кг"
                 android:clickable="true"
-                android:textSize="16sp" />
+                android:paddingTop="16dp"
+                android:textSize="16sp"
+                tools:text="70 кг" />
 
             <Button
                 android:id="@+id/bpSet1"
@@ -154,16 +156,17 @@
             <TextView
                 android:id="@+id/tvRowWeight"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_alignBaseline="@id/row_title"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="16dp"
-                tools:text="70 кг"
                 android:clickable="true"
-                android:textSize="16sp" />
+                android:paddingTop="16dp"
+                android:textSize="16sp"
+                tools:text="70 кг" />
 
             <Button
                 android:id="@+id/rowSet1"

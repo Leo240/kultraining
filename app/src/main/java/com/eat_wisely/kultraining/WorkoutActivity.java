@@ -18,7 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-public class WorkoutActivity extends AppCompatActivity implements WorkWeight.WorkWeightListener {
+public class WorkoutActivity extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -79,13 +79,6 @@ public class WorkoutActivity extends AppCompatActivity implements WorkWeight.Wor
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void onDialogPositiveClick(DialogFragment dialog, String workWeight) {
-        TextView tvSquatWeight = (TextView) dialog.getActivity().findViewById(R.id.tvSquatWeight);
-        tvSquatWeight.setText(workWeight + "кг");
-    }
-
-
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
@@ -102,11 +95,9 @@ public class WorkoutActivity extends AppCompatActivity implements WorkWeight.Wor
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch(position){
                 case 0:
-                    tab_work_sets t_work = new tab_work_sets();
-                    return t_work;
+                    return new tab_work_sets();
                 case 1:
-                    tab_warmup_sets t_warmup = new tab_warmup_sets();
-                    return t_warmup;
+                    return new tab_warmup_sets();
             }
             return null;
         }

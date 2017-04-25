@@ -1,7 +1,6 @@
 package com.eat_wisely.kultraining;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -13,16 +12,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class WorkWeight extends DialogFragment implements View.OnClickListener {
+public class SquatWorkWeight extends DialogFragment implements View.OnClickListener {
 
     float weight;
     EditText etWeight;
-
-    public interface WorkWeightListener{
-        public void onDialogPositiveClick(DialogFragment dialog, String workWeight);
-    }
-
-    WorkWeightListener listener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
@@ -36,7 +29,7 @@ public class WorkWeight extends DialogFragment implements View.OnClickListener {
         ImageButton ibMinus = (ImageButton) dialogView.findViewById(R.id.ibMinus);
         ImageButton ibPlus = (ImageButton) dialogView.findViewById(R.id.ibPlus);
         etWeight = (EditText) dialogView.findViewById(R.id.etWeight);
-        TextView tvSquatWeight = (TextView) getActivity().findViewById(R.id.tvSquatWeight);
+        final TextView tvSquatWeight = (TextView) getActivity().findViewById(R.id.tvSquatWeight);
 
         String s = tvSquatWeight.getText().toString();
         etWeight.setText(s.replace("кг", ""));
@@ -50,26 +43,16 @@ public class WorkWeight extends DialogFragment implements View.OnClickListener {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String workWeight = etWeight.getText().toString();
-                        listener.onDialogPositiveClick(WorkWeight.this, workWeight);
+                        tvSquatWeight.setText(workWeight + "кг");
                     }
                 })
                 .setNegativeButton("Отмена", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        WorkWeight.this.getDialog().cancel();
+                        SquatWorkWeight.this.getDialog().cancel();
                     }
                 });
         return builder.create();
-    }
-
-    @Override
-    public void onAttach(Activity activity){
-        super.onAttach(activity);
-        try{
-            listener =(WorkWeightListener) activity;
-        }catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString());
-        }
     }
 
     @Override

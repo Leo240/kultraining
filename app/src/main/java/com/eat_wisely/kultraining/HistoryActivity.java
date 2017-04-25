@@ -11,9 +11,11 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -47,6 +49,13 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
 
         lvMain = (ListView) findViewById(R.id.lvMain);
         lvMain.setAdapter(scAdapter);
+
+        lvMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("myTag", "position=" + position + ", id=" + id );
+            }
+        });
 
         getSupportLoaderManager().initLoader(0, null, this);
 
@@ -106,25 +115,27 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
 
     }
 
-    static class MyCursorLoader extends CursorLoader{
+    private static class MyCursorLoader extends CursorLoader{
         DB db;
 
-        public MyCursorLoader(Context context, DB db) {
+        MyCursorLoader(Context context, DB db) {
             super(context);
             this.db = db;
         }
 
         @Override
         public Cursor loadInBackground(){
-            Cursor cursor = db.getAllData();
-            return cursor;
+            return db.getAllData();
         }
     }
 
-    class MyViewBinder implements SimpleCursorAdapter.ViewBinder{
+    private class MyViewBinder implements SimpleCursorAdapter.ViewBinder{
 
         @Override
         public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+            int KEY_EX;
+            String ex;
+            TextView tvEx;
 
             switch(view.getId()){
                 case R.id.tvDate:
@@ -134,43 +145,49 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
                     tvDate.setText(workout_date);
                     return true;
                 case R.id.tvExercise_1:
-                    int KEY_EX_1 = cursor.getColumnIndex(DB.KEY_EX_1);
-                    String ex_1 = cursor.getString(KEY_EX_1);
-                    TextView tvEx1 = (TextView) view;
+                    KEY_EX = cursor.getColumnIndex(DB.KEY_EX_1);
+                    ex = cursor.getString(KEY_EX);
+                    tvEx = (TextView) view;
                     try {
-                        JSONObject obj = new JSONObject(ex_1);
+                        JSONObject obj = new JSONObject(ex);
                         String set1 = obj.getString("set1");
                         String set2 = obj.getString("set2");
                         String set3 = obj.getString("set3");
-                        tvEx1.setText("Приседания: " + set1 + "/" + set2 + "/" + set3);
+                        String workWeight = obj.getString("workWeight");
+                        tvEx.setText("Приседания: " + set1 + "/" + set2 + "/" + set3 + " "
+                                + workWeight + "кг");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     return true;
                 case R.id.tvExercise_2:
-                    int KEY_EX_2 = cursor.getColumnIndex(DB.KEY_EX_2);
-                    String ex_2 = cursor.getString(KEY_EX_2);
-                    TextView tvEx2 = (TextView) view;
+                    KEY_EX = cursor.getColumnIndex(DB.KEY_EX_2);
+                    ex = cursor.getString(KEY_EX);
+                    tvEx = (TextView) view;
                     try {
-                        JSONObject obj = new JSONObject(ex_2);
+                        JSONObject obj = new JSONObject(ex);
                         String set1 = obj.getString("set1");
                         String set2 = obj.getString("set2");
                         String set3 = obj.getString("set3");
-                        tvEx2.setText("Жим лежа: " + set1 + "/" + set2 + "/" + set3);
+                        String workWeight = obj.getString("workWeight");
+                        tvEx.setText("Жим лежа: " + set1 + "/" + set2 + "/" + set3 + " "
+                                + workWeight + "кг");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     return true;
                 case R.id.tvExercise_3:
-                    int KEY_EX_3 = cursor.getColumnIndex(DB.KEY_EX_3);
-                    String ex_3 = cursor.getString(KEY_EX_3);
-                    TextView tvEx3 = (TextView) view;
+                    KEY_EX = cursor.getColumnIndex(DB.KEY_EX_3);
+                    ex = cursor.getString(KEY_EX);
+                    tvEx = (TextView) view;
                     try {
-                        JSONObject obj = new JSONObject(ex_3);
+                        JSONObject obj = new JSONObject(ex);
                         String set1 = obj.getString("set1");
                         String set2 = obj.getString("set2");
                         String set3 = obj.getString("set3");
-                        tvEx3.setText("Тяга в наклоне: " + set1 + "/" + set2 + "/" + set3);
+                        String workWeight = obj.getString("workWeight");
+                        tvEx.setText("Тяга в наклоне: " + set1 + "/" + set2 + "/" + set3 + " "
+                                + workWeight + "кг");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
