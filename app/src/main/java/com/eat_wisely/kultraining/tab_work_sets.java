@@ -32,6 +32,8 @@ public class tab_work_sets extends Fragment {
 
     TextView tvExec1Weight, tvExec2Weight, tvExec3Weight;
 
+    String workoutType;
+
     String[] reps;
 
     DB db;
@@ -41,8 +43,16 @@ public class tab_work_sets extends Fragment {
                              Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.tab_work_sets, container, false);
 
+        Intent intent = getActivity().getIntent();
+        String action = intent.getAction();
+
         db = new DB(getActivity());
 
+        if (action.equals("com.eat_wisely.action.workout_a")) {
+            workoutType = "A";
+        } else if (action.equals("com.eat_wisely.action.workout_b")) {
+            workoutType = "B";
+        }
 
         exec1Set1 = (Button) rootView.findViewById(R.id.squatSet1);
         exec1Set2 = (Button) rootView.findViewById(R.id.squatSet2);
@@ -59,7 +69,7 @@ public class tab_work_sets extends Fragment {
         tvExec3Weight = (TextView) rootView.findViewById(R.id.tvRowWeight);
 
         db.open();
-        Cursor c = db.getAllData();
+        Cursor c = db.getWorkoutsOfType(new String[] {workoutType});
         if(c.getCount() == 0){
             tvExec1Weight.setText(R.string.default_weight);
             tvExec2Weight.setText(R.string.default_weight);
@@ -84,12 +94,14 @@ public class tab_work_sets extends Fragment {
                 }
 
                 JSONObject obj_ex_2 = new JSONObject(ex_2);
-                if(obj_ex_2.getString("exercise").equalsIgnoreCase("2") ){
+                if(obj_ex_2.getString("exercise").equalsIgnoreCase("2") ||
+                        obj_ex_2.getString("exercise").equalsIgnoreCase("4")){
                     tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
                 }
 
                 JSONObject obj_ex_3 = new JSONObject(ex_3);
-                if(obj_ex_3.getString("exercise").equalsIgnoreCase("3") ){
+                if(obj_ex_3.getString("exercise").equalsIgnoreCase("3") ||
+                        obj_ex_2.getString("exercise").equalsIgnoreCase("5")){
                     tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
                 }
 
@@ -97,7 +109,6 @@ public class tab_work_sets extends Fragment {
                 e.printStackTrace();
             }
         }
-
 
         db.close();
 
@@ -168,7 +179,12 @@ public class tab_work_sets extends Fragment {
                 ex2.put("set2",exec2Set2.getText().toString());
                 ex2.put("set3",exec2Set3.getText().toString());
                 ex2.put("workWeight",tvExec2Weight.getText().toString().replace("кг", ""));
-                ex2.put("exercise", "2");
+
+                if (workoutType == "A") {
+                    ex2.put("exercise", "2");
+                } else {
+                    ex2.put("exercise", "4");
+                }
 
                 int set1 = Integer.parseInt(ex2.getString("set1"));
                 int set2 = Integer.parseInt(ex2.getString("set2"));
@@ -188,7 +204,12 @@ public class tab_work_sets extends Fragment {
                 ex3.put("set2",exec3Set2.getText().toString());
                 ex3.put("set3",exec3Set3.getText().toString());
                 ex3.put("workWeight",tvExec3Weight.getText().toString().replace("кг", ""));
-                ex3.put("exercise", "3");
+
+                if (workoutType == "A"){
+                    ex3.put("exercise", "3");
+                } else {
+                    ex3.put("exercise", "5");
+                }
 
                 int set1 = Integer.parseInt(ex3.getString("set1"));
                 int set2 = Integer.parseInt(ex3.getString("set2"));

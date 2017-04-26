@@ -32,11 +32,21 @@ public class MainActivity extends AppCompatActivity {
                 Cursor c = db.getAllData();
                 if (c.getCount() == 0) {
                     intent = new Intent("com.eat_wisely.action.workout_a");
-                    intent.putExtra("workoutType", "A");
                     startActivity(intent);
+                } else {
+                    c.moveToLast();
+                    int KEY_WORKOUT_TYPE = c.getColumnIndex(DB.KEY_WORKOUT_TYPE);
+                    String workoutType = c.getString(KEY_WORKOUT_TYPE);
+
+                    if (workoutType.equals("A") ) {
+                        intent = new Intent("com.eat_wisely.action.workout_a");
+                        startActivity(intent);
+                    } else {
+                        intent = new Intent("com.eat_wisely.action.workout_b");
+                        startActivity(intent);
+                    }
                 }
-                intent = new Intent(MainActivity.this, WorkoutActivity.class);
-                startActivity(intent);
+                db.close();
             }
         });
     }

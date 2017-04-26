@@ -52,6 +52,10 @@ public class DB{
         return mDB.query(TABLE_WORKOUTS, null, null, null, null, null, null);
     }
 
+    public Cursor getWorkoutsOfType(String[] type){
+        return mDB.query(TABLE_WORKOUTS, null, "workout_type = ?", type, null, null, null, null);
+    }
+
     void addRec(String ex1, String ex2, String ex3, String dateValue, String workoutType){
         ContentValues cv = new ContentValues();
         selection = "workout_date = ?";
@@ -72,6 +76,7 @@ public class DB{
         cv.put(KEY_EX_1, ex1);
         cv.put(KEY_EX_2, ex2);
         cv.put(KEY_EX_3, ex3);
+        cv.put(KEY_WORKOUT_TYPE, workoutType);
 
         mDB.update(TABLE_WORKOUTS, cv, selection, selectionArgs);
     }
