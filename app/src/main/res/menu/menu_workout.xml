@@ -8,4 +8,11 @@
         android:title="@string/action_home_activity"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_home"/>
+
+    <item
+        android:id="@+id/action_cal"
+        android:orderInCategory="101"
+        android:title="@string/action_home_activity"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_cal"/>
 </menu>

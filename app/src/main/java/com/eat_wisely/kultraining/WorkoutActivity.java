@@ -1,9 +1,8 @@
 package com.eat_wisely.kultraining;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,11 +11,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 public class WorkoutActivity extends AppCompatActivity {
 
@@ -76,6 +72,9 @@ public class WorkoutActivity extends AppCompatActivity {
         if (id == R.id.action_home) {
             Intent intentHome = new Intent(this, MainActivity.class);
             startActivity(intentHome);
+        } else if (id == R.id.action_cal) {
+            DialogFragment dialog = new CalendarDialog();
+            dialog.show(getSupportFragmentManager(), "myCalendar");
         }
 
         return super.onOptionsItemSelected(item);

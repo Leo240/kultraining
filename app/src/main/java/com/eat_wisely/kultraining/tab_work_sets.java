@@ -30,7 +30,7 @@ public class tab_work_sets extends Fragment {
     Button exec1Set1, exec1Set2, exec1Set3, exec2Set1, exec2Set2, exec2Set3,
             exec3Set1, exec3Set2, exec3Set3, btnSave;
 
-    TextView tvExec1Weight, tvExec2Weight, tvExec3Weight;
+    TextView tvExec1Weight, tvExec2Weight, tvExec3Weight, exec1_title, exec2_title, exec3_title;
 
     String workoutType;
 
@@ -67,6 +67,20 @@ public class tab_work_sets extends Fragment {
         tvExec1Weight = (TextView) rootView.findViewById(R.id.tvSquatWeight);
         tvExec2Weight = (TextView) rootView.findViewById(R.id.tvBenchWeight);
         tvExec3Weight = (TextView) rootView.findViewById(R.id.tvRowWeight);
+
+        exec1_title = (TextView) rootView.findViewById(R.id.exec1_title);
+        exec2_title = (TextView) rootView.findViewById(R.id.exec2_title);
+        exec3_title = (TextView) rootView.findViewById(R.id.exec3_title);
+
+        exec1_title.setText("Приседания");
+
+        if ( workoutType.equals("A") ) {
+            exec2_title.setText("Жим лежа");
+            exec3_title.setText("Тяга в наклоне");
+        } else {
+            exec2_title.setText("Жим над головой");
+            exec3_title.setText("Мертвая тяга");
+        }
 
         db.open();
         Cursor c = db.getWorkoutsOfType(new String[] {workoutType});
@@ -180,7 +194,7 @@ public class tab_work_sets extends Fragment {
                 ex2.put("set3",exec2Set3.getText().toString());
                 ex2.put("workWeight",tvExec2Weight.getText().toString().replace("кг", ""));
 
-                if (workoutType == "A") {
+                if ( workoutType.equals("A") ) {
                     ex2.put("exercise", "2");
                 } else {
                     ex2.put("exercise", "4");
@@ -205,7 +219,7 @@ public class tab_work_sets extends Fragment {
                 ex3.put("set3",exec3Set3.getText().toString());
                 ex3.put("workWeight",tvExec3Weight.getText().toString().replace("кг", ""));
 
-                if (workoutType == "A"){
+                if ( workoutType.equals("A") ){
                     ex3.put("exercise", "3");
                 } else {
                     ex3.put("exercise", "5");

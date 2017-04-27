@@ -26,7 +26,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/squat"
+                tools:text="@string/squat"
                 android:textSize="18sp" />
 
             <TextView
@@ -88,7 +88,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/benchpress"
+                tools:text="@string/benchpress"
                 android:textSize="18sp" />
 
             <TextView
@@ -150,7 +150,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/row"
+                tools:text="@string/row"
                 android:textSize="18sp" />
 
             <TextView
