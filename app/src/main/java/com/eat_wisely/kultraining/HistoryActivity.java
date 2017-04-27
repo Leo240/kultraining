@@ -133,16 +133,18 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
 
         @Override
         public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-            int KEY_EX;
+            int KEY_EX, WORKOUT_TYPE;
             String ex;
             TextView tvEx;
 
             switch(view.getId()){
                 case R.id.tvDate:
                     int KEY_WORKOUT_DATE = cursor.getColumnIndex(DB.KEY_WORKOUT_DATE);
+                    WORKOUT_TYPE = cursor.getColumnIndex(DB.KEY_WORKOUT_TYPE);
                     String workout_date = cursor.getString(KEY_WORKOUT_DATE);
+                    String workout_type = cursor.getString(WORKOUT_TYPE);
                     TextView tvDate = (TextView) view;
-                    tvDate.setText(workout_date);
+                    tvDate.setText(workout_date + " Type: " + workout_type);
                     return true;
                 case R.id.tvExercise_1:
                     KEY_EX = cursor.getColumnIndex(DB.KEY_EX_1);

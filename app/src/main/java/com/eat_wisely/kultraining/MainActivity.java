@@ -31,20 +31,22 @@ public class MainActivity extends AppCompatActivity {
                 db.open();
                 Cursor c = db.getAllData();
                 if (c.getCount() == 0) {
+                    c.close();
                     intent = new Intent("com.eat_wisely.action.workout_a");
                     startActivity(intent);
                 } else {
                     c.moveToLast();
                     int KEY_WORKOUT_TYPE = c.getColumnIndex(DB.KEY_WORKOUT_TYPE);
                     String workoutType = c.getString(KEY_WORKOUT_TYPE);
-
+                    c.close();
                     if (workoutType.equals("A") ) {
-                        intent = new Intent("com.eat_wisely.action.workout_a");
-                        startActivity(intent);
-                    } else {
                         intent = new Intent("com.eat_wisely.action.workout_b");
                         startActivity(intent);
+                    } else {
+                        intent = new Intent("com.eat_wisely.action.workout_a");
+                        startActivity(intent);
                     }
+
                 }
                 db.close();
             }
