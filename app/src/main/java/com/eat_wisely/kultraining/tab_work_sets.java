@@ -6,6 +6,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,7 @@ public class tab_work_sets extends Fragment {
         } else if (action.equals("com.eat_wisely.action.workout_b")) {
             workoutType = "B";
         }
+
 
         exec1Set1 = (Button) rootView.findViewById(R.id.squatSet1);
         exec1Set2 = (Button) rootView.findViewById(R.id.squatSet2);
@@ -103,19 +105,19 @@ public class tab_work_sets extends Fragment {
 
             try {
                 JSONObject obj_ex_1 = new JSONObject(ex_1);
-                if(obj_ex_1.getString("exercise").equalsIgnoreCase("1") ){
+                if(obj_ex_1.getString("exercise").equals("1") ){
                     tvExec1Weight.setText(obj_ex_1.getString("workWeight") + "кг");
                 }
 
                 JSONObject obj_ex_2 = new JSONObject(ex_2);
-                if(obj_ex_2.getString("exercise").equalsIgnoreCase("2") ||
-                        obj_ex_2.getString("exercise").equalsIgnoreCase("4")){
+                if(obj_ex_2.getString("exercise").equals("2") ||
+                        obj_ex_2.getString("exercise").equals("4")){
                     tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
                 }
 
                 JSONObject obj_ex_3 = new JSONObject(ex_3);
-                if(obj_ex_3.getString("exercise").equalsIgnoreCase("3") ||
-                        obj_ex_2.getString("exercise").equalsIgnoreCase("5")){
+                if(obj_ex_3.getString("exercise").equals("3") ||
+                        obj_ex_2.getString("exercise").equals("5")){
                     tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
                 }
 
@@ -161,8 +163,8 @@ public class tab_work_sets extends Fragment {
         @Override
         public void onClick(View v) {
 
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-            String dateValue = sdf.format(new Date());
+            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+            String dateValue = toolbar.getTitle().toString();
             DialogFragment fragment;
 
             JSONObject ex1 = new JSONObject();

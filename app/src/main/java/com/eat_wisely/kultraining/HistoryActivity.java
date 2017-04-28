@@ -171,9 +171,18 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
                         String set1 = obj.getString("set1");
                         String set2 = obj.getString("set2");
                         String set3 = obj.getString("set3");
+                        String exID = obj.getString("exercise");
+
                         String workWeight = obj.getString("workWeight");
-                        tvEx.setText("Жим лежа: " + set1 + "/" + set2 + "/" + set3 + " "
-                                + workWeight + "кг");
+
+                        if ( exID.equals("2") ) {
+                            tvEx.setText("Жим лежа: " + set1 + "/" + set2 + "/" + set3 + " "
+                                    + workWeight + "кг");
+                        } else {
+                            tvEx.setText("Жим над головой: " + set1 + "/" + set2 + "/" + set3 + " "
+                                    + workWeight + "кг");
+                        }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -187,9 +196,17 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
                         String set1 = obj.getString("set1");
                         String set2 = obj.getString("set2");
                         String set3 = obj.getString("set3");
+                        String exID = obj.getString("exercise");
                         String workWeight = obj.getString("workWeight");
-                        tvEx.setText("Тяга в наклоне: " + set1 + "/" + set2 + "/" + set3 + " "
-                                + workWeight + "кг");
+
+                        if ( exID.equals("3") ) {
+                            tvEx.setText("Тяга в наклоне: " + set1 + "/" + set2 + "/" + set3 + " "
+                                    + workWeight + "кг");
+                        } else {
+                            tvEx.setText("Мертвая тяга: " + set1 + "/" + set2 + "/" + set3 + " "
+                                    + workWeight + "кг");
+                        }
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
