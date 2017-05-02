@@ -52,9 +52,9 @@ public class DB{
         return mDB.query(TABLE_WORKOUTS, null, null, null, null, null, null);
     }
 
-    public Cursor getWorkoutsOfType(String[] type){
+    /*public Cursor getWorkoutsOfType(String[] type){
         return mDB.query(TABLE_WORKOUTS, null, "workout_type = ?", type, null, null, null, null);
-    }
+    }*/
 
     void addRec(String ex1, String ex2, String ex3, String dateValue, String workoutType){
         ContentValues cv = new ContentValues();

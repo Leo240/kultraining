@@ -85,7 +85,7 @@ public class tab_work_sets extends Fragment {
         }
 
         db.open();
-        Cursor c = db.getWorkoutsOfType(new String[] {workoutType});
+        Cursor c = db.getAllData();
         if(c.getCount() == 0){
             tvExec1Weight.setText(R.string.default_weight);
             tvExec2Weight.setText(R.string.default_weight);
@@ -110,20 +110,78 @@ public class tab_work_sets extends Fragment {
                 }
 
                 JSONObject obj_ex_2 = new JSONObject(ex_2);
-                if(obj_ex_2.getString("exercise").equals("2") ||
-                        obj_ex_2.getString("exercise").equals("4")){
-                    tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
+                if (workoutType.equals("A")){
+                    c = db.getAllData();
+                    c.moveToLast();
+                    c.moveToPrevious();
+                    if (obj_ex_2.getString("exercise").equals("4")) {
+                        tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
+                    } else {
+                        tvExec2Weight.setText(R.string.default_weight);
+                    }
+                    c.close();
+                } else {
+                    c = db.getAllData();
+                    c.moveToLast();
+                    c.moveToPrevious();
+                    if (obj_ex_2.getString("exercise").equals("2")) {
+                        tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
+                    } else {
+                        tvExec2Weight.setText(R.string.default_weight);
+                    }
+                    c.close();
                 }
+                /*if ( obj_ex_2.getString("exercise").equals("2") ||
+                        obj_ex_2.getString("exercise").equals("4") ) {
+                    if (!obj_ex_2.getString("workWeight").equals("")) {
+                        tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
+                    } else {
+                        tvExec2Weight.setText(R.string.default_weight);
+                    }
+
+                } else {
+                    tvExec2Weight.setText(R.string.default_weight);
+                }*/
 
                 JSONObject obj_ex_3 = new JSONObject(ex_3);
-                if(obj_ex_3.getString("exercise").equals("3") ||
-                        obj_ex_2.getString("exercise").equals("5")){
-                    tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
+
+                if (workoutType.equals("A")){
+                    c = db.getAllData();
+                    c.moveToLast();
+                    c.moveToPrevious();
+                    if (obj_ex_3.getString("exercise").equals("5")){
+                        tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
+                    } else {
+                        tvExec3Weight.setText(R.string.default_weight);
+                    }
+                    c.close();
+                } else {
+                    c = db.getAllData();
+                    c.moveToLast();
+                    c.moveToPrevious();
+                    if (obj_ex_3.getString("exercise").equals("3")){
+                        tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
+                    } else {
+                        tvExec3Weight.setText(R.string.default_weight);
+                    }
+                    c.close();
                 }
+                /*if( obj_ex_3.getString("exercise").equals("3") ||
+                        obj_ex_3.getString("exercise").equals("5") ) {
+                    if (!obj_ex_3.getString("workWeight").equals("")) {
+                        tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
+                    } else {
+                        tvExec3Weight.setText(R.string.default_weight);
+                    }
+
+                } else {
+                    tvExec3Weight.setText(R.string.default_weight);
+                }*/
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
         }
 
         db.close();
