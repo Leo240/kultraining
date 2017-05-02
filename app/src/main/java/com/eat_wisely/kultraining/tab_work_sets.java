@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 
 public class tab_work_sets extends Fragment {
@@ -96,12 +89,20 @@ public class tab_work_sets extends Fragment {
             String ex_1 = c.getString(KEY_EX_1);
 
             int KEY_EX_2 = c.getColumnIndex(DB.KEY_EX_2);
-            String ex_2 = c.getString(KEY_EX_2);
-
             int KEY_EX_3 = c.getColumnIndex(DB.KEY_EX_3);
-            String ex_3 = c.getString(KEY_EX_3);
 
-            c.close();
+            String ex_2 = "";
+            String ex_3 = "";
+
+            if ( c.isLast() && !c.isFirst() ){
+                c.moveToPrevious();
+                ex_2 = c.getString(KEY_EX_2);
+                ex_3 = c.getString(KEY_EX_3);
+                c.moveToLast();
+            } else if ( c.isLast() && c.isFirst() ){
+                ex_2 = c.getString(KEY_EX_2);
+                ex_3 = c.getString(KEY_EX_3);
+            }
 
             try {
                 JSONObject obj_ex_1 = new JSONObject(ex_1);
@@ -110,78 +111,25 @@ public class tab_work_sets extends Fragment {
                 }
 
                 JSONObject obj_ex_2 = new JSONObject(ex_2);
-                if (workoutType.equals("A")){
-                    c = db.getAllData();
-                    c.moveToLast();
-                    c.moveToPrevious();
-                    if (obj_ex_2.getString("exercise").equals("4")) {
-                        tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
-                    } else {
-                        tvExec2Weight.setText(R.string.default_weight);
-                    }
-                    c.close();
-                } else {
-                    c = db.getAllData();
-                    c.moveToLast();
-                    c.moveToPrevious();
-                    if (obj_ex_2.getString("exercise").equals("2")) {
-                        tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
-                    } else {
-                        tvExec2Weight.setText(R.string.default_weight);
-                    }
-                    c.close();
-                }
-                /*if ( obj_ex_2.getString("exercise").equals("2") ||
-                        obj_ex_2.getString("exercise").equals("4") ) {
-                    if (!obj_ex_2.getString("workWeight").equals("")) {
-                        tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
-                    } else {
-                        tvExec2Weight.setText(R.string.default_weight);
-                    }
 
+                if (!obj_ex_2.getString("workWeight").equals("")) {
+                    tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
                 } else {
                     tvExec2Weight.setText(R.string.default_weight);
-                }*/
+                }
 
                 JSONObject obj_ex_3 = new JSONObject(ex_3);
 
-                if (workoutType.equals("A")){
-                    c = db.getAllData();
-                    c.moveToLast();
-                    c.moveToPrevious();
-                    if (obj_ex_3.getString("exercise").equals("5")){
-                        tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
-                    } else {
-                        tvExec3Weight.setText(R.string.default_weight);
-                    }
-                    c.close();
-                } else {
-                    c = db.getAllData();
-                    c.moveToLast();
-                    c.moveToPrevious();
-                    if (obj_ex_3.getString("exercise").equals("3")){
-                        tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
-                    } else {
-                        tvExec3Weight.setText(R.string.default_weight);
-                    }
-                    c.close();
-                }
-                /*if( obj_ex_3.getString("exercise").equals("3") ||
-                        obj_ex_3.getString("exercise").equals("5") ) {
-                    if (!obj_ex_3.getString("workWeight").equals("")) {
-                        tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
-                    } else {
-                        tvExec3Weight.setText(R.string.default_weight);
-                    }
-
+                if (!obj_ex_3.getString("workWeight").equals("")) {
+                    tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
                 } else {
                     tvExec3Weight.setText(R.string.default_weight);
-                }*/
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
+            c.close();
         }
 
         db.close();
