@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +20,14 @@ import org.json.JSONObject;
 public class tab_work_sets extends Fragment {
 
     int squatSet1reps, squatSet2reps, squatSet3reps, bpSet1reps,
-            bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps;
+            bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps, pos;
 
     Button exec1Set1, exec1Set2, exec1Set3, exec2Set1, exec2Set2, exec2Set3,
             exec3Set1, exec3Set2, exec3Set3, btnSave;
 
     TextView tvExec1Weight, tvExec2Weight, tvExec3Weight, exec1_title, exec2_title, exec3_title;
 
-    String workoutType;
+    String workoutType , action;
 
     String[] reps;
 
@@ -38,16 +39,7 @@ public class tab_work_sets extends Fragment {
         View rootView = inflater.inflate(R.layout.tab_work_sets, container, false);
 
         Intent intent = getActivity().getIntent();
-        String action = intent.getAction();
-
-        db = new DB(getActivity());
-
-        if (action.equals("com.eat_wisely.action.workout_a")) {
-            workoutType = "A";
-        } else if (action.equals("com.eat_wisely.action.workout_b")) {
-            workoutType = "B";
-        }
-
+        action = intent.getAction();
 
         exec1Set1 = (Button) rootView.findViewById(R.id.squatSet1);
         exec1Set2 = (Button) rootView.findViewById(R.id.squatSet2);
@@ -67,6 +59,61 @@ public class tab_work_sets extends Fragment {
         exec2_title = (TextView) rootView.findViewById(R.id.exec2_title);
         exec3_title = (TextView) rootView.findViewById(R.id.exec3_title);
 
+        db = new DB(getActivity());
+
+        if (action.equals("com.eat_wisely.action.workout_a")) {
+            workoutType = "A";
+        } else if (action.equals("com.eat_wisely.action.workout_b")) {
+            workoutType = "B";
+        } else if (action.equals("com.eat_wisely.action.edit")) {
+            pos = intent.getIntExtra("pos", 1);
+
+            db.open();
+            Cursor c = db.getAllData();
+            c.moveToPosition(pos);
+            int KEY_WORKOUT_TYPE = c.getColumnIndex(DB.KEY_WORKOUT_TYPE);
+            int KEY_EX_1 = c.getColumnIndex(DB.KEY_EX_1);
+            int KEY_EX_2 = c.getColumnIndex(DB.KEY_EX_2);
+            int KEY_EX_3 = c.getColumnIndex(DB.KEY_EX_3);
+
+            String ex_1 = c.getString(KEY_EX_1);
+            String ex_2 = c.getString(KEY_EX_2);
+            String ex_3 = c.getString(KEY_EX_3);
+            workoutType = c.getString(KEY_WORKOUT_TYPE);
+
+            try {
+                JSONObject obj_ex_1 = new JSONObject(ex_1);
+                JSONObject obj_ex_2 = new JSONObject(ex_2);
+                JSONObject obj_ex_3 = new JSONObject(ex_3);
+
+                exec1Set1.setText(obj_ex_1.getString("set1"));
+                exec1Set2.setText(obj_ex_1.getString("set2"));
+                exec1Set3.setText(obj_ex_1.getString("set3"));
+                tvExec1Weight.setText(obj_ex_1.getString("workWeight") + "кг");
+
+                exec2Set1.setText(obj_ex_2.getString("set1"));
+                exec2Set2.setText(obj_ex_2.getString("set2"));
+                exec2Set3.setText(obj_ex_2.getString("set3"));
+                tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
+
+                exec3Set1.setText(obj_ex_3.getString("set1"));
+                exec3Set2.setText(obj_ex_3.getString("set2"));
+                exec3Set3.setText(obj_ex_3.getString("set3"));
+                tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            c.close();
+            db.close();
+
+            Log.d("myTag", "position: " + pos + " workoutType: " + workoutType );
+
+
+        }
+
+
+
+
         exec1_title.setText("Приседания");
 
         if ( workoutType.equals("A") ) {
@@ -77,62 +124,65 @@ public class tab_work_sets extends Fragment {
             exec3_title.setText("Мертвая тяга");
         }
 
-        db.open();
-        Cursor c = db.getAllData();
-        if(c.getCount() == 0){
-            tvExec1Weight.setText(R.string.default_weight);
-            tvExec2Weight.setText(R.string.default_weight);
-            tvExec3Weight.setText(R.string.default_weight);
-        }else {
-            c.moveToLast();
-            int KEY_EX_1 = c.getColumnIndex(DB.KEY_EX_1);
-            String ex_1 = c.getString(KEY_EX_1);
-
-            int KEY_EX_2 = c.getColumnIndex(DB.KEY_EX_2);
-            int KEY_EX_3 = c.getColumnIndex(DB.KEY_EX_3);
-
-            String ex_2 = "";
-            String ex_3 = "";
-
-            if ( c.isLast() && !c.isFirst() ){
-                c.moveToPrevious();
-                ex_2 = c.getString(KEY_EX_2);
-                ex_3 = c.getString(KEY_EX_3);
+        if (!action.equals("com.eat_wisely.action.edit")){
+            db.open();
+            Cursor c = db.getAllData();
+            if(c.getCount() == 0){
+                tvExec1Weight.setText(R.string.default_weight);
+                tvExec2Weight.setText(R.string.default_weight);
+                tvExec3Weight.setText(R.string.default_weight);
+            }else {
                 c.moveToLast();
-            } else if ( c.isLast() && c.isFirst() ){
-                ex_2 = c.getString(KEY_EX_2);
-                ex_3 = c.getString(KEY_EX_3);
+                int KEY_EX_1 = c.getColumnIndex(DB.KEY_EX_1);
+                String ex_1 = c.getString(KEY_EX_1);
+
+                int KEY_EX_2 = c.getColumnIndex(DB.KEY_EX_2);
+                int KEY_EX_3 = c.getColumnIndex(DB.KEY_EX_3);
+
+                String ex_2 = "";
+                String ex_3 = "";
+
+                if ( c.isLast() && !c.isFirst() ){
+                    c.moveToPrevious();
+                    ex_2 = c.getString(KEY_EX_2);
+                    ex_3 = c.getString(KEY_EX_3);
+                    c.moveToLast();
+                } else if ( c.isLast() && c.isFirst() ){
+                    ex_2 = c.getString(KEY_EX_2);
+                    ex_3 = c.getString(KEY_EX_3);
+                }
+
+                try {
+                    JSONObject obj_ex_1 = new JSONObject(ex_1);
+                    if(obj_ex_1.getString("exercise").equals("1") ){
+                        tvExec1Weight.setText(obj_ex_1.getString("workWeight") + "кг");
+                    }
+
+                    JSONObject obj_ex_2 = new JSONObject(ex_2);
+
+                    if (!obj_ex_2.getString("workWeight").isEmpty()) {
+                        tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
+                    } else {
+                        tvExec2Weight.setText(R.string.default_weight);
+                    }
+
+                    JSONObject obj_ex_3 = new JSONObject(ex_3);
+
+                    if (!obj_ex_3.getString("workWeight").isEmpty()) {
+                        tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
+                    } else {
+                        tvExec3Weight.setText(R.string.default_weight);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                c.close();
             }
 
-            try {
-                JSONObject obj_ex_1 = new JSONObject(ex_1);
-                if(obj_ex_1.getString("exercise").equals("1") ){
-                    tvExec1Weight.setText(obj_ex_1.getString("workWeight") + "кг");
-                }
-
-                JSONObject obj_ex_2 = new JSONObject(ex_2);
-
-                if (!obj_ex_2.getString("workWeight").equals("")) {
-                    tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
-                } else {
-                    tvExec2Weight.setText(R.string.default_weight);
-                }
-
-                JSONObject obj_ex_3 = new JSONObject(ex_3);
-
-                if (!obj_ex_3.getString("workWeight").equals("")) {
-                    tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
-                } else {
-                    tvExec3Weight.setText(R.string.default_weight);
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            c.close();
+            db.close();
         }
 
-        db.close();
 
         Resources res = getResources();
         reps = res.getStringArray(R.array.rep_range);
@@ -334,7 +384,11 @@ public class tab_work_sets extends Fragment {
                     break;
                 case R.id.btnSave:
                     db.open();
-                    db.addRec(e1, e2, e3, dateValue, workoutType);
+                    if (action.equals("com.eat_wisely.action.edit")) {
+                        //db.editRec(id, e1, e2, e3, dateValue, workoutType);
+                    } else {
+                        db.addRec(e1, e2, e3, dateValue, workoutType);
+                    }
                     db.close();
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);

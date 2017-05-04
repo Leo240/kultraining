@@ -26,6 +26,7 @@
             <intent-filter>
                 <action android:name="com.eat_wisely.action.workout_a" />
                 <action android:name="com.eat_wisely.action.workout_b" />
+                <action android:name="com.eat_wisely.action.edit" />
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

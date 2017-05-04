@@ -53,7 +53,11 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
         lvMain.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("myTag", "position=" + position + ", id=" + id );
+                //Log.d("myTag", "position=" + position + ", id=" + id );
+
+                Intent intent = new Intent("com.eat_wisely.action.edit");
+                intent.putExtra("pos", position);
+                startActivity(intent);
             }
         });
 
