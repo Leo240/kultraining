@@ -23,5 +23,5 @@
     <string name="card_title">Вт, 4 Апр</string>
     <string name="title_activity_history">HistoryActivity</string>
     <string name="default_weight">20кг</string>
-    <string name="unit_kg">кг</string>
+    <string name="unit_kg">%1$sкг</string>
 </resources>

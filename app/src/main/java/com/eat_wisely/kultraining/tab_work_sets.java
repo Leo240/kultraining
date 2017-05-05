@@ -27,7 +27,7 @@ public class tab_work_sets extends Fragment {
 
     TextView tvExec1Weight, tvExec2Weight, tvExec3Weight, exec1_title, exec2_title, exec3_title;
 
-    String workoutType , action;
+    String workoutType , action, workWeight, text;
 
     String[] reps;
 
@@ -89,17 +89,23 @@ public class tab_work_sets extends Fragment {
                 exec1Set1.setText(obj_ex_1.getString("set1"));
                 exec1Set2.setText(obj_ex_1.getString("set2"));
                 exec1Set3.setText(obj_ex_1.getString("set3"));
-                tvExec1Weight.setText(obj_ex_1.getString("workWeight") + "кг");
+                workWeight = obj_ex_1.getString("workWeight");
+                text = getResources().getString(R.string.unit_kg, workWeight);
+                tvExec1Weight.setText(text);
 
                 exec2Set1.setText(obj_ex_2.getString("set1"));
                 exec2Set2.setText(obj_ex_2.getString("set2"));
                 exec2Set3.setText(obj_ex_2.getString("set3"));
-                tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
+                workWeight = obj_ex_2.getString("workWeight");
+                text = getResources().getString(R.string.unit_kg, workWeight);
+                tvExec2Weight.setText(text);
 
                 exec3Set1.setText(obj_ex_3.getString("set1"));
                 exec3Set2.setText(obj_ex_3.getString("set2"));
                 exec3Set3.setText(obj_ex_3.getString("set3"));
-                tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
+                workWeight = obj_ex_3.getString("workWeight");
+                text = getResources().getString(R.string.unit_kg, workWeight);
+                tvExec3Weight.setText(text);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -110,9 +116,6 @@ public class tab_work_sets extends Fragment {
 
 
         }
-
-
-
 
         exec1_title.setText("Приседания");
 
@@ -154,22 +157,26 @@ public class tab_work_sets extends Fragment {
 
                 try {
                     JSONObject obj_ex_1 = new JSONObject(ex_1);
+                    workWeight  = obj_ex_1.getString("workWeight");
+                    text = getResources().getString(R.string.unit_kg, workWeight);
                     if(obj_ex_1.getString("exercise").equals("1") ){
-                        tvExec1Weight.setText(obj_ex_1.getString("workWeight") + "кг");
+                        tvExec1Weight.setText(text);
                     }
 
                     JSONObject obj_ex_2 = new JSONObject(ex_2);
-
+                    workWeight = obj_ex_2.getString("workWeight");
+                    text = getResources().getString(R.string.unit_kg, workWeight);
                     if (!obj_ex_2.getString("workWeight").isEmpty()) {
-                        tvExec2Weight.setText(obj_ex_2.getString("workWeight") + "кг");
+                        tvExec2Weight.setText(text);
                     } else {
                         tvExec2Weight.setText(R.string.default_weight);
                     }
 
                     JSONObject obj_ex_3 = new JSONObject(ex_3);
-
+                    workWeight = obj_ex_3.getString("workWeight");
+                    text = getResources().getString(R.string.unit_kg, workWeight);
                     if (!obj_ex_3.getString("workWeight").isEmpty()) {
-                        tvExec3Weight.setText(obj_ex_3.getString("workWeight") + "кг");
+                        tvExec3Weight.setText(text);
                     } else {
                         tvExec3Weight.setText(R.string.default_weight);
                     }
