@@ -2,6 +2,8 @@ package com.eat_wisely.kultraining;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.content.res.Resources;
@@ -15,6 +17,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class tab_work_sets extends Fragment {
@@ -30,6 +35,9 @@ public class tab_work_sets extends Fragment {
     String workoutType , action, workWeight, text;
 
     String[] reps;
+
+    Timer timer;
+    MyTimerTask myTimerTask;
 
     DB db;
 
@@ -221,6 +229,12 @@ public class tab_work_sets extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        timer.cancel();
+    }
+
     private final View.OnClickListener onClickListener = new View.OnClickListener() {
 
         @Override
@@ -311,6 +325,8 @@ public class tab_work_sets extends Fragment {
                 case R.id.squatSet1:
                     squatSet1reps--;
                     exec1Set1.setText(reps[squatSet1reps]);
+
+                    startTimer();
 
                     if (squatSet1reps == 0){
                         exec1Set1.setText("0");
@@ -416,5 +432,55 @@ public class tab_work_sets extends Fragment {
             }
         }
     };
+
+    void startTimer(){
+        if (timer != null) {
+            timer.cancel();
+        }
+        timer = new Timer();
+        myTimerTask = new MyTimerTask();
+        timer.schedule(myTimerTask,1000, 1000);
+    }
+
+    private class MyTimerTask extends TimerTask{
+
+        long startTime = System.currentTimeMillis();
+        long MILLIS_TO_MINUTES = 60000;
+        long MILLIS_TO_SECONDS = 1000;
+
+        int seconds;
+        int minutes;
+
+
+        @Override
+        public void run() {
+            long passed = System.currentTimeMillis() - startTime;
+
+            seconds = (int) ((passed / MILLIS_TO_SECONDS) % 60);
+            minutes = (int) ((passed / MILLIS_TO_MINUTES) % 60);
+
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (getActivity() != null){
+                        Snackbar.make(getActivity().findViewById(R.id.main_content),
+                                String.valueOf(minutes) + " : " + String.valueOf(seconds),
+                                Snackbar.LENGTH_SHORT)
+                                .setAction("X", new TimerCloseListener())
+                                .show();
+                    }
+
+                }
+            });
+        }
+    }
+
+    private class TimerCloseListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            timer.cancel();
+        }
+    }
 
 }
