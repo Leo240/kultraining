@@ -337,6 +337,8 @@ public class tab_work_sets extends Fragment {
                     squatSet2reps--;
                     exec1Set2.setText(reps[squatSet2reps]);
 
+                    startTimer();
+
                     if (squatSet2reps == 0){
                         exec1Set2.setText("0");
                         squatSet2reps = reps.length;
@@ -345,6 +347,8 @@ public class tab_work_sets extends Fragment {
                 case R.id.squatSet3:
                     squatSet3reps--;
                     exec1Set3.setText(reps[squatSet3reps]);
+
+                    startTimer();
 
                     if (squatSet3reps == 0){
                         exec1Set3.setText("0");
@@ -355,6 +359,8 @@ public class tab_work_sets extends Fragment {
                     bpSet1reps--;
                     exec2Set1.setText(reps[bpSet1reps]);
 
+                    startTimer();
+
                     if (bpSet1reps == 0){
                         exec2Set1.setText("0");
                         bpSet1reps = reps.length;
@@ -363,6 +369,8 @@ public class tab_work_sets extends Fragment {
                 case R.id.bpSet2:
                     bpSet2reps--;
                     exec2Set2.setText(reps[bpSet2reps]);
+
+                    startTimer();
 
                     if (bpSet2reps == 0){
                         exec2Set2.setText("0");
@@ -373,6 +381,8 @@ public class tab_work_sets extends Fragment {
                     bpSet3reps--;
                     exec2Set3.setText(reps[bpSet3reps]);
 
+                    startTimer();
+
                     if (bpSet3reps == 0){
                         exec2Set3.setText("0");
                         bpSet3reps = reps.length;
@@ -381,6 +391,8 @@ public class tab_work_sets extends Fragment {
                 case R.id.rowSet1:
                     rowSet1reps--;
                     exec3Set1.setText(reps[rowSet1reps]);
+
+                    startTimer();
 
                     if (rowSet1reps == 0){
                         exec3Set1.setText("0");
@@ -391,19 +403,15 @@ public class tab_work_sets extends Fragment {
                     rowSet2reps--;
                     exec3Set2.setText(reps[rowSet2reps]);
 
+                    startTimer();
+
                     if (rowSet2reps == 0){
                         exec3Set2.setText("0");
                         rowSet2reps = reps.length;
                     }
                     break;
                 case R.id.rowSet3:
-                    rowSet3reps--;
-                    exec3Set3.setText(reps[rowSet3reps]);
-
-                    if (rowSet3reps == 0){
-                        exec3Set3.setText("0");
-                        rowSet3reps = reps.length;
-                    }
+                    changeButtonText(rowSet3reps);
                     break;
                 case R.id.btnSave:
                     db.open();
@@ -440,6 +448,18 @@ public class tab_work_sets extends Fragment {
         timer = new Timer();
         myTimerTask = new MyTimerTask();
         timer.schedule(myTimerTask,1000, 1000);
+    }
+
+    int changeButtonText(int counter){
+        counter--;
+        exec3Set3.setText(reps[counter]);
+        return counter--;
+        /*startTimer();
+
+        if (counter == 0){
+            exec3Set3.setText("0");
+            changeButtonText(reps.length);
+        }*/
     }
 
     private class MyTimerTask extends TimerTask{
