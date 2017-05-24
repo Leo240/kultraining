@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DB{
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 6;
     private static final String DATABASE_NAME = "workoutsDb";
     private static final String TABLE_WORKOUTS = "workouts";
 
@@ -86,9 +86,11 @@ public class DB{
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
             db.execSQL("drop table if exists " + TABLE_WORKOUTS);
 
             onCreate(db);
+
         }
     }
 }

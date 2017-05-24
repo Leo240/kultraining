@@ -32,9 +32,11 @@ public class tab_work_sets extends Fragment {
 
     TextView tvExec1Weight, tvExec2Weight, tvExec3Weight, exec1_title, exec2_title, exec3_title;
 
-    String workoutType , action, workWeight, text;
+    String workoutType , action, workWeight, text, dateValue;
 
     String[] reps;
+
+    Toolbar toolbar;
 
     Timer timer;
     MyTimerTask myTimerTask;
@@ -63,6 +65,8 @@ public class tab_work_sets extends Fragment {
         tvExec2Weight = (TextView) rootView.findViewById(R.id.tvBenchWeight);
         tvExec3Weight = (TextView) rootView.findViewById(R.id.tvRowWeight);
 
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+
         exec1_title = (TextView) rootView.findViewById(R.id.exec1_title);
         exec2_title = (TextView) rootView.findViewById(R.id.exec2_title);
         exec3_title = (TextView) rootView.findViewById(R.id.exec3_title);
@@ -80,6 +84,7 @@ public class tab_work_sets extends Fragment {
             Cursor c = db.getAllData();
             c.moveToPosition(pos);
             int KEY_WORKOUT_TYPE = c.getColumnIndex(DB.KEY_WORKOUT_TYPE);
+            int KEY_WORKOUT_DATE = c.getColumnIndex(DB.KEY_WORKOUT_DATE);
             int KEY_EX_1 = c.getColumnIndex(DB.KEY_EX_1);
             int KEY_EX_2 = c.getColumnIndex(DB.KEY_EX_2);
             int KEY_EX_3 = c.getColumnIndex(DB.KEY_EX_3);
@@ -88,7 +93,8 @@ public class tab_work_sets extends Fragment {
             String ex_2 = c.getString(KEY_EX_2);
             String ex_3 = c.getString(KEY_EX_3);
             workoutType = c.getString(KEY_WORKOUT_TYPE);
-
+            dateValue = c.getString(KEY_WORKOUT_DATE);
+            toolbar.setTitle(dateValue);
             try {
                 JSONObject obj_ex_1 = new JSONObject(ex_1);
                 JSONObject obj_ex_2 = new JSONObject(ex_2);
@@ -232,7 +238,11 @@ public class tab_work_sets extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        timer.cancel();
+
+        if (timer != null){
+            timer.cancel();
+        }
+
     }
 
     private final View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -240,8 +250,8 @@ public class tab_work_sets extends Fragment {
         @Override
         public void onClick(View v) {
 
-            Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-            String dateValue = toolbar.getTitle().toString();
+            //Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+            dateValue = toolbar.getTitle().toString();
             DialogFragment fragment;
 
             JSONObject ex1 = new JSONObject();
@@ -323,8 +333,7 @@ public class tab_work_sets extends Fragment {
 
             switch (v.getId()){
                 case R.id.squatSet1:
-                    squatSet1reps--;
-                    exec1Set1.setText(reps[squatSet1reps]);
+                    exec1Set1.setText(reps[--squatSet1reps]);
 
                     startTimer();
 
@@ -334,8 +343,7 @@ public class tab_work_sets extends Fragment {
                     }
                     break;
                 case R.id.squatSet2:
-                    squatSet2reps--;
-                    exec1Set2.setText(reps[squatSet2reps]);
+                    exec1Set2.setText(reps[--squatSet2reps]);
 
                     startTimer();
 
@@ -345,8 +353,7 @@ public class tab_work_sets extends Fragment {
                     }
                     break;
                 case R.id.squatSet3:
-                    squatSet3reps--;
-                    exec1Set3.setText(reps[squatSet3reps]);
+                    exec1Set3.setText(reps[--squatSet3reps]);
 
                     startTimer();
 
@@ -356,8 +363,7 @@ public class tab_work_sets extends Fragment {
                     }
                     break;
                 case R.id.bpSet1:
-                    bpSet1reps--;
-                    exec2Set1.setText(reps[bpSet1reps]);
+                    exec2Set1.setText(reps[--bpSet1reps]);
 
                     startTimer();
 
@@ -367,8 +373,7 @@ public class tab_work_sets extends Fragment {
                     }
                     break;
                 case R.id.bpSet2:
-                    bpSet2reps--;
-                    exec2Set2.setText(reps[bpSet2reps]);
+                    exec2Set2.setText(reps[--bpSet2reps]);
 
                     startTimer();
 
@@ -378,8 +383,7 @@ public class tab_work_sets extends Fragment {
                     }
                     break;
                 case R.id.bpSet3:
-                    bpSet3reps--;
-                    exec2Set3.setText(reps[bpSet3reps]);
+                    exec2Set3.setText(reps[--bpSet3reps]);
 
                     startTimer();
 
@@ -389,8 +393,7 @@ public class tab_work_sets extends Fragment {
                     }
                     break;
                 case R.id.rowSet1:
-                    rowSet1reps--;
-                    exec3Set1.setText(reps[rowSet1reps]);
+                    exec3Set1.setText(reps[--rowSet1reps]);
 
                     startTimer();
 
@@ -400,8 +403,7 @@ public class tab_work_sets extends Fragment {
                     }
                     break;
                 case R.id.rowSet2:
-                    rowSet2reps--;
-                    exec3Set2.setText(reps[rowSet2reps]);
+                    exec3Set2.setText(reps[--rowSet2reps]);
 
                     startTimer();
 
@@ -411,7 +413,14 @@ public class tab_work_sets extends Fragment {
                     }
                     break;
                 case R.id.rowSet3:
-                    changeButtonText(rowSet3reps);
+                    exec3Set3.setText(reps[--rowSet3reps]);
+
+                    startTimer();
+
+                    if (rowSet3reps == 0){
+                        exec3Set3.setText("0");
+                        rowSet3reps = reps.length;
+                    }
                     break;
                 case R.id.btnSave:
                     db.open();
@@ -471,6 +480,8 @@ public class tab_work_sets extends Fragment {
         int seconds;
         int minutes;
 
+        String secondsText;
+
 
         @Override
         public void run() {
@@ -479,12 +490,18 @@ public class tab_work_sets extends Fragment {
             seconds = (int) ((passed / MILLIS_TO_SECONDS) % 60);
             minutes = (int) ((passed / MILLIS_TO_MINUTES) % 60);
 
+            if (seconds < 10) {
+                secondsText = "0" + String.valueOf(seconds);
+            } else {
+                secondsText = String.valueOf(seconds);
+            }
+
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     if (getActivity() != null){
                         Snackbar.make(getActivity().findViewById(R.id.main_content),
-                                String.valueOf(minutes) + " : " + String.valueOf(seconds),
+                                String.valueOf(minutes) + " : " + secondsText,
                                 Snackbar.LENGTH_SHORT)
                                 .setAction("X", new TimerCloseListener())
                                 .show();
