@@ -78,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, HistoryActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.action_charts:
+                intent = new Intent(this, GraphicsActivity.class);
+                startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
