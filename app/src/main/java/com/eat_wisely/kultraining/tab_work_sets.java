@@ -26,7 +26,8 @@ import java.util.TimerTask;
 public class tab_work_sets extends Fragment {
 
     int squatSet1reps, squatSet2reps, squatSet3reps, bpSet1reps,
-            bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps, pos;
+            bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps;
+    long id;
 
     Button exec1Set1, exec1Set2, exec1Set3, exec2Set1, exec2Set2, exec2Set3,
             exec3Set1, exec3Set2, exec3Set3, btnSave;
@@ -79,11 +80,11 @@ public class tab_work_sets extends Fragment {
         } else if (action.equals("com.eat_wisely.action.workout_b")) {
             workoutType = "B";
         } else if (action.equals("com.eat_wisely.action.edit")) {
-            pos = intent.getIntExtra("pos", 1);
+            id = intent.getLongExtra("id", 1);
 
             db.open();
-            Cursor c = db.getAllData();
-            c.moveToPosition(pos);
+            Cursor c = db.getRecord(id);
+            c.moveToFirst();
             int KEY_WORKOUT_TYPE = c.getColumnIndex(DB.KEY_WORKOUT_TYPE);
             int KEY_WORKOUT_DATE = c.getColumnIndex(DB.KEY_WORKOUT_DATE);
             int KEY_EX_1 = c.getColumnIndex(DB.KEY_EX_1);
@@ -127,7 +128,7 @@ public class tab_work_sets extends Fragment {
             c.close();
             db.close();
 
-            Log.d("myTag", "position: " + pos + " workoutType: " + workoutType );
+            Log.d("myTag", "id: " + id + " workoutType: " + workoutType );
 
 
         }
@@ -438,14 +439,16 @@ public class tab_work_sets extends Fragment {
                 case R.id.btnSave:
                     db.open();
                     if (action.equals("com.eat_wisely.action.edit")) {
-                        //db.editRec(id, e1, e2, e3, dateValue, workoutType);
+                        db.editRec(id, e1, e2, e3, dateValue, workoutType);
+                        Intent intent = new Intent(getActivity(), HistoryActivity.class);
+                        startActivity(intent);
                     } else {
                         db.addRec(e1, e2, e3, dateValue, workoutType);
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
                     }
                     db.close();
 
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    startActivity(intent);
                     break;
                 case R.id.tvSquatWeight:
                     fragment = new SquatWorkWeight();

@@ -55,7 +55,7 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
                 //Log.d("myTag", "position=" + position + ", id=" + id );
 
                 Intent intent = new Intent("com.eat_wisely.action.edit");
-                intent.putExtra("pos", position);
+                intent.putExtra("id", id);
                 startActivity(intent);
             }
         });
