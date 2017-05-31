@@ -3,7 +3,6 @@ package com.eat_wisely.kultraining;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -440,15 +439,13 @@ public class tab_work_sets extends Fragment {
                     db.open();
                     if (action.equals("com.eat_wisely.action.edit")) {
                         db.editRec(id, e1, e2, e3, dateValue, workoutType);
-                        Intent intent = new Intent(getActivity(), HistoryActivity.class);
-                        startActivity(intent);
                     } else {
                         db.addRec(e1, e2, e3, dateValue, workoutType);
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
                     }
                     db.close();
-
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
                     break;
                 case R.id.tvSquatWeight:
                     fragment = new SquatWorkWeight();

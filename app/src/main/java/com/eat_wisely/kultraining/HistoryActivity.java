@@ -73,6 +73,12 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        getSupportLoaderManager().restartLoader(0, null, this);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_history, menu);
         return true;
