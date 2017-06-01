@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import org.json.JSONException;
@@ -26,7 +27,7 @@ public class GraphicsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_graphics);
         initializeView();
 
-        db = new DB(this);
+
     }
 
     void initializeView(){
@@ -39,10 +40,51 @@ public class GraphicsActivity extends AppCompatActivity {
 
     class Panel extends View {
         JSONObject obj_ex_1;
-        List<Integer> weightList;
+        List<Float> weightList;
 
         public Panel(Context context) {
             super(context);
+            initializePanel();
+        }
+
+        void initializePanel(){
+            weightList = new ArrayList<>();
+            db = new DB(this.getContext());
+            db.open();
+            Cursor c = db.getAllData();
+
+
+
+            if (c.moveToFirst()){
+                //int KEY_WORKOUT_DATE = c.getColumnIndex(DB.KEY_WORKOUT_DATE);
+                int KEY_EX_1 = c.getColumnIndex(DB.KEY_EX_1);
+                /*int KEY_EX_2 = c.getColumnIndex(DB.KEY_EX_2);
+                int KEY_EX_3 = c.getColumnIndex(DB.KEY_EX_3);*/
+
+
+                //JSONObject obj_ex_2 = new JSONObject(ex_2);
+                //JSONObject obj_ex_3 = new JSONObject(ex_3);
+
+                long startTime = System.currentTimeMillis();
+
+                do {
+                    try {
+                        obj_ex_1 = new JSONObject(c.getString(KEY_EX_1));
+                        float ex1_work_weight = Float.parseFloat(obj_ex_1.getString("workWeight"));
+
+                        weightList.add(ex1_work_weight);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } while(c.moveToNext());
+
+                long duration = System.currentTimeMillis() - startTime;
+
+                Log.d("myLog", "" + duration);
+
+
+            }
+            c.close();
         }
 
         @Override
@@ -54,7 +96,10 @@ public class GraphicsActivity extends AppCompatActivity {
             int initX = 20;
             int finalX = canvasW - 20;
             int finalY = 20;
-            weightList = new ArrayList<>();
+
+            int currentX = initX;
+
+
 
             canvas.drawColor(Color.WHITE);
 
@@ -62,42 +107,10 @@ public class GraphicsActivity extends AppCompatActivity {
             canvas.drawLine(initX, initY, finalX, initY, paint);
 
             paint.setColor( Color.GREEN);
-            db.open();
-            Cursor c = db.getAllData();
 
-
-
-            if (c.moveToFirst()){
-                int KEY_WORKOUT_DATE = c.getColumnIndex(DB.KEY_WORKOUT_DATE);
-                int KEY_EX_1 = c.getColumnIndex(DB.KEY_EX_1);
-                int KEY_EX_2 = c.getColumnIndex(DB.KEY_EX_2);
-                int KEY_EX_3 = c.getColumnIndex(DB.KEY_EX_3);
-
-                String ex_1 = c.getString(KEY_EX_1);
-                String ex_2 = c.getString(KEY_EX_2);
-                String ex_3 = c.getString(KEY_EX_3);
-                String workoutDate = c.getString(KEY_WORKOUT_DATE);
-
-
-                //JSONObject obj_ex_2 = new JSONObject(ex_2);
-                //JSONObject obj_ex_3 = new JSONObject(ex_3);
-
-                try {
-                    obj_ex_1 = new JSONObject(ex_1);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                while(c.moveToNext()){
-                    int ex1_set1 = Integer.parseInt(obj_ex_1.getString("set1"));
-                    int ex1_set2 = Integer.parseInt(obj_ex_1.getString("set2"));
-                    int ex1_set3 = Integer.parseInt(obj_ex_1.getString("set3"));
-                    int ex1_work_weight = Integer.parseInt(obj_ex_1.getString("workWeight"));
-                    int volume = ex1_set1 * ex1_set2 * ex1_set3 * ex1_work_weight;
-                    weightList.add(volume);
-
-                }
+            for (float weight : weightList) {
+                //Log.d("myLog", "" + weight + ", ");
+                canvas.drawLine(currentX, initY - weight, currentX + 10, );
             }
 
         }
