@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:key="squats"
+        android:title="Приседания">
+        <EditTextPreference
+            android:key="squats_sets"
+            android:title="Кол-во подходов"
+            android:defaultValue="3"/>
+        <EditTextPreference
+            android:key="squats_reps"
+            android:title="Кол-во повторений"
+            android:defaultValue="8"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="benchpress"
+        android:title="Жим лежа">
+        <EditTextPreference
+            android:key="benchpress_sets"
+            android:title="Кол-во подходов"
+            android:defaultValue="3"/>
+        <EditTextPreference
+            android:key="benchpress_reps"
+            android:title="Кол-во повторений"
+            android:defaultValue="8"/>
+    </PreferenceCategory>
+</PreferenceScreen>

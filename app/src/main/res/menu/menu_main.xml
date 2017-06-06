@@ -17,4 +17,9 @@
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_charts"/>
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings_activity"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_settings"/>
 </menu>

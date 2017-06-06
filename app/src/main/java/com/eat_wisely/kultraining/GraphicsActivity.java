@@ -20,6 +20,8 @@ public class GraphicsActivity extends AppCompatActivity {
 
     Paint paint;
     DB db;
+    int currentX;
+    float currentY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +67,6 @@ public class GraphicsActivity extends AppCompatActivity {
                 //JSONObject obj_ex_2 = new JSONObject(ex_2);
                 //JSONObject obj_ex_3 = new JSONObject(ex_3);
 
-                long startTime = System.currentTimeMillis();
 
                 do {
                     try {
@@ -78,13 +79,9 @@ public class GraphicsActivity extends AppCompatActivity {
                     }
                 } while(c.moveToNext());
 
-                long duration = System.currentTimeMillis() - startTime;
-
-                Log.d("myLog", "" + duration);
-
-
             }
             c.close();
+            currentY = weightList.get(0);
         }
 
         @Override
@@ -97,7 +94,8 @@ public class GraphicsActivity extends AppCompatActivity {
             int finalX = canvasW - 20;
             int finalY = 20;
 
-            int currentX = initX;
+            currentX = initX;
+
 
 
 
@@ -110,7 +108,9 @@ public class GraphicsActivity extends AppCompatActivity {
 
             for (float weight : weightList) {
                 //Log.d("myLog", "" + weight + ", ");
-                canvas.drawLine(currentX, initY - weight, currentX + 10, );
+                canvas.drawLine(currentX + initX, initY - currentY, currentX + initX + 14, initY - weight, paint);
+                currentX +=14;
+                currentY = weight;
             }
 
         }

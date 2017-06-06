@@ -25,4 +25,5 @@
     <string name="default_weight">20кг</string>
     <string name="unit_kg">%1$sкг</string>
     <string name="action_charts_activity">Progress</string>
+    <string name="action_settings_activity">Settings</string>
 </resources>

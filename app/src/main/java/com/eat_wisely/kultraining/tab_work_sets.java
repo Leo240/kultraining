@@ -2,7 +2,6 @@ package com.eat_wisely.kultraining;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -233,13 +232,19 @@ public class tab_work_sets extends Fragment {
         tvExec2Weight.setOnClickListener(onClickListener);
         tvExec3Weight.setOnClickListener(onClickListener);
 
+        if (savedInstanceState != null){
+            exec1Set1.setText(savedInstanceState.getString("exec1Set1"));
+        }
+
+
         return rootView;
     }
 
     @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+        outState.putString("exec1Set1", exec1Set1.getText().toString());
     }
 
     @Override
@@ -249,12 +254,6 @@ public class tab_work_sets extends Fragment {
         if (timer != null){
             timer.cancel();
         }
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
 
     }
 
@@ -472,16 +471,17 @@ public class tab_work_sets extends Fragment {
         timer.schedule(myTimerTask,1000, 1000);
     }
 
-    int changeButtonText(int counter){
+    void changeButtonText(){
+        exec3Set3.setText(reps.length - 1);
+        int counter = Integer.parseInt(exec3Set3.getText().toString());
         counter--;
         exec3Set3.setText(reps[counter]);
-        return counter--;
-        /*startTimer();
+        startTimer();
 
         if (counter == 0){
             exec3Set3.setText("0");
-            changeButtonText(reps.length);
-        }*/
+            counter = reps.length;
+        }
     }
 
     private class MyTimerTask extends TimerTask{

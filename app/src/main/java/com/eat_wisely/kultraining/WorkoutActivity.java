@@ -2,6 +2,7 @@ package com.eat_wisely.kultraining;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.PersistableBundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -58,7 +59,6 @@ public class WorkoutActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
