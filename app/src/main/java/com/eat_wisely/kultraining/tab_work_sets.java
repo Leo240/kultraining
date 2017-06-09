@@ -1,18 +1,22 @@
 package com.eat_wisely.kultraining;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +42,10 @@ public class tab_work_sets extends Fragment {
 
     Toolbar toolbar;
 
+    LinearLayout panel_1;
+    SharedPreferences sharedPreferences;
+    ViewGroup.LayoutParams layoutParams;
+
     Timer timer;
     MyTimerTask myTimerTask;
 
@@ -51,9 +59,26 @@ public class tab_work_sets extends Fragment {
         Intent intent = getActivity().getIntent();
         action = intent.getAction();
 
-        exec1Set1 = (Button) rootView.findViewById(R.id.squatSet1);
+        PreferenceManager.setDefaultValues(this.getActivity(), R.xml.preferences, false);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        int squatSets = Integer.parseInt(sharedPreferences.getString("squats_sets", "1"));
+
+
+        panel_1 = (LinearLayout) rootView.findViewById(R.id.buttonPanel_1);
+        layoutParams = new ViewGroup.LayoutParams(screenSize(48), screenSize(48));
+
+        for (int i = 0; i < squatSets; i++){
+            Button squat_b = new Button(this.getActivity());
+            squat_b.setText("" + (i+1));
+            squat_b.setLayoutParams(layoutParams);
+            squat_b.setOnClickListener(onClickListener);
+            panel_1.addView(squat_b);
+        }
+
+        /*exec1Set1 = (Button) rootView.findViewById(R.id.squatSet1);
         exec1Set2 = (Button) rootView.findViewById(R.id.squatSet2);
-        exec1Set3 = (Button) rootView.findViewById(R.id.squatSet3);
+        exec1Set3 = (Button) rootView.findViewById(R.id.squatSet3);*/
         exec2Set1 = (Button) rootView.findViewById(R.id.bpSet1);
         exec2Set2 = (Button) rootView.findViewById(R.id.bpSet2);
         exec2Set3 = (Button) rootView.findViewById(R.id.bpSet3);
@@ -218,9 +243,9 @@ public class tab_work_sets extends Fragment {
         rowSet2reps = reps.length;
         rowSet3reps = reps.length;
 
-        exec1Set1.setOnClickListener(onClickListener);
+        /*exec1Set1.setOnClickListener(onClickListener);
         exec1Set2.setOnClickListener(onClickListener);
-        exec1Set3.setOnClickListener(onClickListener);
+        exec1Set3.setOnClickListener(onClickListener);*/
         exec2Set1.setOnClickListener(onClickListener);
         exec2Set2.setOnClickListener(onClickListener);
         exec2Set3.setOnClickListener(onClickListener);
@@ -240,11 +265,39 @@ public class tab_work_sets extends Fragment {
         return rootView;
     }
 
+    public int screenSize(int dp) {
+        DisplayMetrics metrics = new DisplayMetrics();
+
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        float logicalDensity = metrics.density;
+
+        int px = (int) Math.ceil(dp * logicalDensity);
+        return px;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        panel_1.removeAllViews();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        int squatSets = Integer.parseInt(sharedPreferences.getString("squats_sets", "1"));
+
+        for (int i = 0; i < squatSets; i++){
+            Button squat_b = new Button(this.getActivity());
+            squat_b.setText("" + i);
+            squat_b.setLayoutParams(layoutParams);
+            squat_b.setOnClickListener(onClickListener);
+            panel_1.addView(squat_b);
+        }
+
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        outState.putString("exec1Set1", exec1Set1.getText().toString());
+        //outState.putString("exec1Set1", exec1Set1.getText().toString());
     }
 
     @Override
@@ -344,7 +397,7 @@ public class tab_work_sets extends Fragment {
             String e3 = ex3.toString();
 
             switch (v.getId()){
-                case R.id.squatSet1:
+                /*case R.id.squatSet1:
                     exec1Set1.setText(reps[--squatSet1reps]);
 
                     startTimer();
@@ -373,7 +426,7 @@ public class tab_work_sets extends Fragment {
                         exec1Set3.setText("0");
                         squatSet3reps = reps.length;
                     }
-                    break;
+                    break;*/
                 case R.id.bpSet1:
                     exec2Set1.setText(reps[--bpSet1reps]);
 

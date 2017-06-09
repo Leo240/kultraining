@@ -24,4 +24,16 @@
             android:title="Кол-во повторений"
             android:defaultValue="8"/>
     </PreferenceCategory>
+    <PreferenceCategory
+        android:key="row"
+        android:title="Тяга в наклоне">
+        <EditTextPreference
+            android:key="row_sets"
+            android:title="Кол-во подходов"
+            android:defaultValue="3"/>
+        <EditTextPreference
+            android:key="row_reps"
+            android:title="Кол-во повторений"
+            android:defaultValue="8"/>
+    </PreferenceCategory>
 </PreferenceScreen>
