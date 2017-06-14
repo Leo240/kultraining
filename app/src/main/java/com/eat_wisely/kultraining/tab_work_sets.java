@@ -28,7 +28,7 @@ import java.util.TimerTask;
 public class tab_work_sets extends Fragment {
 
     int squatSet1reps, squatSet2reps, squatSet3reps, bpSet1reps,
-            bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps;
+            bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps, squatReps;
     long id;
 
     Button exec1Set1, exec1Set2, exec1Set3, exec2Set1, exec2Set2, exec2Set3,
@@ -49,6 +49,8 @@ public class tab_work_sets extends Fragment {
     Timer timer;
     MyTimerTask myTimerTask;
 
+    JSONObject ex1, ex2, ex3;
+
     DB db;
 
     @Override
@@ -61,20 +63,9 @@ public class tab_work_sets extends Fragment {
 
         PreferenceManager.setDefaultValues(this.getActivity(), R.xml.preferences, false);
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        int squatSets = Integer.parseInt(sharedPreferences.getString("squats_sets", "1"));
-
-
         panel_1 = (LinearLayout) rootView.findViewById(R.id.buttonPanel_1);
         layoutParams = new ViewGroup.LayoutParams(screenSize(48), screenSize(48));
 
-        for (int i = 0; i < squatSets; i++){
-            Button squat_b = new Button(this.getActivity());
-            squat_b.setText("" + (i+1));
-            squat_b.setLayoutParams(layoutParams);
-            squat_b.setOnClickListener(onClickListener);
-            panel_1.addView(squat_b);
-        }
 
         /*exec1Set1 = (Button) rootView.findViewById(R.id.squatSet1);
         exec1Set2 = (Button) rootView.findViewById(R.id.squatSet2);
@@ -258,7 +249,7 @@ public class tab_work_sets extends Fragment {
         tvExec3Weight.setOnClickListener(onClickListener);
 
         if (savedInstanceState != null){
-            exec1Set1.setText(savedInstanceState.getString("exec1Set1"));
+            //exec1Set1.setText(savedInstanceState.getString("exec1Set1"));
         }
 
 
@@ -271,26 +262,52 @@ public class tab_work_sets extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
         float logicalDensity = metrics.density;
 
-        int px = (int) Math.ceil(dp * logicalDensity);
-        return px;
+        return (int) Math.ceil(dp * logicalDensity);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-        panel_1.removeAllViews();
+        ex1 = new JSONObject();
+        try {
+            ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
+            ex1.put("exercise", "1");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         int squatSets = Integer.parseInt(sharedPreferences.getString("squats_sets", "1"));
+        squatReps = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
+        if (panel_1.getChildCount() == 0){
+            for (int i = 0; i < squatSets; i++){
+                final Button squat_b = new Button(this.getActivity());
+                squat_b.setId(i);
+                squat_b.setText("");
+                squat_b.setLayoutParams(layoutParams);
+                final int index = i;
+                squat_b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            ex1.put("set" + index+1, squat_b.getText());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
-        for (int i = 0; i < squatSets; i++){
-            Button squat_b = new Button(this.getActivity());
-            squat_b.setText("" + i);
-            squat_b.setLayoutParams(layoutParams);
-            squat_b.setOnClickListener(onClickListener);
-            panel_1.addView(squat_b);
+                        squat_b.setText(Integer.toString(squatReps--));
+
+                        startTimer();
+
+                        if (squatReps == -1){
+                            //squat_b.setText("0");
+                            squatReps = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
+                        }
+                    }
+                });
+                panel_1.addView(squat_b);
+            }
         }
-
+        panel_1.getId();
     }
 
     @Override
@@ -319,13 +336,13 @@ public class tab_work_sets extends Fragment {
             dateValue = toolbar.getTitle().toString();
             DialogFragment fragment;
 
-            JSONObject ex1 = new JSONObject();
-            JSONObject ex2 = new JSONObject();
-            JSONObject ex3 = new JSONObject();
+            //ex1 = new JSONObject();
+            ex2 = new JSONObject();
+            ex3 = new JSONObject();
             try {
-                ex1.put("set1",exec1Set1.getText().toString());
+                /*ex1.put("set1",exec1Set1.getText().toString());
                 ex1.put("set2",exec1Set2.getText().toString());
-                ex1.put("set3",exec1Set3.getText().toString());
+                ex1.put("set3",exec1Set3.getText().toString());*/
                 ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
                 ex1.put("exercise", "1");
 
