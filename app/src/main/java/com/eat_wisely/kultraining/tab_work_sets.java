@@ -21,6 +21,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -28,7 +29,8 @@ import java.util.TimerTask;
 public class tab_work_sets extends Fragment {
 
     int squatSet1reps, squatSet2reps, squatSet3reps, bpSet1reps,
-            bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps, squatReps;
+            bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps ;
+    int[] squatReps;
     long id;
 
     Button exec1Set1, exec1Set2, exec1Set3, exec2Set1, exec2Set2, exec2Set3,
@@ -268,6 +270,10 @@ public class tab_work_sets extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        int squatSets = Integer.parseInt(sharedPreferences.getString("squats_sets", "1"));
+        squatReps = new int[squatSets];
         ex1 = new JSONObject();
         try {
             ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
@@ -275,39 +281,38 @@ public class tab_work_sets extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        int squatSets = Integer.parseInt(sharedPreferences.getString("squats_sets", "1"));
-        squatReps = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
         if (panel_1.getChildCount() == 0){
             for (int i = 0; i < squatSets; i++){
+                squatReps[i] = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
                 final Button squat_b = new Button(this.getActivity());
                 squat_b.setId(i);
                 squat_b.setText("");
                 squat_b.setLayoutParams(layoutParams);
-                final int index = i;
+                final int index= i;
                 squat_b.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        squat_b.setText(Integer.toString(squatReps[index]));
                         try {
-                            ex1.put("set" + index+1, squat_b.getText());
+                            ex1.put("set" + Integer.toString(index + 1), squat_b.getText());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-                        squat_b.setText(Integer.toString(squatReps--));
-
+                        squatReps[index]--;
                         startTimer();
-
-                        if (squatReps == -1){
+                        Log.d("myLog", "" + ex1.opt("set1") + ex1.opt("set2") + ex1.opt("set3"));
+                        if (squatReps[index] == -1){
                             //squat_b.setText("0");
-                            squatReps = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
+                            squatReps[index] = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
                         }
+
                     }
                 });
                 panel_1.addView(squat_b);
             }
         }
-        panel_1.getId();
+
     }
 
     @Override
@@ -343,8 +348,8 @@ public class tab_work_sets extends Fragment {
                 /*ex1.put("set1",exec1Set1.getText().toString());
                 ex1.put("set2",exec1Set2.getText().toString());
                 ex1.put("set3",exec1Set3.getText().toString());*/
-                ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
-                ex1.put("exercise", "1");
+                /*ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
+                ex1.put("exercise", "1");*/
 
                 int set1 = Integer.parseInt(ex1.getString("set1"));
                 int set2 = Integer.parseInt(ex1.getString("set2"));
