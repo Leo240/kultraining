@@ -21,7 +21,9 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -118,9 +120,27 @@ public class tab_work_sets extends Fragment {
                 JSONObject obj_ex_2 = new JSONObject(ex_2);
                 JSONObject obj_ex_3 = new JSONObject(ex_3);
 
-                exec1Set1.setText(obj_ex_1.getString("set1"));
+                final List<String> squatSets = getSets(obj_ex_1);
+                for (int i=0; i < squatSets.size(); i++) {
+                    final Button squat_b = new Button(this.getActivity());
+                    squat_b.setId(i);
+                    final int squatReps = Integer.parseInt(squatSets.get(i));
+                    squat_b.setText(squatSets.get(i));
+                    squat_b.setLayoutParams(layoutParams);
+                    final int index = i;
+                    squat_b.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            squat_b.setText(squatReps);
+                        }
+                    });
+
+                    panel_1.addView(squat_b);
+                }
+
+                /*exec1Set1.setText(obj_ex_1.getString("set1"));
                 exec1Set2.setText(obj_ex_1.getString("set2"));
-                exec1Set3.setText(obj_ex_1.getString("set3"));
+                exec1Set3.setText(obj_ex_1.getString("set3"));*/
                 workWeight = obj_ex_1.getString("workWeight");
                 text = getResources().getString(R.string.unit_kg, workWeight);
                 tvExec1Weight.setText(text);
@@ -256,6 +276,21 @@ public class tab_work_sets extends Fragment {
 
 
         return rootView;
+    }
+
+    List<String> getSets(JSONObject exercise){
+        List<String> squatSets = new ArrayList<>();
+        int i=1;
+        try {
+            while( exercise.getString("set" + Integer.toString(i)) != null) {
+                String squatSet = exercise.getString("set" + Integer.toString(i));
+                squatSets.add(squatSet);
+                i++;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return squatSets;
     }
 
     public int screenSize(int dp) {
