@@ -13,12 +13,12 @@ public class DB{
     private static final String DATABASE_NAME = "workoutsDb";
     private static final String TABLE_WORKOUTS = "workouts";
 
-    public static final String KEY_ID = "_id";
-    public static final String KEY_EX_1 ="ex1";
-    public static final String KEY_EX_2 ="ex2";
-    public static final String KEY_EX_3 ="ex3";
-    public static final String KEY_WORKOUT_DATE = "workout_date";
-    public static final String KEY_WORKOUT_TYPE = "workout_type";
+    static final String KEY_ID = "_id";
+    static final String KEY_EX_1 ="ex1";
+    static final String KEY_EX_2 ="ex2";
+    static final String KEY_EX_3 ="ex3";
+    static final String KEY_WORKOUT_DATE = "workout_date";
+    static final String KEY_WORKOUT_TYPE = "workout_type";
 
     private static final String DB_CREATE = "create table " + TABLE_WORKOUTS + "(" + KEY_ID + " integer primary key," +
             KEY_EX_1 + " text," +

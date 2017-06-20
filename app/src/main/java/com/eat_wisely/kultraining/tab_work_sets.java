@@ -32,10 +32,10 @@ public class tab_work_sets extends Fragment {
 
     int squatSet1reps, squatSet2reps, squatSet3reps, bpSet1reps,
             bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps ;
-    int[] squatReps;
+    Integer[] squatReps;
     long id;
 
-    Button exec1Set1, exec1Set2, exec1Set3, exec2Set1, exec2Set2, exec2Set3,
+    Button /*exec1Set1, exec1Set2, exec1Set3,*/ exec2Set1, exec2Set2, exec2Set3,
             exec3Set1, exec3Set2, exec3Set3, btnSave;
 
     TextView tvExec1Weight, tvExec2Weight, tvExec3Weight, exec1_title, exec2_title, exec3_title;
@@ -120,18 +120,20 @@ public class tab_work_sets extends Fragment {
                 JSONObject obj_ex_2 = new JSONObject(ex_2);
                 JSONObject obj_ex_3 = new JSONObject(ex_3);
 
-                final List<String> squatSets = getSets(obj_ex_1);
-                for (int i=0; i < squatSets.size(); i++) {
+                squatReps = getSets(obj_ex_1);
+                for (int i=0; i < squatReps.length; i++) {
                     final Button squat_b = new Button(this.getActivity());
                     squat_b.setId(i);
-                    final int squatReps = Integer.parseInt(squatSets.get(i));
-                    squat_b.setText(squatSets.get(i));
+                    squat_b.setText(Integer.toString(squatReps[i]));
+                    final int repsNumber =squatReps[i];
                     squat_b.setLayoutParams(layoutParams);
                     final int index = i;
                     squat_b.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            squat_b.setText(squatReps);
+
+                            squat_b.setText(Integer.toString(repsNumber);
+                            squatReps[index]--;
                         }
                     });
 
@@ -270,27 +272,27 @@ public class tab_work_sets extends Fragment {
         tvExec2Weight.setOnClickListener(onClickListener);
         tvExec3Weight.setOnClickListener(onClickListener);
 
-        if (savedInstanceState != null){
-            //exec1Set1.setText(savedInstanceState.getString("exec1Set1"));
-        }
+        /*if (savedInstanceState != null){
+            exec1Set1.setText(savedInstanceState.getString("exec1Set1"));
+        }*/
 
 
         return rootView;
     }
 
-    List<String> getSets(JSONObject exercise){
-        List<String> squatSets = new ArrayList<>();
+    Integer[] getSets(JSONObject exercise){
+        List<Integer> setsList = new ArrayList<>();
         int i=1;
         try {
             while( exercise.getString("set" + Integer.toString(i)) != null) {
-                String squatSet = exercise.getString("set" + Integer.toString(i));
-                squatSets.add(squatSet);
+                int squatSet = exercise.getInt("set" + Integer.toString(i));
+                setsList.add(squatSet);
                 i++;
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return squatSets;
+        return setsList.toArray(new Integer[setsList.size()]);
     }
 
     public int screenSize(int dp) {
@@ -308,7 +310,7 @@ public class tab_work_sets extends Fragment {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         int squatSets = Integer.parseInt(sharedPreferences.getString("squats_sets", "1"));
-        squatReps = new int[squatSets];
+        squatReps = new Integer[squatSets];
         ex1 = new JSONObject();
         try {
             ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
@@ -316,7 +318,7 @@ public class tab_work_sets extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if (panel_1.getChildCount() == 0){
+        if (panel_1.getChildCount() != squatSets){
             for (int i = 0; i < squatSets; i++){
                 squatReps[i] = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
                 final Button squat_b = new Button(this.getActivity());
