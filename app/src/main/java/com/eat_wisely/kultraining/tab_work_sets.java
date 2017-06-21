@@ -31,7 +31,8 @@ import java.util.TimerTask;
 public class tab_work_sets extends Fragment {
 
     int squatSet1reps, squatSet2reps, squatSet3reps, bpSet1reps,
-            bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps ;
+            bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps  ;
+    int[] repsNumber;
     Integer[] squatReps;
     long id;
 
@@ -120,20 +121,18 @@ public class tab_work_sets extends Fragment {
                 JSONObject obj_ex_2 = new JSONObject(ex_2);
                 JSONObject obj_ex_3 = new JSONObject(ex_3);
 
-                squatReps = getSets(obj_ex_1);
-                for (int i=0; i < squatReps.length; i++) {
+                final Integer[] squatSets = getSets(obj_ex_1);
+                
+                for (int i=0; i < squatSets.length; i++) {
                     final Button squat_b = new Button(this.getActivity());
                     squat_b.setId(i);
-                    squat_b.setText(Integer.toString(squatReps[i]));
-                    final int repsNumber =squatReps[i];
+                    squat_b.setText(Integer.toString(squatSets[i]));
                     squat_b.setLayoutParams(layoutParams);
                     final int index = i;
                     squat_b.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
-                            squat_b.setText(Integer.toString(repsNumber);
-                            squatReps[index]--;
+                            squat_b.setText(Integer.toString(squatSets[index]--));
                         }
                     });
 

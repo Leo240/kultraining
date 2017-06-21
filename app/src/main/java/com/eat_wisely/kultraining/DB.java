@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DB{
+class DB{
 
     private static final int DATABASE_VERSION = 6;
     private static final String DATABASE_NAME = "workoutsDb";
@@ -52,7 +52,7 @@ public class DB{
         return mDB.query(TABLE_WORKOUTS, null, null, null, null, null, null);
     }
 
-    public Cursor getRecord(long id){
+    Cursor getRecord(long id){
         return mDB.query(TABLE_WORKOUTS, null, DB.KEY_ID + " = ?", new String[] {String.valueOf(id)}, null, null, null, null);
     }
 
@@ -73,7 +73,7 @@ public class DB{
 
     }
 
-    public void editRec(long id, String ex1, String ex2, String ex3, String dateValue, String workoutType){
+    void editRec(long id, String ex1, String ex2, String ex3, String dateValue, String workoutType){
         ContentValues cv = new ContentValues();
 
         cv.put(KEY_EX_1, ex1);
