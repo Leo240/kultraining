@@ -22,7 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,18 +29,16 @@ import java.util.TimerTask;
 
 public class tab_work_sets extends Fragment {
 
-    int squatSet1reps, squatSet2reps, squatSet3reps, bpSet1reps,
-            bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps  ;
-    int[] repsNumber;
+    int bpSet1reps, bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps  ;
     Integer[] squatReps;
     long id;
 
-    Button /*exec1Set1, exec1Set2, exec1Set3,*/ exec2Set1, exec2Set2, exec2Set3,
+    Button exec2Set1, exec2Set2, exec2Set3,
             exec3Set1, exec3Set2, exec3Set3, btnSave;
 
     TextView tvExec1Weight, tvExec2Weight, tvExec3Weight, exec1_title, exec2_title, exec3_title;
 
-    String workoutType , action, workWeight, text, dateValue;
+    String workoutType , action, workWeight, text, dateValue, e1;
 
     String[] reps;
 
@@ -117,12 +114,12 @@ public class tab_work_sets extends Fragment {
             dateValue = c.getString(KEY_WORKOUT_DATE);
             toolbar.setTitle(dateValue);
             try {
-                JSONObject obj_ex_1 = new JSONObject(ex_1);
+                JSONObject ex1 = new JSONObject(ex_1);
                 JSONObject obj_ex_2 = new JSONObject(ex_2);
                 JSONObject obj_ex_3 = new JSONObject(ex_3);
 
-                final Integer[] squatSets = getSets(obj_ex_1);
-                
+                final Integer[] squatSets = getSets(ex1);
+
                 for (int i=0; i < squatSets.length; i++) {
                     final Button squat_b = new Button(this.getActivity());
                     squat_b.setId(i);
@@ -139,10 +136,7 @@ public class tab_work_sets extends Fragment {
                     panel_1.addView(squat_b);
                 }
 
-                /*exec1Set1.setText(obj_ex_1.getString("set1"));
-                exec1Set2.setText(obj_ex_1.getString("set2"));
-                exec1Set3.setText(obj_ex_1.getString("set3"));*/
-                workWeight = obj_ex_1.getString("workWeight");
+                workWeight = ex1.getString("workWeight");
                 text = getResources().getString(R.string.unit_kg, workWeight);
                 tvExec1Weight.setText(text);
 
@@ -164,10 +158,6 @@ public class tab_work_sets extends Fragment {
             }
             c.close();
             db.close();
-
-            Log.d("myTag", "id: " + id + " workoutType: " + workoutType );
-
-
         }
 
         exec1_title.setText("Приседания");
@@ -247,9 +237,6 @@ public class tab_work_sets extends Fragment {
         Resources res = getResources();
         reps = res.getStringArray(R.array.rep_range);
 
-        squatSet1reps = reps.length;
-        squatSet2reps = reps.length;
-        squatSet3reps = reps.length;
         bpSet1reps = reps.length;
         bpSet2reps = reps.length;
         bpSet3reps = reps.length;
@@ -257,9 +244,6 @@ public class tab_work_sets extends Fragment {
         rowSet2reps = reps.length;
         rowSet3reps = reps.length;
 
-        /*exec1Set1.setOnClickListener(onClickListener);
-        exec1Set2.setOnClickListener(onClickListener);
-        exec1Set3.setOnClickListener(onClickListener);*/
         exec2Set1.setOnClickListener(onClickListener);
         exec2Set2.setOnClickListener(onClickListener);
         exec2Set3.setOnClickListener(onClickListener);
@@ -311,12 +295,7 @@ public class tab_work_sets extends Fragment {
         int squatSets = Integer.parseInt(sharedPreferences.getString("squats_sets", "1"));
         squatReps = new Integer[squatSets];
         ex1 = new JSONObject();
-        try {
-            ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
-            ex1.put("exercise", "1");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
         if (panel_1.getChildCount() != squatSets){
             for (int i = 0; i < squatSets; i++){
                 squatReps[i] = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
@@ -332,23 +311,21 @@ public class tab_work_sets extends Fragment {
                         squat_b.setText(Integer.toString(squatReps[index]));
                         try {
                             ex1.put("set" + Integer.toString(index + 1), squat_b.getText());
+                            ex1.put("exercise", "1");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         squatReps[index]--;
                         startTimer();
-                        Log.d("myLog", "" + ex1.opt("set1") + ex1.opt("set2") + ex1.opt("set3"));
+
                         if (squatReps[index] == -1){
-                            //squat_b.setText("0");
                             squatReps[index] = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
                         }
-
                     }
                 });
                 panel_1.addView(squat_b);
             }
         }
-
     }
 
     @Override
@@ -365,7 +342,6 @@ public class tab_work_sets extends Fragment {
         if (timer != null){
             timer.cancel();
         }
-
     }
 
     private final View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -373,32 +349,11 @@ public class tab_work_sets extends Fragment {
         @Override
         public void onClick(View v) {
 
-            //Toolbar toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
             dateValue = toolbar.getTitle().toString();
             DialogFragment fragment;
 
-            //ex1 = new JSONObject();
             ex2 = new JSONObject();
             ex3 = new JSONObject();
-            try {
-                /*ex1.put("set1",exec1Set1.getText().toString());
-                ex1.put("set2",exec1Set2.getText().toString());
-                ex1.put("set3",exec1Set3.getText().toString());*/
-                /*ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
-                ex1.put("exercise", "1");*/
-
-                int set1 = Integer.parseInt(ex1.getString("set1"));
-                int set2 = Integer.parseInt(ex1.getString("set2"));
-                int set3 = Integer.parseInt(ex1.getString("set3"));
-
-                if(set1 == 8 && set2 == 8 && set3 == 8){
-                    ex1.put("success", true);
-                } else {
-                    ex1.put("success", false);
-                }
-            }catch (Exception e){
-                System.out.println("Error:" + e);
-            }
 
             try {
                 ex2.put("set1",exec2Set1.getText().toString());
@@ -450,41 +405,10 @@ public class tab_work_sets extends Fragment {
                 System.out.println("Error:" + e);
             }
 
-            String e1 = ex1.toString();
             String e2 = ex2.toString();
             String e3 = ex3.toString();
 
             switch (v.getId()){
-                /*case R.id.squatSet1:
-                    exec1Set1.setText(reps[--squatSet1reps]);
-
-                    startTimer();
-
-                    if (squatSet1reps == 0){
-                        exec1Set1.setText("0");
-                        squatSet1reps = reps.length;
-                    }
-                    break;
-                case R.id.squatSet2:
-                    exec1Set2.setText(reps[--squatSet2reps]);
-
-                    startTimer();
-
-                    if (squatSet2reps == 0){
-                        exec1Set2.setText("0");
-                        squatSet2reps = reps.length;
-                    }
-                    break;
-                case R.id.squatSet3:
-                    exec1Set3.setText(reps[--squatSet3reps]);
-
-                    startTimer();
-
-                    if (squatSet3reps == 0){
-                        exec1Set3.setText("0");
-                        squatSet3reps = reps.length;
-                    }
-                    break;*/
                 case R.id.bpSet1:
                     exec2Set1.setText(reps[--bpSet1reps]);
 
@@ -546,10 +470,41 @@ public class tab_work_sets extends Fragment {
                     }
                     break;
                 case R.id.btnSave:
+
                     db.open();
                     if (action.equals("com.eat_wisely.action.edit")) {
+                        try {
+                            ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
+                            int set1 = Integer.parseInt(ex1.getString("set1"));
+                            int set2 = Integer.parseInt(ex1.getString("set2"));
+                            int set3 = Integer.parseInt(ex1.getString("set3"));
+
+                            if(set1 == 8 && set2 == 8 && set3 == 8){
+                                ex1.put("success", true);
+                            } else {
+                                ex1.put("success", false);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        e1 = ex1.toString();
                         db.editRec(id, e1, e2, e3, dateValue, workoutType);
                     } else {
+                        try {
+                            ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
+                            int set1 = Integer.parseInt(ex1.getString("set1"));
+                            int set2 = Integer.parseInt(ex1.getString("set2"));
+                            int set3 = Integer.parseInt(ex1.getString("set3"));
+
+                            if(set1 == 8 && set2 == 8 && set3 == 8){
+                                ex1.put("success", true);
+                            } else {
+                                ex1.put("success", false);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        e1 = ex1.toString();
                         db.addRec(e1, e2, e3, dateValue, workoutType);
                     }
                     db.close();
@@ -582,19 +537,6 @@ public class tab_work_sets extends Fragment {
         timer.schedule(myTimerTask,1000, 1000);
     }
 
-    void changeButtonText(){
-        exec3Set3.setText(reps.length - 1);
-        int counter = Integer.parseInt(exec3Set3.getText().toString());
-        counter--;
-        exec3Set3.setText(reps[counter]);
-        startTimer();
-
-        if (counter == 0){
-            exec3Set3.setText("0");
-            counter = reps.length;
-        }
-    }
-
     private class MyTimerTask extends TimerTask{
 
         long startTime = System.currentTimeMillis();
@@ -605,7 +547,6 @@ public class tab_work_sets extends Fragment {
         int minutes;
 
         String secondsText;
-
 
         @Override
         public void run() {
@@ -630,7 +571,6 @@ public class tab_work_sets extends Fragment {
                                 .setAction("X", new TimerCloseListener())
                                 .show();
                     }
-
                 }
             });
         }
@@ -643,5 +583,4 @@ public class tab_work_sets extends Fragment {
             timer.cancel();
         }
     }
-
 }
