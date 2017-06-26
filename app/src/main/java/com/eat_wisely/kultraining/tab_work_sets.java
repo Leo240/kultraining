@@ -68,7 +68,6 @@ public class tab_work_sets extends Fragment {
         panel_1 = (LinearLayout) rootView.findViewById(R.id.buttonPanel_1);
         layoutParams = new ViewGroup.LayoutParams(screenSize(48), screenSize(48));
 
-
         /*exec1Set1 = (Button) rootView.findViewById(R.id.squatSet1);
         exec1Set2 = (Button) rootView.findViewById(R.id.squatSet2);
         exec1Set3 = (Button) rootView.findViewById(R.id.squatSet3);*/
@@ -91,73 +90,77 @@ public class tab_work_sets extends Fragment {
 
         db = new DB(getActivity());
 
-        if (action.equals("com.eat_wisely.action.workout_a")) {
-            workoutType = "A";
-        } else if (action.equals("com.eat_wisely.action.workout_b")) {
-            workoutType = "B";
-        } else if (action.equals("com.eat_wisely.action.edit")) {
-            id = intent.getLongExtra("id", 1);
+        switch (action) {
+            case "com.eat_wisely.action.workout_a":
+                workoutType = "A";
+                break;
+            case "com.eat_wisely.action.workout_b":
+                workoutType = "B";
+                break;
+            case "com.eat_wisely.action.edit":
+                id = intent.getLongExtra("id", 1);
 
-            db.open();
-            Cursor c = db.getRecord(id);
-            c.moveToFirst();
-            int KEY_WORKOUT_TYPE = c.getColumnIndex(DB.KEY_WORKOUT_TYPE);
-            int KEY_WORKOUT_DATE = c.getColumnIndex(DB.KEY_WORKOUT_DATE);
-            int KEY_EX_1 = c.getColumnIndex(DB.KEY_EX_1);
-            int KEY_EX_2 = c.getColumnIndex(DB.KEY_EX_2);
-            int KEY_EX_3 = c.getColumnIndex(DB.KEY_EX_3);
+                db.open();
+                Cursor c = db.getRecord(id);
+                c.moveToFirst();
+                int KEY_WORKOUT_TYPE = c.getColumnIndex(DB.KEY_WORKOUT_TYPE);
+                int KEY_WORKOUT_DATE = c.getColumnIndex(DB.KEY_WORKOUT_DATE);
+                int KEY_EX_1 = c.getColumnIndex(DB.KEY_EX_1);
+                int KEY_EX_2 = c.getColumnIndex(DB.KEY_EX_2);
+                int KEY_EX_3 = c.getColumnIndex(DB.KEY_EX_3);
 
-            String ex_1 = c.getString(KEY_EX_1);
-            String ex_2 = c.getString(KEY_EX_2);
-            String ex_3 = c.getString(KEY_EX_3);
-            workoutType = c.getString(KEY_WORKOUT_TYPE);
-            dateValue = c.getString(KEY_WORKOUT_DATE);
-            toolbar.setTitle(dateValue);
-            try {
-                JSONObject ex1 = new JSONObject(ex_1);
-                JSONObject obj_ex_2 = new JSONObject(ex_2);
-                JSONObject obj_ex_3 = new JSONObject(ex_3);
+                String ex_1 = c.getString(KEY_EX_1);
+                String ex_2 = c.getString(KEY_EX_2);
+                String ex_3 = c.getString(KEY_EX_3);
+                workoutType = c.getString(KEY_WORKOUT_TYPE);
+                dateValue = c.getString(KEY_WORKOUT_DATE);
+                toolbar.setTitle(dateValue);
+                try {
+                    JSONObject ex1 = new JSONObject(ex_1);
+                    JSONObject obj_ex_2 = new JSONObject(ex_2);
+                    JSONObject obj_ex_3 = new JSONObject(ex_3);
 
-                final Integer[] squatSets = getSets(ex1);
+                    final Integer[] squatSets = getSets(ex1);
 
-                for (int i=0; i < squatSets.length; i++) {
-                    final Button squat_b = new Button(this.getActivity());
-                    squat_b.setId(i);
-                    squat_b.setText(Integer.toString(squatSets[i]));
-                    squat_b.setLayoutParams(layoutParams);
-                    final int index = i;
-                    squat_b.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            squat_b.setText(Integer.toString(squatSets[index]--));
-                        }
-                    });
+                    for (int i = 0; i < squatSets.length; i++) {
+                        final Button squat_b = new Button(this.getActivity());
+                        squat_b.setId(i);
+                        squat_b.setText(Integer.toString(squatSets[i]));
+                        squat_b.setLayoutParams(layoutParams);
+                        final int index = i;
+                        squat_b.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                squat_b.setText(Integer.toString(squatSets[index]--));
+                            }
+                        });
 
-                    panel_1.addView(squat_b);
+                        panel_1.addView(squat_b);
+                    }
+
+                    workWeight = ex1.getString("workWeight");
+                    text = getResources().getString(R.string.unit_kg, workWeight);
+                    tvExec1Weight.setText(text);
+
+                    exec2Set1.setText(obj_ex_2.getString("set1"));
+                    exec2Set2.setText(obj_ex_2.getString("set2"));
+                    exec2Set3.setText(obj_ex_2.getString("set3"));
+                    workWeight = obj_ex_2.getString("workWeight");
+                    text = getResources().getString(R.string.unit_kg, workWeight);
+                    tvExec2Weight.setText(text);
+
+                    exec3Set1.setText(obj_ex_3.getString("set1"));
+                    exec3Set2.setText(obj_ex_3.getString("set2"));
+                    exec3Set3.setText(obj_ex_3.getString("set3"));
+                    workWeight = obj_ex_3.getString("workWeight");
+                    text = getResources().getString(R.string.unit_kg, workWeight);
+                    tvExec3Weight.setText(text);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
-                workWeight = ex1.getString("workWeight");
-                text = getResources().getString(R.string.unit_kg, workWeight);
-                tvExec1Weight.setText(text);
-
-                exec2Set1.setText(obj_ex_2.getString("set1"));
-                exec2Set2.setText(obj_ex_2.getString("set2"));
-                exec2Set3.setText(obj_ex_2.getString("set3"));
-                workWeight = obj_ex_2.getString("workWeight");
-                text = getResources().getString(R.string.unit_kg, workWeight);
-                tvExec2Weight.setText(text);
-
-                exec3Set1.setText(obj_ex_3.getString("set1"));
-                exec3Set2.setText(obj_ex_3.getString("set2"));
-                exec3Set3.setText(obj_ex_3.getString("set3"));
-                workWeight = obj_ex_3.getString("workWeight");
-                text = getResources().getString(R.string.unit_kg, workWeight);
-                tvExec3Weight.setText(text);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            c.close();
-            db.close();
+                c.close();
+                db.close();
+                break;
         }
 
         exec1_title.setText("Приседания");
@@ -296,7 +299,7 @@ public class tab_work_sets extends Fragment {
         squatReps = new Integer[squatSets];
         ex1 = new JSONObject();
 
-        if (panel_1.getChildCount() != squatSets){
+        if (panel_1.getChildCount() == 0){
             for (int i = 0; i < squatSets; i++){
                 squatReps[i] = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
                 final Button squat_b = new Button(this.getActivity());
