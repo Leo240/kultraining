@@ -30,7 +30,7 @@ import java.util.TimerTask;
 public class tab_work_sets extends Fragment {
 
     int bpSet1reps, bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps  ;
-    Integer[] squatReps;
+
     long id;
 
     Button exec2Set1, exec2Set2, exec2Set3,
@@ -278,7 +278,7 @@ public class tab_work_sets extends Fragment {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
         int squatSets = Integer.parseInt(sharedPreferences.getString("squats_sets", "1"));
-        squatReps = new Integer[squatSets];
+        final Integer[] squatReps = new Integer[squatSets];
         ex1 = new JSONObject();
 
         if (panel_1.getChildCount() == 0){
