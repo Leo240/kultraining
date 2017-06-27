@@ -38,7 +38,7 @@ public class tab_work_sets extends Fragment {
 
     TextView tvExec1Weight, tvExec2Weight, tvExec3Weight, exec1_title, exec2_title, exec3_title;
 
-    String workoutType , action, workWeight, text, dateValue, e1;
+    String workoutType , action, dateValue, e1;
 
     String[] reps;
 
@@ -138,23 +138,17 @@ public class tab_work_sets extends Fragment {
                         panel_1.addView(squat_b);
                     }
 
-                    workWeight = ex1.getString("workWeight");
-                    text = getResources().getString(R.string.unit_kg, workWeight);
-                    tvExec1Weight.setText(text);
+                    setWorkWeight(ex_1, tvExec1Weight);
 
                     exec2Set1.setText(obj_ex_2.getString("set1"));
                     exec2Set2.setText(obj_ex_2.getString("set2"));
                     exec2Set3.setText(obj_ex_2.getString("set3"));
-                    workWeight = obj_ex_2.getString("workWeight");
-                    text = getResources().getString(R.string.unit_kg, workWeight);
-                    tvExec2Weight.setText(text);
+                    setWorkWeight(ex_2, tvExec2Weight);
 
                     exec3Set1.setText(obj_ex_3.getString("set1"));
                     exec3Set2.setText(obj_ex_3.getString("set2"));
                     exec3Set3.setText(obj_ex_3.getString("set3"));
-                    workWeight = obj_ex_3.getString("workWeight");
-                    text = getResources().getString(R.string.unit_kg, workWeight);
-                    tvExec3Weight.setText(text);
+                    setWorkWeight(ex_3, tvExec3Weight);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -186,9 +180,9 @@ public class tab_work_sets extends Fragment {
                 String ex_1 = c.getString(KEY_EX_1);
 
                 int KEY_EX_2 = c.getColumnIndex(DB.KEY_EX_2);
-                int KEY_EX_3 = c.getColumnIndex(DB.KEY_EX_3);
-
                 String ex_2 = "";
+
+                int KEY_EX_3 = c.getColumnIndex(DB.KEY_EX_3);
                 String ex_3 = "";
 
                 if ( c.isLast() && !c.isFirst() ){
@@ -201,35 +195,9 @@ public class tab_work_sets extends Fragment {
                     ex_3 = c.getString(KEY_EX_3);
                 }
 
-                try {
-                    JSONObject obj_ex_1 = new JSONObject(ex_1);
-                    workWeight  = obj_ex_1.getString("workWeight");
-                    text = getResources().getString(R.string.unit_kg, workWeight);
-                    if(obj_ex_1.getString("exercise").equals("1") ){
-                        tvExec1Weight.setText(text);
-                    }
-
-                    JSONObject obj_ex_2 = new JSONObject(ex_2);
-                    workWeight = obj_ex_2.getString("workWeight");
-                    text = getResources().getString(R.string.unit_kg, workWeight);
-                    if (!obj_ex_2.getString("workWeight").isEmpty()) {
-                        tvExec2Weight.setText(text);
-                    } else {
-                        tvExec2Weight.setText(R.string.default_weight);
-                    }
-
-                    JSONObject obj_ex_3 = new JSONObject(ex_3);
-                    workWeight = obj_ex_3.getString("workWeight");
-                    text = getResources().getString(R.string.unit_kg, workWeight);
-                    if (!obj_ex_3.getString("workWeight").isEmpty()) {
-                        tvExec3Weight.setText(text);
-                    } else {
-                        tvExec3Weight.setText(R.string.default_weight);
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                setWorkWeight(ex_1, tvExec1Weight);
+                setWorkWeight(ex_2, tvExec2Weight);
+                setWorkWeight(ex_3, tvExec3Weight);
                 c.close();
             }
 
@@ -262,7 +230,6 @@ public class tab_work_sets extends Fragment {
             exec1Set1.setText(savedInstanceState.getString("exec1Set1"));
         }*/
 
-
         return rootView;
     }
 
@@ -288,6 +255,21 @@ public class tab_work_sets extends Fragment {
         float logicalDensity = metrics.density;
 
         return (int) Math.ceil(dp * logicalDensity);
+    }
+
+    void setWorkWeight(String exercise, TextView tv) {
+        try {
+            JSONObject obj = new JSONObject(exercise);
+            String workWeight = obj.getString("workWeight");
+            String text = getResources().getString(R.string.unit_kg, workWeight);
+            if (!obj.getString("workWeight").isEmpty()) {
+                tv.setText(text);
+            } else {
+                tv.setText(R.string.default_weight);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
