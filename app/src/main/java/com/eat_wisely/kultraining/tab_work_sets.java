@@ -116,11 +116,7 @@ public class tab_work_sets extends Fragment {
                 dateValue = c.getString(KEY_WORKOUT_DATE);
                 toolbar.setTitle(dateValue);
                 try {
-                    JSONObject ex1 = new JSONObject(ex_1);
-                    JSONObject obj_ex_2 = new JSONObject(ex_2);
-                    JSONObject obj_ex_3 = new JSONObject(ex_3);
-
-                    final Integer[] squatSets = getSets(ex1);
+                    final Integer[] squatSets = getSets(ex_1);
 
                     for (int i = 0; i < squatSets.length; i++) {
                         final Button squat_b = new Button(this.getActivity());
@@ -140,11 +136,13 @@ public class tab_work_sets extends Fragment {
 
                     setWorkWeight(ex_1, tvExec1Weight);
 
+                    JSONObject obj_ex_2 = new JSONObject(ex_2);
                     exec2Set1.setText(obj_ex_2.getString("set1"));
                     exec2Set2.setText(obj_ex_2.getString("set2"));
                     exec2Set3.setText(obj_ex_2.getString("set3"));
                     setWorkWeight(ex_2, tvExec2Weight);
 
+                    JSONObject obj_ex_3 = new JSONObject(ex_3);
                     exec3Set1.setText(obj_ex_3.getString("set1"));
                     exec3Set2.setText(obj_ex_3.getString("set2"));
                     exec3Set3.setText(obj_ex_3.getString("set3"));
@@ -157,15 +155,7 @@ public class tab_work_sets extends Fragment {
                 break;
         }
 
-        exec1_title.setText("Приседания");
-
-        if ( workoutType.equals("A") ) {
-            exec2_title.setText("Жим лежа");
-            exec3_title.setText("Тяга в наклоне");
-        } else {
-            exec2_title.setText("Жим над головой");
-            exec3_title.setText("Мертвая тяга");
-        }
+        setExerciseNames(workoutType);
 
         if (!action.equals("com.eat_wisely.action.edit")){
             db.open();
@@ -233,12 +223,13 @@ public class tab_work_sets extends Fragment {
         return rootView;
     }
 
-    Integer[] getSets(JSONObject exercise){
+    Integer[] getSets(String exercise){
         List<Integer> setsList = new ArrayList<>();
         int i=1;
         try {
-            while( exercise.getString("set" + Integer.toString(i)) != null) {
-                int squatSet = exercise.getInt("set" + Integer.toString(i));
+            JSONObject obj = new JSONObject(exercise);
+            while( obj.getString("set" + Integer.toString(i)) != null) {
+                int squatSet = obj.getInt("set" + Integer.toString(i));
                 setsList.add(squatSet);
                 i++;
             }
@@ -269,6 +260,18 @@ public class tab_work_sets extends Fragment {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    void setExerciseNames(String workoutType) {
+        exec1_title.setText("Приседания");
+
+        if ( workoutType.equals("A") ) {
+            exec2_title.setText("Жим лежа");
+            exec3_title.setText("Тяга в наклоне");
+        } else {
+            exec2_title.setText("Жим над головой");
+            exec3_title.setText("Мертвая тяга");
         }
     }
 
