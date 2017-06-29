@@ -104,16 +104,19 @@ public class tab_work_sets extends Fragment {
                 Cursor c = db.getRecord(id);
                 c.moveToFirst();
                 int KEY_WORKOUT_TYPE = c.getColumnIndex(DB.KEY_WORKOUT_TYPE);
-                int KEY_WORKOUT_DATE = c.getColumnIndex(DB.KEY_WORKOUT_DATE);
-                int KEY_EX_1 = c.getColumnIndex(DB.KEY_EX_1);
-                int KEY_EX_2 = c.getColumnIndex(DB.KEY_EX_2);
-                int KEY_EX_3 = c.getColumnIndex(DB.KEY_EX_3);
-
-                String ex_1 = c.getString(KEY_EX_1);
-                String ex_2 = c.getString(KEY_EX_2);
-                String ex_3 = c.getString(KEY_EX_3);
                 workoutType = c.getString(KEY_WORKOUT_TYPE);
+
+                int KEY_WORKOUT_DATE = c.getColumnIndex(DB.KEY_WORKOUT_DATE);
                 dateValue = c.getString(KEY_WORKOUT_DATE);
+
+                String ex_1 = getExerciseById(id, DB.KEY_EX_1);
+
+                String ex_2 = getExerciseById(id, DB.KEY_EX_2);
+
+                String ex_3 = getExerciseById(id, DB.KEY_EX_3);
+
+                c.close();
+                db.close();
                 toolbar.setTitle(dateValue);
                 try {
                     final Integer[] squatSets = getSets(ex_1);
@@ -150,8 +153,7 @@ public class tab_work_sets extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                c.close();
-                db.close();
+
                 break;
         }
 
@@ -221,6 +223,13 @@ public class tab_work_sets extends Fragment {
         }*/
 
         return rootView;
+    }
+
+    String getExerciseById(long id, String key) {
+        Cursor c = db.getRecord(id);
+        c.moveToFirst();
+        int KEY = c.getColumnIndex(key);
+        return c.getString(KEY);
     }
 
     Integer[] getSets(String exercise){
