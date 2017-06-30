@@ -101,24 +101,25 @@ public class tab_work_sets extends Fragment {
                 id = intent.getLongExtra("id", 1);
 
                 db.open();
-                Cursor c = db.getRecord(id);
-                c.moveToFirst();
-                int KEY_WORKOUT_TYPE = c.getColumnIndex(DB.KEY_WORKOUT_TYPE);
-                workoutType = c.getString(KEY_WORKOUT_TYPE);
+                /*Cursor c = db.getRecord(id);
+                c.moveToFirst();*/
+                /*int KEY_WORKOUT_TYPE = c.getColumnIndex(DB.KEY_WORKOUT_TYPE);
+                workoutType = c.getString(KEY_WORKOUT_TYPE);*/
 
-                int KEY_WORKOUT_DATE = c.getColumnIndex(DB.KEY_WORKOUT_DATE);
-                dateValue = c.getString(KEY_WORKOUT_DATE);
+                /*int KEY_WORKOUT_DATE = c.getColumnIndex(DB.KEY_WORKOUT_DATE);
+                dateValue = c.getString(KEY_WORKOUT_DATE);*/
 
-                String ex_1 = getExerciseById(id, DB.KEY_EX_1);
+                /*c.close();*/
+                workoutType = getFieldValue(id, DB.KEY_WORKOUT_TYPE);
+                dateValue = getFieldValue(id, DB.KEY_WORKOUT_DATE);
 
-                String ex_2 = getExerciseById(id, DB.KEY_EX_2);
+                String ex_1 = getFieldValue(id, DB.KEY_EX_1);
+                String ex_2 = getFieldValue(id, DB.KEY_EX_2);
+                String ex_3 = getFieldValue(id, DB.KEY_EX_3);
 
-                String ex_3 = getExerciseById(id, DB.KEY_EX_3);
-
-                c.close();
                 db.close();
                 toolbar.setTitle(dateValue);
-                try {
+
                     final Integer[] squatSets = getSets(ex_1);
 
                     for (int i = 0; i < squatSets.length; i++) {
@@ -138,7 +139,7 @@ public class tab_work_sets extends Fragment {
                     }
 
                     setWorkWeight(ex_1, tvExec1Weight);
-
+                try {
                     JSONObject obj_ex_2 = new JSONObject(ex_2);
                     exec2Set1.setText(obj_ex_2.getString("set1"));
                     exec2Set2.setText(obj_ex_2.getString("set2"));
@@ -186,13 +187,11 @@ public class tab_work_sets extends Fragment {
                     ex_2 = c.getString(KEY_EX_2);
                     ex_3 = c.getString(KEY_EX_3);
                 }
-
+                c.close();
                 setWorkWeight(ex_1, tvExec1Weight);
                 setWorkWeight(ex_2, tvExec2Weight);
                 setWorkWeight(ex_3, tvExec3Weight);
-                c.close();
             }
-
             db.close();
         }
 
@@ -225,11 +224,13 @@ public class tab_work_sets extends Fragment {
         return rootView;
     }
 
-    String getExerciseById(long id, String key) {
+    String getFieldValue(long id, String fieldName) {
         Cursor c = db.getRecord(id);
         c.moveToFirst();
-        int KEY = c.getColumnIndex(key);
-        return c.getString(KEY);
+        int KEY = c.getColumnIndex(fieldName);
+        String KEY_EX = c.getString(KEY);
+        c.close();
+        return KEY_EX;
     }
 
     Integer[] getSets(String exercise){

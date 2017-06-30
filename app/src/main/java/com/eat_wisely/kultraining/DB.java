@@ -35,10 +35,6 @@ class DB{
         mCtx = context;
     }
 
-    String selection = null;
-    String[] selectionArgs = null;
-
-
     void open(){
         dbHelper = new DBHelper(mCtx, DATABASE_NAME, null, DATABASE_VERSION);
         mDB  = dbHelper.getWritableDatabase();
@@ -70,7 +66,6 @@ class DB{
         cv.put(KEY_WORKOUT_TYPE, workoutType);
 
         mDB.insert(TABLE_WORKOUTS, null, cv);
-
     }
 
     void editRec(long id, String ex1, String ex2, String ex3, String dateValue, String workoutType){
@@ -122,15 +117,15 @@ class DB{
             db.execSQL("INSERT INTO workouts (_id, ex1, ex2, ex3, workout_date, workout_type) VALUES (22, '{\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"8\",\"workWeight\":\"77.5\",\"exercise\":\"1\",\"success\":true}', '{\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"6\",\"workWeight\":\"32.5\",\"exercise\":\"4\",\"success\":false}', '{\"set1\":\"8\",\"set2\":\"\",\"set3\":\"\",\"workWeight\":\"72.5\",\"exercise\":\"5\"}', '20/06/2017', 'B');");
             db.execSQL("INSERT INTO workouts (_id, ex1, ex2, ex3, workout_date, workout_type) VALUES (23, '{\"workWeight\":\"80\",\"exercise\":\"1\",\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"6\",\"success\":false}', '{\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"6\",\"workWeight\":\"57.5\",\"exercise\":\"2\",\"success\":false}', '{\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"8\",\"workWeight\":\"55\",\"exercise\":\"3\",\"success\":true}', '22/06/2017', 'A');");
             db.execSQL("INSERT INTO workouts (_id, ex1, ex2, ex3, workout_date, workout_type) VALUES (24, '{\"set1\":\"8\",\"exercise\":\"1\",\"set2\":\"8\",\"set3\":\"8\",\"workWeight\":\"80\",\"success\":true}', '{\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"6\",\"workWeight\":\"32.5\",\"exercise\":\"4\",\"success\":false}', '{\"set1\":\"0\",\"set2\":\"\",\"set3\":\"\",\"workWeight\":\"72.5\",\"exercise\":\"5\"}', '24/06/2017', 'B');");
+            db.execSQL("INSERT INTO workouts (_id, ex1, ex2, ex3, workout_date, workout_type) VALUES (25, '{\"set1\":\"0\",\"exercise\":\"1\",\"set2\":\"0\",\"set3\":\"0\",\"workWeight\":\"80\",\"success\":false}', '{\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"8\",\"workWeight\":\"57.5\",\"exercise\":\"2\",\"success\":true}', '{\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"8\",\"workWeight\":\"57.5\",\"exercise\":\"3\",\"success\":true}', '27/06/2017', 'A');");
+            db.execSQL("INSERT INTO workouts (_id, ex1, ex2, ex3, workout_date, workout_type) VALUES (26, '{\"set1\":\"8\",\"exercise\":\"1\",\"set2\":\"8\",\"set3\":\"6\",\"workWeight\":\"80\",\"success\":false}', '{\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"8\",\"workWeight\":\"32.5\",\"exercise\":\"4\",\"success\":true}', '{\"set1\":\"8\",\"set2\":\"\",\"set3\":\"\",\"workWeight\":\"75\",\"exercise\":\"5\"}', '29/06/2017', 'B');");
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
             db.execSQL("drop table if exists " + TABLE_WORKOUTS);
-
             onCreate(db);
-
         }
     }
 }
