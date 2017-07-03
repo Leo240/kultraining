@@ -227,10 +227,10 @@ public class tab_work_sets extends Fragment {
     String getFieldValue(long id, String fieldName) {
         Cursor c = db.getRecord(id);
         c.moveToFirst();
-        int KEY = c.getColumnIndex(fieldName);
-        String KEY_EX = c.getString(KEY);
+        int fieldIndex = c.getColumnIndex(fieldName);
+        String result = c.getString(fieldIndex);
         c.close();
-        return KEY_EX;
+        return result;
     }
 
     Integer[] getSets(String exercise){
@@ -285,6 +285,44 @@ public class tab_work_sets extends Fragment {
         }
     }
 
+    void saveSets(int index, Button button, JSONObject exercise) {
+        try {
+            exercise.put("set" + Integer.toString(index + 1), button.getText());
+            exercise.put("exercise", "1");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void createButtons(LinearLayout panel, int sets, final Integer[] reps) {
+        if (panel.getChildCount() == 0) {
+            for (int i = 0; i < sets; i++) {
+                reps[i] = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
+                final Button btn = new Button(this.getActivity());
+                btn.setId(i);
+                btn.setText("");
+                btn.setLayoutParams(layoutParams);
+                final int index = i;
+                btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        btn.setText(Integer.toString(reps[index]));
+                        saveSets(index, btn, ex1);
+
+                        reps[index]--;
+                        startTimer();
+
+                        if (reps[index] == -1) {
+                            reps[index] = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
+                        }
+                    }
+                });
+                panel.addView(btn);
+            }
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -294,36 +332,7 @@ public class tab_work_sets extends Fragment {
         final Integer[] squatReps = new Integer[squatSets];
         ex1 = new JSONObject();
 
-        if (panel_1.getChildCount() == 0){
-            for (int i = 0; i < squatSets; i++){
-                squatReps[i] = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
-                final Button squat_b = new Button(this.getActivity());
-                squat_b.setId(i);
-                squat_b.setText("");
-                squat_b.setLayoutParams(layoutParams);
-                final int index= i;
-                squat_b.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        squat_b.setText(Integer.toString(squatReps[index]));
-                        try {
-                            ex1.put("set" + Integer.toString(index + 1), squat_b.getText());
-                            ex1.put("exercise", "1");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        squatReps[index]--;
-                        startTimer();
-
-                        if (squatReps[index] == -1){
-                            squatReps[index] = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
-                        }
-                    }
-                });
-                panel_1.addView(squat_b);
-            }
-        }
+        createButtons(panel_1, squatSets, squatReps);
     }
 
     @Override
