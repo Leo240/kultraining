@@ -359,6 +359,18 @@ public class tab_work_sets extends Fragment {
         }
     }
 
+    List<String> getButtonsText(LinearLayout panel) {
+        List<String> sets = new ArrayList<>();
+        int i=0;
+        while(panel.getChildAt(i) != null) {
+            Button btn = (Button) panel.getChildAt(i);
+            String btnText = btn.getText().toString();
+            sets.add(btnText);
+            i++;
+        }
+        return sets;
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -530,6 +542,8 @@ public class tab_work_sets extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        List<String> ex1_sets = getButtonsText(panel_1);
+                        Log.d("myLog", "" + ex1_sets.toString());
                         e1 = ex1.toString();
                         db.editRec(id, e1, e2, e3, dateValue, workoutType);
                     } else {
