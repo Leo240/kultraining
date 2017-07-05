@@ -101,15 +101,7 @@ public class tab_work_sets extends Fragment {
                 id = intent.getLongExtra("id", 1);
 
                 db.open();
-                /*Cursor c = db.getRecord(id);
-                c.moveToFirst();*/
-                /*int KEY_WORKOUT_TYPE = c.getColumnIndex(DB.KEY_WORKOUT_TYPE);
-                workoutType = c.getString(KEY_WORKOUT_TYPE);*/
 
-                /*int KEY_WORKOUT_DATE = c.getColumnIndex(DB.KEY_WORKOUT_DATE);
-                dateValue = c.getString(KEY_WORKOUT_DATE);*/
-
-                /*c.close();*/
                 workoutType = getFieldValue(id, DB.KEY_WORKOUT_TYPE);
                 dateValue = getFieldValue(id, DB.KEY_WORKOUT_DATE);
 
@@ -121,8 +113,8 @@ public class tab_work_sets extends Fragment {
                 toolbar.setTitle(dateValue);
 
                     final Integer[] squatSets = getSets(ex_1);
-
-                    for (int i = 0; i < squatSets.length; i++) {
+                    createButtons(panel_1, squatSets);
+                    /*for (int i = 0; i < squatSets.length; i++) {
                         final Button squat_b = new Button(this.getActivity());
                         squat_b.setId(i);
                         squat_b.setText(Integer.toString(squatSets[i]));
@@ -136,7 +128,7 @@ public class tab_work_sets extends Fragment {
                         });
 
                         panel_1.addView(squat_b);
-                    }
+                    }*/
 
                     setWorkWeight(ex_1, tvExec1Weight);
                 try {
@@ -288,9 +280,53 @@ public class tab_work_sets extends Fragment {
     void saveSets(int index, Button button, JSONObject exercise) {
         try {
             exercise.put("set" + Integer.toString(index + 1), button.getText());
-            exercise.put("exercise", "1");
+            if (exercise.equals(ex1)) {
+                exercise.put("exercise", "1");
+            } else {
+                checkWorkoutType(exercise);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    void checkWorkoutType(JSONObject exercise) {
+        try {
+            if (exercise.equals(ex2)) {
+                if (workoutType.equals("A")) {
+                    exercise.put("exercise", "2");
+                } else {
+                    exercise.put("exercise", "4");
+                }
+            } else if (exercise.equals(ex3)) {
+                if (workoutType.equals("A")) {
+                    exercise.put("exercise", "3");
+                } else {
+                    exercise.put("exercise", "5");
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    void createButtons(LinearLayout panel, final Integer[] sets) {
+        for (int i = 0; i < sets.length; i++) {
+            final Button btn = new Button(this.getActivity());
+            btn.setId(i);
+            btn.setText(Integer.toString(sets[i]));
+            btn.setLayoutParams(layoutParams);
+            final int index = i;
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    btn.setText(Integer.toString(--sets[index]));
+                }
+            });
+
+            panel.addView(btn);
         }
     }
 
