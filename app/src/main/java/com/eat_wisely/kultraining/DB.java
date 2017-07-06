@@ -80,6 +80,15 @@ class DB{
         mDB.update(TABLE_WORKOUTS, cv, DB.KEY_ID + " = ?", new String[] {String.valueOf(id)});
     }
 
+    String getFieldValue(long id, String fieldName) {
+        Cursor c = getRecord(id);
+        c.moveToFirst();
+        int fieldIndex = c.getColumnIndex(fieldName);
+        String result = c.getString(fieldIndex);
+        c.close();
+        return result;
+    }
+
     public void delRec(long id){
         mDB.delete(TABLE_WORKOUTS, KEY_ID + "=" + id, null);
     }

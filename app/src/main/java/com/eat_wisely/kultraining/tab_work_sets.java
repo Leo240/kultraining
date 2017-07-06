@@ -102,12 +102,12 @@ public class tab_work_sets extends Fragment {
 
                 db.open();
 
-                workoutType = getFieldValue(id, DB.KEY_WORKOUT_TYPE);
-                dateValue = getFieldValue(id, DB.KEY_WORKOUT_DATE);
+                workoutType = db.getFieldValue(id, DB.KEY_WORKOUT_TYPE);
+                dateValue = db.getFieldValue(id, DB.KEY_WORKOUT_DATE);
 
-                String ex_1 = getFieldValue(id, DB.KEY_EX_1);
-                String ex_2 = getFieldValue(id, DB.KEY_EX_2);
-                String ex_3 = getFieldValue(id, DB.KEY_EX_3);
+                String ex_1 = db.getFieldValue(id, DB.KEY_EX_1);
+                String ex_2 = db.getFieldValue(id, DB.KEY_EX_2);
+                String ex_3 = db.getFieldValue(id, DB.KEY_EX_3);
 
                 db.close();
                 toolbar.setTitle(dateValue);
@@ -214,15 +214,6 @@ public class tab_work_sets extends Fragment {
         }*/
 
         return rootView;
-    }
-
-    String getFieldValue(long id, String fieldName) {
-        Cursor c = db.getRecord(id);
-        c.moveToFirst();
-        int fieldIndex = c.getColumnIndex(fieldName);
-        String result = c.getString(fieldIndex);
-        c.close();
-        return result;
     }
 
     Integer[] getSets(String exercise){
@@ -528,6 +519,14 @@ public class tab_work_sets extends Fragment {
 
                     db.open();
                     if (action.equals("com.eat_wisely.action.edit")) {
+                        List<String> ex1_sets = getButtonsText(panel_1);
+                        for (int i = 0; i < ex1_sets.size(); i++) {
+                            try {
+                                ex1.put("set" + (i+1), ex1_sets.get(i));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
                         try {
                             ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
                             int set1 = Integer.parseInt(ex1.getString("set1"));
@@ -542,9 +541,9 @@ public class tab_work_sets extends Fragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        List<String> ex1_sets = getButtonsText(panel_1);
-                        Log.d("myLog", "" + ex1_sets.toString());
+
                         e1 = ex1.toString();
+                        Log.d("myLog", "" + e1);
                         db.editRec(id, e1, e2, e3, dateValue, workoutType);
                     } else {
                         try {
