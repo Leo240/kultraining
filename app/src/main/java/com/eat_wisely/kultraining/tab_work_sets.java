@@ -29,12 +29,11 @@ import java.util.TimerTask;
 
 public class tab_work_sets extends Fragment {
 
-    int bpSet1reps, bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps  ;
+    int bpSet1reps, bpSet2reps, bpSet3reps, rowSet1reps, rowSet2reps, rowSet3reps;
 
     long id;
 
-    Button exec2Set1, exec2Set2, exec2Set3,
-            exec3Set1, exec3Set2, exec3Set3, btnSave;
+    Button exec2Set1, exec2Set2, exec2Set3, exec3Set1, exec3Set2, exec3Set3, btnSave;
 
     TextView tvExec1Weight, tvExec2Weight, tvExec3Weight, exec1_title, exec2_title, exec3_title;
 
@@ -114,21 +113,6 @@ public class tab_work_sets extends Fragment {
 
                     final Integer[] squatSets = getSets(ex_1);
                     createButtons(panel_1, squatSets);
-                    /*for (int i = 0; i < squatSets.length; i++) {
-                        final Button squat_b = new Button(this.getActivity());
-                        squat_b.setId(i);
-                        squat_b.setText(Integer.toString(squatSets[i]));
-                        squat_b.setLayoutParams(layoutParams);
-                        final int index = i;
-                        squat_b.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                squat_b.setText(Integer.toString(squatSets[index]--));
-                            }
-                        });
-
-                        panel_1.addView(squat_b);
-                    }*/
 
                     setWorkWeight(ex_1, tvExec1Weight);
                 try {
@@ -271,20 +255,30 @@ public class tab_work_sets extends Fragment {
     void saveSets(int index, Button button, JSONObject exercise) {
         try {
             exercise.put("set" + Integer.toString(index + 1), button.getText());
-            if (exercise.equals(ex1)) {
-                exercise.put("exercise", "1");
-            } else {
-                checkWorkoutType(exercise);
-            }
+            checkWorkoutType(exercise);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    void saveSets(LinearLayout panel, JSONObject exercise) {
+        List<String> sets = getButtonsText(panel);
+        for (int i = 0; i < sets.size(); i++) {
+            try {
+                exercise.put("set" + (i+1), sets.get(i));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        checkWorkoutType(exercise);
+    }
+
     void checkWorkoutType(JSONObject exercise) {
         try {
-            if (exercise.equals(ex2)) {
+            if (exercise.equals(ex1)) {
+                exercise.put("exercise", "1");
+            } else if (exercise.equals(ex2)) {
                 if (workoutType.equals("A")) {
                     exercise.put("exercise", "2");
                 } else {
@@ -300,7 +294,6 @@ public class tab_work_sets extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     void createButtons(LinearLayout panel, final Integer[] sets) {
@@ -516,17 +509,9 @@ public class tab_work_sets extends Fragment {
                     }
                     break;
                 case R.id.btnSave:
-
                     db.open();
                     if (action.equals("com.eat_wisely.action.edit")) {
-                        List<String> ex1_sets = getButtonsText(panel_1);
-                        for (int i = 0; i < ex1_sets.size(); i++) {
-                            try {
-                                ex1.put("set" + (i+1), ex1_sets.get(i));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        }
+                        saveSets(panel_1, ex1);
                         try {
                             ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
                             int set1 = Integer.parseInt(ex1.getString("set1"));
