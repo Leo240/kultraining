@@ -129,7 +129,7 @@
                 android:orientation="horizontal"
                 style="@style/Base.Widget.AppCompat.ButtonBar">
 
-                <Button
+                <!--<Button
                     android:id="@+id/bpSet1"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
@@ -148,7 +148,7 @@
                     android:id="@+id/bpSet3"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    style="@style/Base.Widget.AppCompat.Button"/>
+                    style="@style/Base.Widget.AppCompat.Button"/>-->
             </LinearLayout>
         </LinearLayout>
 

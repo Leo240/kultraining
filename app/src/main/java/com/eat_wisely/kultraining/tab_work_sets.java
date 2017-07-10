@@ -33,17 +33,17 @@ public class tab_work_sets extends Fragment {
 
     long id;
 
-    Button exec2Set1, exec2Set2, exec2Set3, exec3Set1, exec3Set2, exec3Set3, btnSave;
+    Button /*exec2Set1, exec2Set2, exec2Set3,*/ exec3Set1, exec3Set2, exec3Set3, btnSave;
 
     TextView tvExec1Weight, tvExec2Weight, tvExec3Weight, exec1_title, exec2_title, exec3_title;
 
-    String workoutType , action, dateValue, e1;
+    String workoutType , action, dateValue;
 
     String[] reps;
 
     Toolbar toolbar;
 
-    LinearLayout panel_1;
+    LinearLayout panel_1, panel_2;
     SharedPreferences sharedPreferences;
     ViewGroup.LayoutParams layoutParams;
 
@@ -65,14 +65,12 @@ public class tab_work_sets extends Fragment {
         PreferenceManager.setDefaultValues(this.getActivity(), R.xml.preferences, false);
 
         panel_1 = (LinearLayout) rootView.findViewById(R.id.buttonPanel_1);
+        panel_2 = (LinearLayout) rootView.findViewById(R.id.buttonPanel_2);
         layoutParams = new ViewGroup.LayoutParams(screenSize(48), screenSize(48));
 
-        /*exec1Set1 = (Button) rootView.findViewById(R.id.squatSet1);
-        exec1Set2 = (Button) rootView.findViewById(R.id.squatSet2);
-        exec1Set3 = (Button) rootView.findViewById(R.id.squatSet3);*/
-        exec2Set1 = (Button) rootView.findViewById(R.id.bpSet1);
+        /*exec2Set1 = (Button) rootView.findViewById(R.id.bpSet1);
         exec2Set2 = (Button) rootView.findViewById(R.id.bpSet2);
-        exec2Set3 = (Button) rootView.findViewById(R.id.bpSet3);
+        exec2Set3 = (Button) rootView.findViewById(R.id.bpSet3);*/
         exec3Set1 = (Button) rootView.findViewById(R.id.rowSet1);
         exec3Set2 = (Button) rootView.findViewById(R.id.rowSet2);
         exec3Set3 = (Button) rootView.findViewById(R.id.rowSet3);
@@ -111,17 +109,14 @@ public class tab_work_sets extends Fragment {
                 db.close();
                 toolbar.setTitle(dateValue);
 
-                    final Integer[] squatSets = getSets(ex_1);
-                    createButtons(panel_1, squatSets);
+                final Integer[] squatSets = getSets(ex_1);
+                createButtons(panel_1, squatSets);
+                setWorkWeight(ex_1, tvExec1Weight);
 
-                    setWorkWeight(ex_1, tvExec1Weight);
+                final Integer[] bpSets = getSets(ex_2);
+                createButtons(panel_2, bpSets);
+                setWorkWeight(ex_2, tvExec2Weight);
                 try {
-                    JSONObject obj_ex_2 = new JSONObject(ex_2);
-                    exec2Set1.setText(obj_ex_2.getString("set1"));
-                    exec2Set2.setText(obj_ex_2.getString("set2"));
-                    exec2Set3.setText(obj_ex_2.getString("set3"));
-                    setWorkWeight(ex_2, tvExec2Weight);
-
                     JSONObject obj_ex_3 = new JSONObject(ex_3);
                     exec3Set1.setText(obj_ex_3.getString("set1"));
                     exec3Set2.setText(obj_ex_3.getString("set2"));
@@ -175,16 +170,10 @@ public class tab_work_sets extends Fragment {
         Resources res = getResources();
         reps = res.getStringArray(R.array.rep_range);
 
-        bpSet1reps = reps.length;
-        bpSet2reps = reps.length;
-        bpSet3reps = reps.length;
         rowSet1reps = reps.length;
         rowSet2reps = reps.length;
         rowSet3reps = reps.length;
 
-        exec2Set1.setOnClickListener(onClickListener);
-        exec2Set2.setOnClickListener(onClickListener);
-        exec2Set3.setOnClickListener(onClickListener);
         exec3Set1.setOnClickListener(onClickListener);
         exec3Set2.setOnClickListener(onClickListener);
         exec3Set3.setOnClickListener(onClickListener);
@@ -255,7 +244,7 @@ public class tab_work_sets extends Fragment {
     void saveSets(int index, Button button, JSONObject exercise) {
         try {
             exercise.put("set" + Integer.toString(index + 1), button.getText());
-            checkWorkoutType(exercise);
+            setExerciseCode(exercise);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -264,27 +253,48 @@ public class tab_work_sets extends Fragment {
 
     void saveSets(LinearLayout panel, JSONObject exercise) {
         List<String> sets = getButtonsText(panel);
-        for (int i = 0; i < sets.size(); i++) {
-            try {
+        try {
+            for (int i = 0; i < sets.size(); i++) {
                 exercise.put("set" + (i+1), sets.get(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        setExerciseCode(exercise);
+        compareSets(exercise, sets);
+    }
+
+    void compareSets(JSONObject exercise, List<String> sets) {
+        int i = 0;
+        while(i < sets.size()) {
+            try {
+                if (!sets.get(i).equals("8")) {
+                    exercise.put("success", false);
+                    break;
+                } else {
+                    exercise.put("success", true);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            i++;
         }
-        checkWorkoutType(exercise);
     }
 
-    void checkWorkoutType(JSONObject exercise) {
+    void setExerciseCode(JSONObject exercise) {
         try {
             if (exercise.equals(ex1)) {
                 exercise.put("exercise", "1");
+                exercise.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
             } else if (exercise.equals(ex2)) {
+                exercise.put("workWeight", tvExec2Weight.getText().toString().replace("кг", ""));
                 if (workoutType.equals("A")) {
                     exercise.put("exercise", "2");
                 } else {
                     exercise.put("exercise", "4");
                 }
             } else if (exercise.equals(ex3)) {
+                exercise.put("workWeight", tvExec3Weight.getText().toString().replace("кг", ""));
                 if (workoutType.equals("A")) {
                     exercise.put("exercise", "3");
                 } else {
@@ -328,8 +338,6 @@ public class tab_work_sets extends Fragment {
                     public void onClick(View v) {
 
                         btn.setText(Integer.toString(reps[index]));
-                        saveSets(index, btn, ex1);
-
                         reps[index]--;
                         startTimer();
 
@@ -365,6 +373,12 @@ public class tab_work_sets extends Fragment {
         ex1 = new JSONObject();
 
         createButtons(panel_1, squatSets, squatReps);
+
+        int bpSets = Integer.parseInt(sharedPreferences.getString("benchpress_sets", "1"));
+        final Integer[] bpReps = new Integer[bpSets];
+        ex2 = new JSONObject();
+
+        createButtons(panel_2, bpSets, bpReps);
     }
 
     @Override
@@ -391,33 +405,7 @@ public class tab_work_sets extends Fragment {
             dateValue = toolbar.getTitle().toString();
             DialogFragment fragment;
 
-            ex2 = new JSONObject();
             ex3 = new JSONObject();
-
-            try {
-                ex2.put("set1",exec2Set1.getText().toString());
-                ex2.put("set2",exec2Set2.getText().toString());
-                ex2.put("set3",exec2Set3.getText().toString());
-                ex2.put("workWeight",tvExec2Weight.getText().toString().replace("кг", ""));
-
-                if ( workoutType.equals("A") ) {
-                    ex2.put("exercise", "2");
-                } else {
-                    ex2.put("exercise", "4");
-                }
-
-                int set1 = Integer.parseInt(ex2.getString("set1"));
-                int set2 = Integer.parseInt(ex2.getString("set2"));
-                int set3 = Integer.parseInt(ex2.getString("set3"));
-
-                if(set1 == 8 && set2 == 8 && set3 == 8){
-                    ex2.put("success", true);
-                } else {
-                    ex2.put("success", false);
-                }
-            }catch (Exception e) {
-                System.out.println("Error:" + e);
-            }
 
             try {
                 ex3.put("set1",exec3Set1.getText().toString());
@@ -444,40 +432,9 @@ public class tab_work_sets extends Fragment {
                 System.out.println("Error:" + e);
             }
 
-            String e2 = ex2.toString();
             String e3 = ex3.toString();
 
             switch (v.getId()){
-                case R.id.bpSet1:
-                    exec2Set1.setText(reps[--bpSet1reps]);
-
-                    startTimer();
-
-                    if (bpSet1reps == 0){
-                        exec2Set1.setText("0");
-                        bpSet1reps = reps.length;
-                    }
-                    break;
-                case R.id.bpSet2:
-                    exec2Set2.setText(reps[--bpSet2reps]);
-
-                    startTimer();
-
-                    if (bpSet2reps == 0){
-                        exec2Set2.setText("0");
-                        bpSet2reps = reps.length;
-                    }
-                    break;
-                case R.id.bpSet3:
-                    exec2Set3.setText(reps[--bpSet3reps]);
-
-                    startTimer();
-
-                    if (bpSet3reps == 0){
-                        exec2Set3.setText("0");
-                        bpSet3reps = reps.length;
-                    }
-                    break;
                 case R.id.rowSet1:
                     exec3Set1.setText(reps[--rowSet1reps]);
 
@@ -512,40 +469,17 @@ public class tab_work_sets extends Fragment {
                     db.open();
                     if (action.equals("com.eat_wisely.action.edit")) {
                         saveSets(panel_1, ex1);
-                        try {
-                            ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
-                            int set1 = Integer.parseInt(ex1.getString("set1"));
-                            int set2 = Integer.parseInt(ex1.getString("set2"));
-                            int set3 = Integer.parseInt(ex1.getString("set3"));
+                        saveSets(panel_2, ex2);
 
-                            if(set1 == 8 && set2 == 8 && set3 == 8){
-                                ex1.put("success", true);
-                            } else {
-                                ex1.put("success", false);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        e1 = ex1.toString();
-                        Log.d("myLog", "" + e1);
+                        String e1 = ex1.toString();
+                        String e2 = ex2.toString();
                         db.editRec(id, e1, e2, e3, dateValue, workoutType);
                     } else {
-                        try {
-                            ex1.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
-                            int set1 = Integer.parseInt(ex1.getString("set1"));
-                            int set2 = Integer.parseInt(ex1.getString("set2"));
-                            int set3 = Integer.parseInt(ex1.getString("set3"));
+                        saveSets(panel_1, ex1);
+                        saveSets(panel_2, ex2);
 
-                            if(set1 == 8 && set2 == 8 && set3 == 8){
-                                ex1.put("success", true);
-                            } else {
-                                ex1.put("success", false);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        e1 = ex1.toString();
+                        String e1 = ex1.toString();
+                        String e2 = ex2.toString();
                         db.addRec(e1, e2, e3, dateValue, workoutType);
                     }
                     db.close();
