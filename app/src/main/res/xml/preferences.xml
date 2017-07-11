@@ -36,4 +36,28 @@
             android:title="Кол-во повторений"
             android:defaultValue="8"/>
     </PreferenceCategory>
+    <PreferenceCategory
+        android:key="ohp"
+        android:title="Жим над головой">
+        <EditTextPreference
+            android:key="ohp_sets"
+            android:title="Кол-во подходов"
+            android:defaultValue="3"/>
+        <EditTextPreference
+            android:key="ohp_reps"
+            android:title="Кол-во повторений"
+            android:defaultValue="8"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:key="deadlift"
+        android:title="Мертвая тяга">
+        <EditTextPreference
+            android:key="deadlift_sets"
+            android:title="Кол-во подходов"
+            android:defaultValue="3"/>
+        <EditTextPreference
+            android:key="deadlift_reps"
+            android:title="Кол-во повторений"
+            android:defaultValue="8"/>
+    </PreferenceCategory>
 </PreferenceScreen>

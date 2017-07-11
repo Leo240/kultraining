@@ -222,7 +222,9 @@ public class tab_work_sets extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        setExerciseCode(exercise);
+        if (action.equals("com.eat_wisely.action.edit")) {
+            setExerciseCode(exercise);
+        }
         compareSets(exercise, sets);
     }
 
@@ -331,23 +333,48 @@ public class tab_work_sets extends Fragment {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 
-        int squatsSetsNumber = Integer.parseInt(sharedPreferences.getString("squats_sets", "1"));
-        final int squatsRepsNumber = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
-        final Integer[] squatReps = new Integer[squatsSetsNumber];
         ex1 = new JSONObject();
-        createButtons(panel_1, squatsSetsNumber, squatsRepsNumber, squatReps);
+        setExerciseCode(ex1);
 
-        int bpSetsNumber = Integer.parseInt(sharedPreferences.getString("benchpress_sets", "1"));
-        final int bpRepsNumber = Integer.parseInt(sharedPreferences.getString("benchpress_reps", "0"));
-        final Integer[] bpReps = new Integer[bpSetsNumber];
+        if (ex1.opt("exercise").equals("1")) {
+            int exercise1SetsNumber = Integer.parseInt(sharedPreferences.getString("squats_sets", "1"));
+            final int exercise1RepsNumber = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
+            final Integer[] exercise1Reps = new Integer[exercise1SetsNumber];
+
+            createButtons(panel_1, exercise1SetsNumber, exercise1RepsNumber, exercise1Reps);
+        }
+
         ex2 = new JSONObject();
-        createButtons(panel_2, bpSetsNumber, bpRepsNumber, bpReps);
+        setExerciseCode(ex2);
 
-        int rowSetsNumber = Integer.parseInt(sharedPreferences.getString("row_sets", "1"));
-        final int rowRepsNumber = Integer.parseInt(sharedPreferences.getString("row_reps", "0"));
-        final Integer[] rowReps = new Integer[rowSetsNumber];
+        if (ex2.opt("exercise").equals("2")) {
+            int exercise2SetsNumber = Integer.parseInt(sharedPreferences.getString("benchpress_sets", "1"));
+            final int exercise2RepsNumber = Integer.parseInt(sharedPreferences.getString("benchpress_reps", "0"));
+            final Integer[] exercise2Reps = new Integer[exercise2SetsNumber];
+            createButtons(panel_2, exercise2SetsNumber, exercise2RepsNumber, exercise2Reps);
+
+        } else {
+            int exercise2SetsNumber = Integer.parseInt(sharedPreferences.getString("ohp_sets", "1"));
+            final int exercise2RepsNumber = Integer.parseInt(sharedPreferences.getString("ohp_reps", "0"));
+            final Integer[] exercise2Reps = new Integer[exercise2SetsNumber];
+            createButtons(panel_2, exercise2SetsNumber, exercise2RepsNumber, exercise2Reps);
+        }
+
         ex3 = new JSONObject();
-        createButtons(panel_3, rowSetsNumber, rowRepsNumber, rowReps);
+        setExerciseCode(ex3);
+
+        if (ex3.opt("exercise").equals("3")) {
+            int exercise3SetsNumber = Integer.parseInt(sharedPreferences.getString("row_sets", "1"));
+            final int exercise3RepsNumber = Integer.parseInt(sharedPreferences.getString("row_reps", "0"));
+            final Integer[] exercise3Reps = new Integer[exercise3SetsNumber];
+            createButtons(panel_3, exercise3SetsNumber, exercise3RepsNumber, exercise3Reps);
+        } else {
+            int exercise3SetsNumber = Integer.parseInt(sharedPreferences.getString("deadlift_sets", "1"));
+            final int exercise3RepsNumber = Integer.parseInt(sharedPreferences.getString("deadlift_reps", "0"));
+            final Integer[] exercise3Reps = new Integer[exercise3SetsNumber];
+            createButtons(panel_3, exercise3SetsNumber, exercise3RepsNumber, exercise3Reps);
+        }
+
     }
 
     @Override
