@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public class tab_work_sets extends Fragment {
 
     TextView tvExec1Weight, tvExec2Weight, tvExec3Weight, exec1_title, exec2_title, exec3_title;
 
-    String workoutType , action, dateValue;
+    String workoutType, action, workoutDate;
 
     Toolbar toolbar;
 
@@ -88,14 +89,14 @@ public class tab_work_sets extends Fragment {
                 db.open();
 
                 workoutType = db.getFieldValue(id, DB.KEY_WORKOUT_TYPE);
-                dateValue = db.getFieldValue(id, DB.KEY_WORKOUT_DATE);
+                workoutDate = db.getFieldValue(id, DB.KEY_WORKOUT_DATE);
 
                 String ex_1 = db.getFieldValue(id, DB.KEY_EX_1);
                 String ex_2 = db.getFieldValue(id, DB.KEY_EX_2);
                 String ex_3 = db.getFieldValue(id, DB.KEY_EX_3);
 
                 db.close();
-                toolbar.setTitle(dateValue);
+                toolbar.setTitle(workoutDate);
 
                 final Integer[] squatSets = getSets(ex_1);
                 createButtons(panel_1, squatSets);
@@ -223,7 +224,7 @@ public class tab_work_sets extends Fragment {
             e.printStackTrace();
         }
         if (action.equals("com.eat_wisely.action.edit")) {
-            setExerciseCode(exercise);
+            setExerciseCodeAndWeight(exercise);
         }
         compareSets(exercise, sets);
     }
@@ -245,7 +246,7 @@ public class tab_work_sets extends Fragment {
         }
     }
 
-    void setExerciseCode(JSONObject exercise) {
+    void setExerciseCodeAndWeight(JSONObject exercise) {
         try {
             if (exercise.equals(ex1)) {
                 exercise.put("exercise", "1");
@@ -334,7 +335,7 @@ public class tab_work_sets extends Fragment {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 
         ex1 = new JSONObject();
-        setExerciseCode(ex1);
+        setExerciseCodeAndWeight(ex1);
 
         if (ex1.opt("exercise").equals("1")) {
             int exercise1SetsNumber = Integer.parseInt(sharedPreferences.getString("squats_sets", "1"));
@@ -345,7 +346,7 @@ public class tab_work_sets extends Fragment {
         }
 
         ex2 = new JSONObject();
-        setExerciseCode(ex2);
+        setExerciseCodeAndWeight(ex2);
 
         if (ex2.opt("exercise").equals("2")) {
             int exercise2SetsNumber = Integer.parseInt(sharedPreferences.getString("benchpress_sets", "1"));
@@ -361,7 +362,7 @@ public class tab_work_sets extends Fragment {
         }
 
         ex3 = new JSONObject();
-        setExerciseCode(ex3);
+        setExerciseCodeAndWeight(ex3);
 
         if (ex3.opt("exercise").equals("3")) {
             int exercise3SetsNumber = Integer.parseInt(sharedPreferences.getString("row_sets", "1"));
@@ -398,7 +399,7 @@ public class tab_work_sets extends Fragment {
         @Override
         public void onClick(View v) {
 
-            dateValue = toolbar.getTitle().toString();
+            workoutDate = toolbar.getTitle().toString();
             DialogFragment fragment;
 
             switch (v.getId()){
@@ -414,9 +415,15 @@ public class tab_work_sets extends Fragment {
                     String e3 = ex3.toString();
 
                     if (action.equals("com.eat_wisely.action.edit")) {
-                        db.editRec(id, e1, e2, e3, dateValue, workoutType);
+                        Log.d("myLog", "Edit ex1" + e1);
+                        Log.d("myLog", "Edit ex2" + e2);
+                        Log.d("myLog", "Edit ex3" + e3);
+                        db.editRec(id, e1, e2, e3, workoutDate, workoutType);
                     } else {
-                        db.addRec(e1, e2, e3, dateValue, workoutType);
+                        Log.d("myLog", "Add ex1" + e1);
+                        Log.d("myLog", "Add ex2" + e2);
+                        Log.d("myLog", "Add ex3" + e3);
+                        db.addRec(e1, e2, e3, workoutDate, workoutType);
                     }
                     db.close();
                     Intent intent = new Intent(getActivity(), MainActivity.class);

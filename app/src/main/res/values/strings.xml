@@ -8,17 +8,6 @@
     <string name="benchpress">Жим лежа</string>
     <string name="row">Тяга в наклоне</string>
     <string name="end">Завершить</string>
-    <string-array name="rep_range">
-        <item>0</item>
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-    </string-array>
     <string name="title_activity_main">MainActivity</string>
     <string name="card_title">Вт, 4 Апр</string>
     <string name="title_activity_history">HistoryActivity</string>

@@ -165,27 +165,6 @@
                 android:paddingStart="16dp"
                 android:orientation="horizontal"
                 style="@style/Base.Widget.AppCompat.ButtonBar">
-
-                <!--<Button
-                    android:id="@+id/rowSet1"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginStart="16dp"
-                    style="@style/Base.Widget.AppCompat.Button"/>
-
-                <Button
-                    android:id="@+id/rowSet2"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    style="@style/Base.Widget.AppCompat.Button"/>
-
-                <Button
-                    android:id="@+id/rowSet3"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    style="@style/Base.Widget.AppCompat.Button"/>-->
             </LinearLayout>
         </LinearLayout>
 
@@ -199,6 +178,5 @@
             android:layout_marginTop="16dp"
             android:layout_weight="1"
             android:text="@string/end" />
-
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
