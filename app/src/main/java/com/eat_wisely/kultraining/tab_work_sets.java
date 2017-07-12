@@ -223,9 +223,8 @@ public class tab_work_sets extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        if (action.equals("com.eat_wisely.action.edit")) {
-            setExerciseCodeAndWeight(exercise);
-        }
+        setExerciseCode(exercise);
+        setExerciseWeight(exercise);
         compareSets(exercise, sets);
     }
 
@@ -246,20 +245,17 @@ public class tab_work_sets extends Fragment {
         }
     }
 
-    void setExerciseCodeAndWeight(JSONObject exercise) {
+    void setExerciseCode(JSONObject exercise) {
         try {
             if (exercise.equals(ex1)) {
                 exercise.put("exercise", "1");
-                exercise.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
             } else if (exercise.equals(ex2)) {
-                exercise.put("workWeight", tvExec2Weight.getText().toString().replace("кг", ""));
                 if (workoutType.equals("A")) {
                     exercise.put("exercise", "2");
                 } else {
                     exercise.put("exercise", "4");
                 }
             } else if (exercise.equals(ex3)) {
-                exercise.put("workWeight", tvExec3Weight.getText().toString().replace("кг", ""));
                 if (workoutType.equals("A")) {
                     exercise.put("exercise", "3");
                 } else {
@@ -269,6 +265,21 @@ public class tab_work_sets extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    void setExerciseWeight(JSONObject exercise) {
+        try {
+            if (exercise.equals(ex1)) {
+                exercise.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
+            } else if (exercise.equals(ex2)) {
+                exercise.put("workWeight", tvExec2Weight.getText().toString().replace("кг", ""));
+            } else if (exercise.equals(ex3)) {
+                exercise.put("workWeight", tvExec3Weight.getText().toString().replace("кг", ""));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     void createButtons(LinearLayout panel, final Integer[] sets) {
@@ -335,7 +346,7 @@ public class tab_work_sets extends Fragment {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 
         ex1 = new JSONObject();
-        setExerciseCodeAndWeight(ex1);
+        setExerciseCode(ex1);
 
         if (ex1.opt("exercise").equals("1")) {
             int exercise1SetsNumber = Integer.parseInt(sharedPreferences.getString("squats_sets", "1"));
@@ -346,7 +357,7 @@ public class tab_work_sets extends Fragment {
         }
 
         ex2 = new JSONObject();
-        setExerciseCodeAndWeight(ex2);
+        setExerciseCode(ex2);
 
         if (ex2.opt("exercise").equals("2")) {
             int exercise2SetsNumber = Integer.parseInt(sharedPreferences.getString("benchpress_sets", "1"));
@@ -362,7 +373,7 @@ public class tab_work_sets extends Fragment {
         }
 
         ex3 = new JSONObject();
-        setExerciseCodeAndWeight(ex3);
+        setExerciseCode(ex3);
 
         if (ex3.opt("exercise").equals("3")) {
             int exercise3SetsNumber = Integer.parseInt(sharedPreferences.getString("row_sets", "1"));
