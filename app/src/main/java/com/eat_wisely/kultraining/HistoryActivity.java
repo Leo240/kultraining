@@ -38,8 +38,7 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
         db = new DB(this);
         db.open();
 
-        String[] from = new String[] {DB.KEY_WORKOUT_DATE, DB.KEY_EX_1, DB.KEY_EX_2,
-                DB.KEY_EX_3};
+        String[] from = new String[] {DB.KEY_WORKOUT_DATE, DB.KEY_EX_1, DB.KEY_EX_2, DB.KEY_EX_3};
         int[] to = {R.id.tvDate, R.id.tvExercise_1, R.id.tvExercise_2, R.id.tvExercise_3};
 
         scAdapter = new SimpleCursorAdapter(this, R.layout.card, null, from, to, 0);
