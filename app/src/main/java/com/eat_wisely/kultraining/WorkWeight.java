@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ public class WorkWeight extends DialogFragment implements View.OnClickListener {
     EditText etWeight;
     TextView tvWeight;
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -43,7 +45,8 @@ public class WorkWeight extends DialogFragment implements View.OnClickListener {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String workWeight = etWeight.getText().toString();
-                        tvWeight.setText(workWeight + "кг");
+                        String text = getResources().getString(R.string.unit_kg, workWeight);
+                        tvWeight.setText(text);
                     }
                 })
                 .setNegativeButton("Отмена", new DialogInterface.OnClickListener(){

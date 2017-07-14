@@ -64,9 +64,16 @@ public class tab_work_sets extends Fragment {
         layoutParams = new ViewGroup.LayoutParams(screenSize(48), screenSize(48));
 
         btnSave = (Button) rootView.findViewById(R.id.btnSave);
+        btnSave.setOnClickListener(onClickListener);
+
         tvExec1Weight = (TextView) rootView.findViewById(R.id.tvSquatWeight);
+        tvExec1Weight.setOnClickListener(onClickListener);
+
         tvExec2Weight = (TextView) rootView.findViewById(R.id.tvBenchWeight);
+        tvExec2Weight.setOnClickListener(onClickListener);
+
         tvExec3Weight = (TextView) rootView.findViewById(R.id.tvRowWeight);
+        tvExec3Weight.setOnClickListener(onClickListener);
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
@@ -150,11 +157,6 @@ public class tab_work_sets extends Fragment {
             db.close();
         }
 
-        btnSave.setOnClickListener(onClickListener);
-        tvExec1Weight.setOnClickListener(onClickListener);
-        tvExec2Weight.setOnClickListener(onClickListener);
-        tvExec3Weight.setOnClickListener(onClickListener);
-
         /*if (savedInstanceState != null){
             exec1Set1.setText(savedInstanceState.getString("exec1Set1"));
         }*/
@@ -167,9 +169,9 @@ public class tab_work_sets extends Fragment {
         int i=1;
         try {
             JSONObject obj = new JSONObject(exercise);
-            while( obj.getString("set" + Integer.toString(i)) != null) {
-                int squatSet = obj.getInt("set" + Integer.toString(i));
-                setsList.add(squatSet);
+            while( obj.getString("set" + i) != null) {
+                int exerciseSet = obj.getInt("set" + i);
+                setsList.add(exerciseSet);
                 i++;
             }
         } catch (JSONException e) {
@@ -352,7 +354,6 @@ public class tab_work_sets extends Fragment {
             int exercise1SetsNumber = Integer.parseInt(sharedPreferences.getString("squats_sets", "1"));
             final int exercise1RepsNumber = Integer.parseInt(sharedPreferences.getString("squats_reps", "0"));
             final Integer[] exercise1Reps = new Integer[exercise1SetsNumber];
-
             createButtons(panel_1, exercise1SetsNumber, exercise1RepsNumber, exercise1Reps);
         }
 

@@ -37,7 +37,7 @@ class DB{
 
     void open(){
         dbHelper = new DBHelper(mCtx, DATABASE_NAME, null, DATABASE_VERSION);
-        mDB  = dbHelper.getWritableDatabase();
+        mDB = dbHelper.getWritableDatabase();
     }
 
     void close(){
@@ -48,7 +48,7 @@ class DB{
         return mDB.query(TABLE_WORKOUTS, null, null, null, null, null, null);
     }
 
-    Cursor getRecord(long id){
+    private Cursor getRecord(long id){
         return mDB.query(TABLE_WORKOUTS, null, DB.KEY_ID + " = ?", new String[] {String.valueOf(id)}, null, null, null, null);
     }
 
@@ -89,9 +89,9 @@ class DB{
         return result;
     }
 
-    public void delRec(long id){
+    /*public void delRec(long id){
         mDB.delete(TABLE_WORKOUTS, KEY_ID + "=" + id, null);
-    }
+    }*/
 
     private class DBHelper extends SQLiteOpenHelper{
 
@@ -132,6 +132,7 @@ class DB{
             db.execSQL("INSERT INTO workouts (_id, ex1, ex2, ex3, workout_date, workout_type) VALUES (28, '{\"set1\":\"0\",\"exercise\":\"1\",\"set2\":\"0\",\"set3\":\"0\",\"workWeight\":\"80\",\"success\":false}', '{\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"7\",\"workWeight\":\"35\",\"exercise\":\"4\",\"success\":false}', '{\"set1\":\"5\",\"set2\":\"\",\"set3\":\"\",\"workWeight\":\"70\",\"exercise\":\"5\"}', '4/07/2017', 'B');");
             db.execSQL("INSERT INTO workouts (_id, ex1, ex2, ex3, workout_date, workout_type) VALUES (29, '{\"set1\":\"8\",\"exercise\":\"1\",\"set2\":\"8\",\"set3\":\"8\",\"workWeight\":\"80\",\"success\":true}', '{\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"8\",\"workWeight\":\"60\",\"exercise\":\"2\",\"success\":true}', '{\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"8\",\"workWeight\":\"60\",\"exercise\":\"3\",\"success\":true}', '06/07/2017', 'A');");
             db.execSQL("INSERT INTO workouts (_id, ex1, ex2, ex3, workout_date, workout_type) VALUES (30, '{\"set1\":\"8\",\"exercise\":\"1\",\"set2\":\"8\",\"set3\":\"8\",\"workWeight\":\"80\",\"success\":true}', '{\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"4\",\"workWeight\":\"35\",\"exercise\":\"4\",\"success\":false}', '{\"set1\":\"0\",\"set2\":\"0\",\"set3\":\"0\",\"workWeight\":\"70\",\"exercise\":\"5\",\"success\":false}', '08/07/2017', 'B');");
+            db.execSQL("INSERT INTO workouts (_id, ex1, ex2, ex3, workout_date, workout_type) VALUES (31, '{\"exercise\":\"1\",\"workWeight\":\"82.5\",\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"0\",\"success\":false}', '{\"workWeight\":\"62.5\",\"exercise\":\"2\",\"set1\":\"8\",\"set2\":\"5\",\"set3\":\"5\",\"success\":false}', '{\"workWeight\":\"60\",\"exercise\":\"3\",\"set1\":\"8\",\"set2\":\"8\",\"set3\":\"8\",\"success\":true}', '11/07/2017', 'A');");
         }
 
         @Override

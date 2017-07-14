@@ -97,7 +97,6 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
                 intent = new Intent(this, HistoryActivity.class);
                 startActivity(intent);
                 break;
-
         }
 
         return super.onOptionsItemSelected(item);
