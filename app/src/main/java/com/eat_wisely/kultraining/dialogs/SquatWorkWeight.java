@@ -1,4 +1,4 @@
-package com.eat_wisely.kultraining;
+package com.eat_wisely.kultraining.dialogs;
 
 
 import android.app.Dialog;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
+
+import com.eat_wisely.kultraining.R;
 
 public class SquatWorkWeight extends WorkWeight implements View.OnClickListener {
 

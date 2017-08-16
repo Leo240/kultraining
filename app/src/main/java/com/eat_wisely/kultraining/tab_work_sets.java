@@ -17,6 +17,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.eat_wisely.kultraining.dialogs.BenchpressWorkWeight;
+import com.eat_wisely.kultraining.dialogs.RowWorkWeight;
+import com.eat_wisely.kultraining.dialogs.SquatWorkWeight;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
@@ -105,15 +110,15 @@ public class tab_work_sets extends Fragment {
                 db.close();
                 toolbar.setTitle(workoutDate);
 
-                final Integer[] squatSets = getSets(ex_1);
+                final Integer[] squatSets = DataProcessing.getSets(ex_1);
                 createButtons(panel_1, squatSets);
                 setWorkWeight(ex_1, tvExec1Weight);
 
-                final Integer[] bpSets = getSets(ex_2);
+                final Integer[] bpSets = DataProcessing.getSets(ex_2);
                 createButtons(panel_2, bpSets);
                 setWorkWeight(ex_2, tvExec2Weight);
 
-                final Integer[] rowSets = getSets(ex_3);
+                final Integer[] rowSets = DataProcessing.getSets(ex_3);
                 createButtons(panel_3, rowSets);
                 setWorkWeight(ex_3, tvExec3Weight);
 
@@ -162,22 +167,6 @@ public class tab_work_sets extends Fragment {
         }*/
 
         return rootView;
-    }
-
-    Integer[] getSets(String exercise){
-        List<Integer> setsList = new ArrayList<>();
-        int i=1;
-        try {
-            JSONObject obj = new JSONObject(exercise);
-            while( obj.getString("set" + i) != null) {
-                int exerciseSet = obj.getInt("set" + i);
-                setsList.add(exerciseSet);
-                i++;
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return setsList.toArray(new Integer[setsList.size()]);
     }
 
     public int screenSize(int dp) {

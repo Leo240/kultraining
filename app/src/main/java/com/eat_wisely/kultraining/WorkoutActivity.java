@@ -1,8 +1,6 @@
 package com.eat_wisely.kultraining;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
-import android.os.PersistableBundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +12,8 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.eat_wisely.kultraining.dialogs.CalendarDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

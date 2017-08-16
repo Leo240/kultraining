@@ -143,6 +143,7 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
             int KEY_EX, WORKOUT_TYPE;
             String ex;
             TextView tvEx;
+            Integer[] sets;
 
             switch(view.getId()){
                 case R.id.tvDate:
@@ -157,14 +158,17 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
                     KEY_EX = cursor.getColumnIndex(DB.KEY_EX_1);
                     ex = cursor.getString(KEY_EX);
                     tvEx = (TextView) view;
+                    sets = DataProcessing.getSets(ex);
                     try {
                         JSONObject obj = new JSONObject(ex);
-                        String set1 = obj.getString("set1");
-                        String set2 = obj.getString("set2");
-                        String set3 = obj.getString("set3");
                         String workWeight = obj.getString("workWeight");
-                        tvEx.setText("Приседания: " + set1 + "/" + set2 + "/" + set3 + " "
-                                + workWeight + "кг");
+
+                        String allSets = "";
+                        for (int i=0; i < sets.length; i++) {
+                            allSets += sets[i] + " ";
+                        }
+
+                        tvEx.setText("Приседания: " + allSets + workWeight + "кг");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -173,21 +177,21 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
                     KEY_EX = cursor.getColumnIndex(DB.KEY_EX_2);
                     ex = cursor.getString(KEY_EX);
                     tvEx = (TextView) view;
+                    sets = DataProcessing.getSets(ex);
                     try {
                         JSONObject obj = new JSONObject(ex);
-                        String set1 = obj.getString("set1");
-                        String set2 = obj.getString("set2");
-                        String set3 = obj.getString("set3");
                         String exID = obj.getString("exercise");
-
                         String workWeight = obj.getString("workWeight");
 
+                        String allSets = "";
+                        for (int i=0; i < sets.length; i++) {
+                            allSets += sets[i] + " ";
+                        }
+
                         if ( exID.equals("2") ) {
-                            tvEx.setText("Жим лежа: " + set1 + "/" + set2 + "/" + set3 + " "
-                                    + workWeight + "кг");
+                            tvEx.setText("Жим лежа: " + allSets + workWeight + "кг");
                         } else {
-                            tvEx.setText("Жим над головой: " + set1 + "/" + set2 + "/" + set3 + " "
-                                    + workWeight + "кг");
+                            tvEx.setText("Жим над головой: " + allSets + workWeight + "кг");
                         }
 
                     } catch (JSONException e) {
@@ -198,20 +202,21 @@ public class HistoryActivity extends AppCompatActivity implements LoaderCallback
                     KEY_EX = cursor.getColumnIndex(DB.KEY_EX_3);
                     ex = cursor.getString(KEY_EX);
                     tvEx = (TextView) view;
+                    sets = DataProcessing.getSets(ex);
                     try {
                         JSONObject obj = new JSONObject(ex);
-                        String set1 = obj.getString("set1");
-                        String set2 = obj.getString("set2");
-                        String set3 = obj.getString("set3");
                         String exID = obj.getString("exercise");
                         String workWeight = obj.getString("workWeight");
 
+                        String allSets = "";
+                        for (int i=0; i < sets.length; i++) {
+                            allSets += sets[i] + " ";
+                        }
+
                         if ( exID.equals("3") ) {
-                            tvEx.setText("Тяга в наклоне: " + set1 + "/" + set2 + "/" + set3 + " "
-                                    + workWeight + "кг");
+                            tvEx.setText("Тяга в наклоне: " + allSets + workWeight + "кг");
                         } else {
-                            tvEx.setText("Мертвая тяга: " + set1 + "/" + set2 + "/" + set3 + " "
-                                    + workWeight + "кг");
+                            tvEx.setText("Мертвая тяга: " + allSets + workWeight + "кг");
                         }
 
                     } catch (JSONException e) {

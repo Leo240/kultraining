@@ -1,4 +1,4 @@
-package com.eat_wisely.kultraining;
+package com.eat_wisely.kultraining.dialogs;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.widget.DatePicker;
+
+import com.eat_wisely.kultraining.R;
 
 
 public class CalendarDialog extends DialogFragment implements DatePickerDialog.OnDateSetListener {

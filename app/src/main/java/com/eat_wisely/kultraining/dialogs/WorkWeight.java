@@ -1,4 +1,4 @@
-package com.eat_wisely.kultraining;
+package com.eat_wisely.kultraining.dialogs;
 
 
 import android.app.AlertDialog;
@@ -13,11 +13,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.eat_wisely.kultraining.R;
+
 public class WorkWeight extends DialogFragment implements View.OnClickListener {
 
     float weight;
     EditText etWeight;
-    TextView tvWeight;
+    protected TextView tvWeight;
 
     @NonNull
     @Override
