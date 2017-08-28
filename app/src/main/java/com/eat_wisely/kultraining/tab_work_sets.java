@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.eat_wisely.kultraining.dialogs.BenchpressWorkWeight;
 import com.eat_wisely.kultraining.dialogs.RowWorkWeight;
 import com.eat_wisely.kultraining.dialogs.SquatWorkWeight;
+import com.eat_wisely.kultraining.model.HistoryItem;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -110,15 +111,15 @@ public class tab_work_sets extends Fragment {
                 db.close();
                 toolbar.setTitle(workoutDate);
 
-                final Integer[] squatSets = DataProcessing.getSets(ex_1);
+                final Integer[] squatSets = HistoryItem.getSetsFromJson(ex_1);
                 createButtons(panel_1, squatSets);
                 setWorkWeight(ex_1, tvExec1Weight);
 
-                final Integer[] bpSets = DataProcessing.getSets(ex_2);
+                final Integer[] bpSets = HistoryItem.getSetsFromJson(ex_2);
                 createButtons(panel_2, bpSets);
                 setWorkWeight(ex_2, tvExec2Weight);
 
-                final Integer[] rowSets = DataProcessing.getSets(ex_3);
+                final Integer[] rowSets = HistoryItem.getSetsFromJson(ex_3);
                 createButtons(panel_3, rowSets);
                 setWorkWeight(ex_3, tvExec3Weight);
 
@@ -427,7 +428,7 @@ public class tab_work_sets extends Fragment {
                         db.addRec(e1, e2, e3, workoutDate, workoutType);
                     }
                     db.close();
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    Intent intent = new Intent(getActivity(), HistoryActivity.class);
                     startActivity(intent);
                     getActivity().finish();
                     break;
