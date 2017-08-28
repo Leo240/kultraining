@@ -54,7 +54,7 @@ public class HistoryItem {
         return null;
     }
 
-    private static String getTitleFromJson(String exercise) {
+    private static String getIdFromJson(String exercise) {
         try {
             JSONObject obj = new JSONObject(exercise);
             if (obj.getString("exercise") != null) {
@@ -165,9 +165,9 @@ public class HistoryItem {
         item.setWorkWeight1(getWorkWeightFromJson(cursor.getString(cursor.getColumnIndex(DB.KEY_EX_1))));
         item.setWorkWeight2(getWorkWeightFromJson(cursor.getString(cursor.getColumnIndex(DB.KEY_EX_2))));
         item.setWorkWeight3(getWorkWeightFromJson(cursor.getString(cursor.getColumnIndex(DB.KEY_EX_3))));
-        item.setTitle1(getTitleFromJson(cursor.getString(cursor.getColumnIndex(DB.KEY_EX_1))));
-        item.setTitle2(getTitleFromJson(cursor.getString(cursor.getColumnIndex(DB.KEY_EX_2))));
-        item.setTitle3(getTitleFromJson(cursor.getString(cursor.getColumnIndex(DB.KEY_EX_3))));
+        item.setTitle1(getIdFromJson(cursor.getString(cursor.getColumnIndex(DB.KEY_EX_1))));
+        item.setTitle2(getIdFromJson(cursor.getString(cursor.getColumnIndex(DB.KEY_EX_2))));
+        item.setTitle3(getIdFromJson(cursor.getString(cursor.getColumnIndex(DB.KEY_EX_3))));
         return item;
     }
 }
