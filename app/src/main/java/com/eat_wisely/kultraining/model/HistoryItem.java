@@ -57,18 +57,17 @@ public class HistoryItem {
     private static String getIdFromJson(String exercise) {
         try {
             JSONObject obj = new JSONObject(exercise);
-            if (obj.getString("exercise") != null) {
-                if (obj.getString("exercise").equals("1")) {
+            switch(obj.getString("exercise")) {
+                case "1":
                     return "Приседания";
-                } else if (obj.getString("exercise").equals("2")) {
+                case "2":
                     return "Жим лежа";
-                } else if (obj.getString("exercise").equals("3")) {
+                case "3":
                     return "Тяга в наклоне";
-                } else if (obj.getString("exercise").equals("4")) {
+                case "4":
                     return "Жим над головой";
-                } else if (obj.getString("exercise").equals("5")) {
+                case "5":
                     return "Мертвая тяга";
-                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

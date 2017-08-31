@@ -8,6 +8,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -37,13 +39,13 @@ public class tab_work_sets extends Fragment {
 
     Button btnSave;
 
-    TextView tvExec1Weight, tvExec2Weight, tvExec3Weight, exec1_title, exec2_title, exec3_title;
+    //TextView tvExec1Weight, tvExec2Weight, tvExec3Weight, exec1_title, exec2_title, exec3_title;
 
     String workoutType, action, workoutDate;
 
     Toolbar toolbar;
 
-    LinearLayout panel_1, panel_2, panel_3;
+    //LinearLayout panel_1, panel_2, panel_3;
     SharedPreferences sharedPreferences;
     ViewGroup.LayoutParams layoutParams;
 
@@ -53,6 +55,11 @@ public class tab_work_sets extends Fragment {
     JSONObject ex1, ex2, ex3;
 
     DB db;
+    Cursor cursor;
+
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+    RecyclerView.Adapter myAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,34 +69,42 @@ public class tab_work_sets extends Fragment {
         Intent intent = getActivity().getIntent();
         action = intent.getAction();
 
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewWorkout);
+
+        layoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(layoutManager);
+
+        myAdapter = new MyAdapter(getActivity(), cursor);
+        recyclerView.setAdapter(myAdapter);
+
         PreferenceManager.setDefaultValues(this.getActivity(), R.xml.preferences, false);
 
-        panel_1 = (LinearLayout) rootView.findViewById(R.id.buttonPanel_1);
+        /*panel_1 = (LinearLayout) rootView.findViewById(R.id.buttonPanel_1);
         panel_2 = (LinearLayout) rootView.findViewById(R.id.buttonPanel_2);
-        panel_3 = (LinearLayout) rootView.findViewById(R.id.buttonPanel_3);
+        panel_3 = (LinearLayout) rootView.findViewById(R.id.buttonPanel_3);*/
         layoutParams = new ViewGroup.LayoutParams(screenSize(48), screenSize(48));
 
         btnSave = (Button) rootView.findViewById(R.id.btnSave);
-        btnSave.setOnClickListener(onClickListener);
+        //btnSave.setOnClickListener(onClickListener);
 
-        tvExec1Weight = (TextView) rootView.findViewById(R.id.tvSquatWeight);
+        /*tvExec1Weight = (TextView) rootView.findViewById(R.id.tvSquatWeight);
         tvExec1Weight.setOnClickListener(onClickListener);
 
         tvExec2Weight = (TextView) rootView.findViewById(R.id.tvBenchWeight);
         tvExec2Weight.setOnClickListener(onClickListener);
 
         tvExec3Weight = (TextView) rootView.findViewById(R.id.tvRowWeight);
-        tvExec3Weight.setOnClickListener(onClickListener);
+        tvExec3Weight.setOnClickListener(onClickListener);*/
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
 
-        exec1_title = (TextView) rootView.findViewById(R.id.exec1_title);
+        /*exec1_title = (TextView) rootView.findViewById(R.id.exec1_title);
         exec2_title = (TextView) rootView.findViewById(R.id.exec2_title);
-        exec3_title = (TextView) rootView.findViewById(R.id.exec3_title);
+        exec3_title = (TextView) rootView.findViewById(R.id.exec3_title);*/
 
         db = new DB(getActivity());
 
-        switch (action) {
+        /*switch (action) {
             case "com.eat_wisely.action.workout_a":
                 workoutType = "A";
                 break;
@@ -161,7 +176,7 @@ public class tab_work_sets extends Fragment {
                 setWorkWeight(ex_3, tvExec3Weight);
             }
             db.close();
-        }
+        }*/
 
         /*if (savedInstanceState != null){
             exec1Set1.setText(savedInstanceState.getString("exec1Set1"));
@@ -194,7 +209,7 @@ public class tab_work_sets extends Fragment {
         }
     }
 
-    void setExerciseNames(String workoutType) {
+    /*void setExerciseNames(String workoutType) {
         exec1_title.setText("Приседания");
 
         if ( workoutType.equals("A") ) {
@@ -204,9 +219,9 @@ public class tab_work_sets extends Fragment {
             exec2_title.setText("Жим над головой");
             exec3_title.setText("Мертвая тяга");
         }
-    }
+    }*/
 
-    void saveSets(LinearLayout panel, JSONObject exercise) {
+    /*void saveSets(LinearLayout panel, JSONObject exercise) {
         List<String> sets = getButtonsText(panel);
         try {
             for (int i = 0; i < sets.size(); i++) {
@@ -218,7 +233,7 @@ public class tab_work_sets extends Fragment {
         setExerciseCode(exercise);
         setExerciseWeight(exercise);
         compareSets(exercise, sets);
-    }
+    }*/
 
     void compareSets(JSONObject exercise, List<String> sets) {
         int i = 0;
@@ -259,7 +274,7 @@ public class tab_work_sets extends Fragment {
         }
     }
 
-    void setExerciseWeight(JSONObject exercise) {
+    /*void setExerciseWeight(JSONObject exercise) {
         try {
             if (exercise.equals(ex1)) {
                 exercise.put("workWeight", tvExec1Weight.getText().toString().replace("кг", ""));
@@ -272,7 +287,7 @@ public class tab_work_sets extends Fragment {
             e.printStackTrace();
         }
 
-    }
+    }*/
 
     void createButtons(LinearLayout panel, final Integer[] sets) {
         for (int i = 0; i < sets.length; i++) {
@@ -337,7 +352,7 @@ public class tab_work_sets extends Fragment {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
 
-        ex1 = new JSONObject();
+        /*ex1 = new JSONObject();
         setExerciseCode(ex1);
 
         if (ex1.opt("exercise").equals("1")) {
@@ -376,7 +391,7 @@ public class tab_work_sets extends Fragment {
             final int exercise3RepsNumber = Integer.parseInt(sharedPreferences.getString("deadlift_reps", "0"));
             final Integer[] exercise3Reps = new Integer[exercise3SetsNumber];
             createButtons(panel_3, exercise3SetsNumber, exercise3RepsNumber, exercise3Reps);
-        }
+        }*/
 
     }
 
@@ -396,7 +411,7 @@ public class tab_work_sets extends Fragment {
         }
     }
 
-    private final View.OnClickListener onClickListener = new View.OnClickListener() {
+    /*private final View.OnClickListener onClickListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -446,7 +461,7 @@ public class tab_work_sets extends Fragment {
                     break;
             }
         }
-    };
+    };*/
 
     void startTimer(){
         if (timer != null) {

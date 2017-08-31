@@ -17,7 +17,7 @@
             android:layout_width="match_parent">
 
             <TextView
-                android:id="@+id/exec3_title"
+                android:id="@+id/tvExerciseTitle"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:gravity="start"
@@ -32,7 +32,7 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/tvRowWeight"
+                android:id="@+id/tvExerciseWeight"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_marginEnd="16dp"
@@ -44,7 +44,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/buttonPanel_3"
+            android:id="@+id/buttonPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
